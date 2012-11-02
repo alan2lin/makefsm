@@ -1,0 +1,39 @@
+class(name, implFunctions) ::= <<
+
+package makefsm;
+
+public class <name>Impl extends <name> {
+
+    <implFunctions; separator="\n">    
+  }    
+>> 
+ 
+mooreImpl(name) ::= <<
+  
+  @Override
+  protected void enter<name>() {
+    System.out.println(" enter<name> .....");
+  }
+ 
+>>
+
+mealyImpl(name) ::=<<
+  @Override
+   protected void  on<name>(Event e){
+   System.out.println(" on<name> .....");
+   System.out.println("...............event is "+e.toString());
+   }
+>>
+
+
+
+
+
+
+
+
+
+
+
+
+

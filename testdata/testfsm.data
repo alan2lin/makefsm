@@ -1,0 +1,20 @@
+MOORE FSM Myfsm  "我的状态机代码生成框架";
+STATUS: start DESC "开始状态s0", s1 ,s2 "中间状态2" ,s3,end DESC "结束状态s4";
+START=start;
+END=s1,end;
+
+//我是cpp风格注释
+
+/* c风格的注释 */
+
+#我是xx注释
+
+start->s1[even1 DESC "转移事件1"];
+start->start[even9 DESC "转移事件9"];
+start->end[even2  "事件2"];
+start->s2[even7  "事件7"];
+s2->s3[even5  "事件5"];
+s3->s2[even4  "事件4"];
+s2->s1[even6  "事件6"];
+s2->end[even8  "事件8"];
+s2->start[even10 "事件10"];
