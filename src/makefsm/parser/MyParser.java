@@ -1,11 +1,13 @@
 /**
  * 
  */
-package makefsm;
+package makefsm.parser;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import makefsm.entity.ExceptionBean;
 
 import org.antlr.runtime.*;
 

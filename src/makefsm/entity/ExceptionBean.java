@@ -1,7 +1,7 @@
 /**
  * 
  */
-package makefsm;
+package makefsm.entity;
 
 /**异常描述bean
  * @author "linc"

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package makefsm;
+package makefsm.parser;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import makefsm.Constant.*;
+import makefsm.entity.SymbolBean;
+import makefsm.util.Constant.*;
 
 
 import org.antlr.runtime.RecognizerSharedState;
@@ -32,9 +33,9 @@ public class FSMParser extends MyParser {
 	boolean endFlag = false;
 	
 	/**
-	 * 是否moore 类型的状态机，如果不是moore 就是 mealy
+	 * 是否moore 类型的状态机，如果不是moore 就是 mealy 默认是moore ，暂不支持 mix
 	 */
-	boolean fsmMooreType = true;
+	FSMType fsmType = FSMType.MOORE;
 	
 	/**
 	 * 状态机的名字
@@ -74,17 +75,29 @@ public class FSMParser extends MyParser {
 	ArrayList<SymbolBean> alSymbol = new   ArrayList<SymbolBean>();
 	Hashtable<String,SymbolBean> hshSymbol = new   Hashtable<String,SymbolBean>();
 	
+	
 	boolean symbolRedefined = true;
 	
 	boolean checkFlag = true;  //语义检查通过的标志  true 通过，false 不通过
 	
 	
 	
+	MidleCode mc = new MidleCode();
+	
+	
 	/** 产生中间结果
-	 * @param tmpSymbol 临时符号表
+	 * 
 	 */
-	public MidleCode genMidleCode(ArrayList<SymbolBean> tmpSymbol) {
-		MidleCode mc = null;
+	public MidleCode genMidleCode() {
+		
+		mc.setFsmName(fsmName);
+		mc.setFsmDesc(fsmDesc);
+		mc.setFsmType(fsmType);
+		
+		
+		
+		
+		/*
 		
 		//参数检查
 		if(count==0||statusCount==0||eventCount==0||null==tmpSymbol||tmpSymbol.size()==0||count!=tmpSymbol.size()||count!=(statusCount+eventCount) )
@@ -106,7 +119,7 @@ public class FSMParser extends MyParser {
 		for (Iterator it = tmpSymbol.iterator(); it.hasNext();) {
 			SymbolBean sb = (SymbolBean) it.next();
 			
-			if(sb.isStatusType())
+			if(sb.getType().equals(SymbolType.STATUS))
 			{
 				tmpasb[iStatus] = new StatusBean();
 				tmpasb[iStatus].setId(sb.getIndex());
@@ -121,8 +134,8 @@ public class FSMParser extends MyParser {
 				tmpaeb[iEvent].setEid(sb.getIndex());
 				tmpaeb[iEvent].setName(sb.getName());
 				tmpaeb[iEvent].setDesc(sb.getDesc());
-				tmpaeb[iEvent].setPend(sb.getPend());
-				tmpaeb[iEvent].setPstart(sb.getPstart());
+				//tmpaeb[iEvent].setPend(sb.getPend());
+				//tmpaeb[iEvent].setPstart(sb.getPstart());
 								
 
 				iEvent++;
@@ -133,13 +146,11 @@ public class FSMParser extends MyParser {
 		
 		
 		mc = new MidleCode();
-		mc.setFsmName(fsmName);
-		mc.setFsmDesc(fsmDesc);
-		mc.setMooreFsm(fsmMooreType);
+
 		
 		mc.setAeb(tmpaeb);
 		mc.setAsb(tmpasb);
-		
+		*/
 		
 		return mc;	
 	}
@@ -158,5 +169,9 @@ public class FSMParser extends MyParser {
 	public FSMParser(TokenStream input, RecognizerSharedState state) {
 		super(input, state);
 	}
-
+	
+	public MidleCode getMidleCode()
+	{
+		return null;
+	}
 }

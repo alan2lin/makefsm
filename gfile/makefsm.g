@@ -8,15 +8,18 @@ superClass=FSMParser;
 
 @header
 {
-package  makefsm;
-import makefsm.Constant.StatusAttr;
+package  makefsm.parser;
+import makefsm.util.Constant.FSMType;
+import makefsm.util.Constant.StatusAttr;
+import makefsm.util.Constant.SymbolType;
+import makefsm.entity.SymbolBean;
 
 }
 
 
 @lexer::header
 {
-package  makefsm;
+package  makefsm.parser;
 }
 
 
@@ -29,125 +32,84 @@ package  makefsm;
 prog
 @after{
 //check if had set the start and end status;
-if(!startFlag) throw new FailedPredicateException(input, "you haven't define the start status ,please check", eventPrefix);
-if(!endFlag) throw new FailedPredicateException(input, "you haven't define the end status  list,please check", eventPrefix);
+if(!startFlag) throw new FailedPredicateException(input,"prog" ,"you haven't define the start status ,please check");
+if(!endFlag) throw new FailedPredicateException(input,"prog" , "you haven't define the end status  list,please check");
 
 //System.out.println(alSymbol.toString());
 
-MidleCode mc = genMidleCode(alSymbol);
-if(mc==null) throw new FailedPredicateException(input, "unknown error", eventPrefix);
-//if(!mc.check()) System.out.println(mc.getErrorMsg());
-if(!mc.check()) System.out.println(mc.getErrorMsg());
-//mc.check2();
-//System.out.println(" \n \n \n" + mc.makeGraphContent() );
-mc.testWriteFile();
-mc.getAllTestPath();
+MidleCode mc = genMidleCode();
 
-
-
-//if(true) throw new FailedPredicateException(input, "please check", eventPrefix);
 
 }	
-  : ('MOORE'|'MEALY'{fsmMooreType=false;})? fsm_name def_status statment+  EOF;
+  : ('MOORE'|'MEALY'{fsmType = FSMType.MOORE;})? fsm_name status_list statment+  EOF;
 
-statment:	 start_status| end_status | transfer;
+statment:	 start_status| end_status_list | transfer;
 
 fsm_name 
 	:	FSM  a=ID{fsmName=$a.text;} (DESC? b=STRING {fsmDesc=$b.text;})? SEMI;
+
+status_list
+  :
+  STATUS  COLON def_status (COMMA  def_status )* SEMI;
 	
 def_status
-	:	STATUS  COLON a=ID 
+	:	 a=ID 
 	       {
-	         SymbolBean s1 = new SymbolBean(); 
-	         s1.setIndex(count);
-	         s1.setStatusType(true);
-	         s1.setName($a.text);
-	         symbolRedefined = (null!=hshSymbol.get(statusPrefix+$a.text) ) ;
-	         if(symbolRedefined) throw new FailedPredicateException(input, "stauts ["+$a.text+"]defined again,please check", eventPrefix);
-	        }
-	        
-	   (DESC? b=STRING {s1.setDesc($b.text);})?
-	   	   
-	       {	         	       
-	         alSymbol.add(s1);	         
-	         hshSymbol.put(statusPrefix+s1.getName(),s1);
+	         symbolRedefined = mc.isSymbolExists($a.text,SymbolType.STATUS) ;
+	         if(symbolRedefined) throw new FailedPredicateException(input,"def_stauts", "stauts ["+$a.text+"]defined again,please check");
 	         
-	         statusCount++;
-	         count++;
+	         SymbolBean sb = new SymbolBean(); 
+           sb.setIndex(mc.getCount());
+           sb.setType(SymbolType.STATUS); 
+           sb.setStatus(StatusAttr.NONTERMINAL);      
+           sb.setName($a.text); 
 	        }
-	        	        
 	        
-	        	        
-	    (COMMA c=ID
-         {
-           SymbolBean s2 = new SymbolBean(); 
-           s2.setIndex(count);
-           s2.setStatusType(true);
-           s2.setName($c.text);
-           symbolRedefined = (null!=hshSymbol.get(statusPrefix+$c.text) ) ;
-           
-           if(symbolRedefined) throw new FailedPredicateException(input, "stauts ["+$c.text+"]defined again,please check", eventPrefix);
-           
-          }	     
-	       (DESC? d=STRING {s2.setDesc($d.text);})?
-	        {                   
-           alSymbol.add(s2);           
-           hshSymbol.put(statusPrefix+s2.getName(),s2); 
-           statusCount++;          
-           count++;
-          }
-	       
-	       
-	     )*   SEMI;
+	   (DESC? b=STRING {sb.setDesc($b.text);})?
+	   	   
+	       {	
+	         mc.addSymbol(sb); 
+	       }       
+	   ;
 
 start_status
 	: 
 	 START  EQUAL  a=ID SEMI
 	 {   
-	   if(startFlag) throw new FailedPredicateException(input, "you had defined the start status ,please check", eventPrefix);
+	   if(startFlag) throw new FailedPredicateException(input,"start_status", "you had defined the start status ,please check");
 	   
-	   SymbolBean start = hshSymbol.get(statusPrefix+$a.text);
+	   SymbolBean start = mc.getSymbol($a.text,SymbolType.STATUS);
 	   
-	   if(null == start) throw new FailedPredicateException(input, "status ["+$a.text+"] that you want to start is not defined yet", eventPrefix);
+	   if(null == start) throw new FailedPredicateException(input,"start_status", "status ["+$a.text+"] that you want to start is not defined yet");
 	   
 	   start.setStatus(StatusAttr.START); //denfine this status to start status;   	   	   
 	   
 	   startFlag = true;
 	 }
 	 ;	
-	
+
+end_status_list:
+{
+  if(endFlag) throw new FailedPredicateException(input,"end_status_list", "you had defined the end status list ,please check");
+}
+END EQUAL 
+end_status 	(COMMA end_status )* SEMI
+  {
+   endFlag = true;   
+  };
+  
+  
 end_status	
 	: 
-	END EQUAL a=ID
-	{
-	  if(endFlag) throw new FailedPredicateException(input, "you had defined the end status list ,please check", eventPrefix);
-	  
-	   SymbolBean end = hshSymbol.get(statusPrefix+$a.text);
+	a=ID
+	{	  
+	   SymbolBean end = mc.getSymbol($a.text,SymbolType.STATUS);
      
-     if(null == end) throw new FailedPredicateException(input, "status ["+$a.text+"] that you want to start is not defined yet", eventPrefix);
-     if(end.getStatus()==StatusAttr.START) throw new FailedPredicateException(input, "status ["+$a.text+"] have been defined as start status", eventPrefix);
+     if(null == end) throw new FailedPredicateException(input,"end_status", "status ["+$a.text+"] that you want to start is not defined yet");
+     if(end.getStatus()==StatusAttr.START) throw new FailedPredicateException(input,"end_status", "status ["+$a.text+"] have been defined as start status");
      
-     end.setStatus(StatusAttr.TERMINAL); //denfine this status to end status;        
-	  
-	}
-	(
-	  COMMA b=ID
-	   {	  
-	     SymbolBean end2 = hshSymbol.get(statusPrefix+$b.text);
-	     
-	     if(null == end2) throw new FailedPredicateException(input, "status ["+$b.text+"] that you want to start is not defined yet", eventPrefix);
-	     if(end2.getStatus()==StatusAttr.START) throw new FailedPredicateException(input, "status ["+$b.text+"] have been defined as start status", eventPrefix);
-	     
-	     end2.setStatus(StatusAttr.TERMINAL); //denfine this status to end status;
-     }        
-	  
-	  	
-	)* SEMI
-	
-	{
-	 endFlag = true;	 
-	}
-	
+     end.setStatus(StatusAttr.TERMINAL); //denfine this status to end status;     
+	}	
 	;
 
 	
@@ -159,27 +121,24 @@ a=ID '->' b=ID LSB c=ID (DESC? e=STRING {s1.setDesc($e.text);})? RSB SEMI
 {
 //check for whether the status undefined and whether event redefined;
 
-
-     SymbolBean ps1 = hshSymbol.get(statusPrefix+$a.text);     
-     if(null == ps1) throw new FailedPredicateException(input, "status ["+$a.text+"] that you want to start is not defined yet", eventPrefix);
-
-     SymbolBean ps2 = hshSymbol.get(statusPrefix+$b.text);     
-     if(null == ps2) throw new FailedPredicateException(input, "status ["+$b.text+"] that you want to start is not defined yet", eventPrefix);
+     symbolRedefined = mc.isSymbolExists($c.text,SymbolType.EVENT) ;
+     if(symbolRedefined) throw new FailedPredicateException(input,"transfer", "event ["+$c.text+"] redefined!!! please check");
      
-     SymbolBean se = hshSymbol.get(eventPrefix+$c.text);
-     if(null!=se)  throw new FailedPredicateException(input, "event ["+$c.text+"] redefined!!! please check", eventPrefix);
      
-     s1.setIndex(count);
+     if(!mc.isSymbolExists($a.text,SymbolType.STATUS)) throw new FailedPredicateException(input,"transfer", "status ["+$a.text+"] that transfer from is not  defined yet");
+     if(!mc.isSymbolExists($b.text,SymbolType.STATUS)) throw new FailedPredicateException(input,"transfer", "status ["+$b.text+"] that transfer to is not  defined yet");
+
+
+     
+     s1.setIndex(mc.getCount());
      s1.setName($c.text);
-     s1.setStatusType(false);
-     s1.setPstart(ps1.getIndex());
-     s1.setPend(ps2.getIndex());
+     s1.setType(SymbolType.EVENT);
+     s1.setPstart(mc.getSymbol($a.text,SymbolType.STATUS));
+     s1.setPend(mc.getSymbol($b.text,SymbolType.STATUS));
      
-     alSymbol.add(s1);           
-     hshSymbol.put(eventPrefix+s1.getName(),s1);        
+     mc.addSymbol(s1);
      
-     eventCount++;
-     count++;
+
      
      
      }

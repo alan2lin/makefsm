@@ -3,6 +3,9 @@
  */
 package makefsm;
 
+
+import makefsm.entity.SymbolBean;
+
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -14,34 +17,34 @@ import org.jgrapht.graph.DefaultEdge;
 public class MyEdge extends DefaultEdge {
 	
 	
-	
-	   public EventBean  eb;
+	   //TODO 边同事件的符号关联，以便减少查找，可能这个可以省略
+	   public SymbolBean  eb;
 	
 	   public MyEdge()
 	   {
 		   super();
 	   }
 
-		public StatusBean getSource()
+		public SymbolBean getSource()
 		{
-			return (StatusBean) super.getSource();
+			return (SymbolBean) super.getSource();
 		}
-		public StatusBean getTarget()
+		public SymbolBean getTarget()
 		{
-			return (StatusBean) super.getTarget();
+			return (SymbolBean) super.getTarget();
 		}
 
 		/**
 		 * @return the eb
 		 */
-		public EventBean getEb() {
+		public SymbolBean getBindEvent() {
 			return eb;
 		}
 
 		/**
 		 * @param eb the eb to set
 		 */
-		public void setEb(EventBean eb) {
+		public void setBindEvent(SymbolBean eb) {
 			this.eb = eb;
 		}
 		

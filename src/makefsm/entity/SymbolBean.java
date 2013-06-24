@@ -1,9 +1,11 @@
 /**
  * 
  */
-package makefsm;
+package makefsm.entity;
 
-import makefsm.Constant.StatusAttr;
+import makefsm.util.Constant.StatusAttr;
+import makefsm.util.Constant.SymbolType;
+
 
 /**
  * @author "linc"
@@ -26,23 +28,24 @@ public class SymbolBean {
 	 */
 	String desc;
 	/**
-	 * 符号类型   false:事件   true 状态
+	 * 符号类型   
 	 */
-	boolean statusType = false;
+	SymbolType type ;
+
 	/**
 	 *  状态的属性  0 非终结状态   1开始状态 2 结束状态
 	 */
-	StatusAttr status = StatusAttr.NONTERMINAL;
+	StatusAttr status;
 	
 	/**
 	 *  事件的开始端
 	 */
-	int pstart;
+	SymbolBean pstart;
 	
 	/**
 	 *  事件的结束端
 	 */
-	int pend;
+	SymbolBean pend;
 
 	/**
 	 * @return the index
@@ -105,48 +108,44 @@ public class SymbolBean {
 	/**
 	 * @return the pstart
 	 */
-	public int getPstart() {
+	public SymbolBean getPstart() {
 		return pstart;
 	}
 
 	/**
 	 * @param pstart the pstart to set
 	 */
-	public void setPstart(int pstart) {
+	public void setPstart(SymbolBean pstart) {
 		this.pstart = pstart;
 	}
 
 	/**
 	 * @return the pend
 	 */
-	public int getPend() {
+	public SymbolBean getPend() {
 		return pend;
 	}
 
 	/**
 	 * @param pend the pend to set
 	 */
-	public void setPend(int pend) {
+	public void setPend(SymbolBean pend) {
 		this.pend = pend;
 	}
 	
 	public String toString(){		
-		return "["+index+"|"+ name+"|"+ desc+"|"+ statusType+"|"+ status+"|"+ pstart+"|"+ pend+"]\n";
+		return "["+index+"|"+ name+"|"+ desc+"|"+ type +"|"+ status+"|"+ pstart+"|"+ pend+"]\n";
 		
 	}
 
-	/**
-	 * @return the statusType
-	 */
-	public boolean isStatusType() {
-		return statusType;
+	public SymbolType getType() {
+		return type;
 	}
 
-	/**
-	 * @param statusType the statusType to set
-	 */
-	public void setStatusType(boolean statusType) {
-		this.statusType = statusType;
+	public void setType(SymbolType type) {
+		this.type = type;
 	}
+
+
 
 }

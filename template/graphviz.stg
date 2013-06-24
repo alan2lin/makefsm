@@ -1,0 +1,19 @@
+ digraph(name,desc,status_list,event_list) ::= <<
+
+ digraph G { 
+ node[fontname="FangSong"]; 
+ edge[fontname="FangSong"]; 
+ graph[fontname="FangSong"]; 
+ subgraph cluster_r0 { 
+     label ="<name> <if(desc)> \n <desc><endif>";
+
+     <status_list; separator="\n"> 
+
+     <event_list; separator="\n"> 
+     }
+ }
+
+ >>
+
+ status_list(name,desc,shape) ::= <<<name>[label="\N<if(desc)>\n <desc><endif>"   shape=<shape>  ]; >>
+ event_list(name,from_status,to_status,desc) ::= <<<from_status>-><to_status>[label="<name><if(desc)>\n <desc><endif>"];>>
