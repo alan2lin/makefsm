@@ -3,6 +3,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class Myfsm {
 
+   //状态机类型
+   String fsmType = "MEALY";
+
    //当前状态
    private States __Y;
    private boolean __exitFlag = false;

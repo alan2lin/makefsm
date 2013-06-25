@@ -1,9 +1,12 @@
-class(name, members,interfaces,functions) ::= <<
+class(name,type, members,interfaces,functions) ::= <<
 
 package makefsm;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class <name> {
+
+   //状态机类型
+   String fsmType = "<type>";
 
    //当前状态
    private States __Y;

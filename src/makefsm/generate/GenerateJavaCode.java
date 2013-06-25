@@ -42,6 +42,7 @@ public class GenerateJavaCode implements IGenerateCode{
 
 		ST absST = absTpl.getInstanceOf("class");
 		absST.add("name", mc.getFsmName());
+		absST.add("type", mc.getFsmType());
 		
 		ST implST = implTpl.getInstanceOf("class");
 		implST.add("name", mc.getFsmName());
