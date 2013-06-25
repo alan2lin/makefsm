@@ -140,11 +140,22 @@ public class GenerateJavaCode implements IGenerateCode{
 					String tmp = e.getTarget().getName();
 					ifblock[i_ifblock].add("newStatusName", tmp);
 					
-					tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);					
-					ifblock[i_ifblock].add("funName", tmp);
-					
-					if(mc.getFsmType().equals( FSMType.MOORE)) ifblock[i_ifblock].add("isMooreType", "moore");
 					if(e.getTarget().getStatus()==StatusAttr.TERMINAL) ifblock[i_ifblock].add("isEndState", "endState");
+					
+					
+					if(mc.getFsmType().equals( FSMType.MOORE)) 
+					{
+						ifblock[i_ifblock].add("isMooreType", "moore");
+						
+						tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);					
+						ifblock[i_ifblock].add("funName", tmp);
+						
+					}else
+					{
+						String tmp2 = e.getBindEvent().getName();
+						tmp2 = tmp2.substring(0,1).toUpperCase() + tmp2.substring(1);	
+						ifblock[i_ifblock].add("funName", tmp2);						
+					}
 					
 					i_ifblock++;
 					

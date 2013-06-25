@@ -37,11 +37,15 @@ public abstract class Myfsm {
    // 事件响应  onEvent(Event e) 以on开头，带参数，参数是为了代码重用方便
    // 动作 enterAction()  以 enter开头，不带参数 
 
-      protected abstract void enterStart();
-      protected abstract void enterS1();
-      protected abstract void enterS2();
-      protected abstract void enterS3();
-      protected abstract void enterEnd();
+      protected abstract void  onEven1(Event e);
+      protected abstract void  onEven9(Event e);
+      protected abstract void  onEven2(Event e);
+      protected abstract void  onEven7(Event e);
+      protected abstract void  onEven5(Event e);
+      protected abstract void  onEven4(Event e);
+      protected abstract void  onEven6(Event e);
+      protected abstract void  onEven8(Event e);
+      protected abstract void  onEven10(Event e);
 
    //主要实现的函数
       public void begin()
@@ -70,44 +74,49 @@ public abstract class Myfsm {
    		   switch( __Y ) {   
    		   case start:  
    		         if( e == Event.even1 ) {      
-   		                  __Y = States.s1;
-   		                  enterS1();           
-   		                  exit(__Y);
+   		                  
+   		                  onEven1(e);
+   		                  __Y = States.s1;exit(__Y);
    		               } else if( e == Event.even9 ) {      
+   		                  
+   		                  onEven9(e);
    		                  __Y = States.start;
-   		                  enterStart();           
    		               } else if( e == Event.even2 ) {      
-   		                  __Y = States.end;
-   		                  enterEnd();           
-   		                  exit(__Y);
+   		                  
+   		                  onEven2(e);
+   		                  __Y = States.end;exit(__Y);
    		               } else if( e == Event.even7 ) {      
+   		                  
+   		                  onEven7(e);
    		                  __Y = States.s2;
-   		                  enterS2();           
    		               }
    		         break;      
    		   case s1:  
    		         break;      
    		   case s2:  
    		         if( e == Event.even5 ) {      
+   		                  
+   		                  onEven5(e);
    		                  __Y = States.s3;
-   		                  enterS3();           
    		               } else if( e == Event.even6 ) {      
-   		                  __Y = States.s1;
-   		                  enterS1();           
-   		                  exit(__Y);
+   		                  
+   		                  onEven6(e);
+   		                  __Y = States.s1;exit(__Y);
    		               } else if( e == Event.even8 ) {      
-   		                  __Y = States.end;
-   		                  enterEnd();           
-   		                  exit(__Y);
+   		                  
+   		                  onEven8(e);
+   		                  __Y = States.end;exit(__Y);
    		               } else if( e == Event.even10 ) {      
+   		                  
+   		                  onEven10(e);
    		                  __Y = States.start;
-   		                  enterStart();           
    		               }
    		         break;      
    		   case s3:  
    		         if( e == Event.even4 ) {      
+   		                  
+   		                  onEven4(e);
    		                  __Y = States.s2;
-   		                  enterS2();           
    		               }
    		         break;      
    		   case end:  

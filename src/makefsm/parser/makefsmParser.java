@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g 2013-06-25 00:24:59
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g 2013-06-25 12:34:35
 
 package  makefsm.parser;
 import makefsm.util.Constant.FSMType;
@@ -85,31 +85,32 @@ public class makefsmParser extends FSMParser {
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:6: 'MOORE'
                     {
                     match(input,26,FOLLOW_26_in_prog56); 
+                    fsmType = FSMType.MOORE;
 
                     }
                     break;
                 case 2 :
-                    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:14: 'MEALY'
+                    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:40: 'MEALY'
                     {
-                    match(input,27,FOLLOW_27_in_prog58); 
-                    fsmType = FSMType.MOORE;
+                    match(input,27,FOLLOW_27_in_prog59); 
+                    fsmType = FSMType.MEALY;
 
                     }
                     break;
 
             }
 
-            pushFollow(FOLLOW_fsm_name_in_prog63);
+            pushFollow(FOLLOW_fsm_name_in_prog64);
             fsm_name();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_status_list_in_prog65);
+            pushFollow(FOLLOW_status_list_in_prog66);
             status_list();
 
             state._fsp--;
 
-            // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:71: ( statment )+
+            // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:97: ( statment )+
             int cnt2=0;
             loop2:
             do {
@@ -123,9 +124,9 @@ public class makefsmParser extends FSMParser {
 
                 switch (alt2) {
             	case 1 :
-            	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:71: statment
+            	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:97: statment
             	    {
-            	    pushFollow(FOLLOW_statment_in_prog67);
+            	    pushFollow(FOLLOW_statment_in_prog68);
             	    statment();
 
             	    state._fsp--;
@@ -143,7 +144,7 @@ public class makefsmParser extends FSMParser {
                 cnt2++;
             } while (true);
 
-            match(input,EOF,FOLLOW_EOF_in_prog71); 
+            match(input,EOF,FOLLOW_EOF_in_prog72); 
 
             }
 
@@ -203,7 +204,7 @@ public class makefsmParser extends FSMParser {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:46:12: start_status
                     {
-                    pushFollow(FOLLOW_start_status_in_statment79);
+                    pushFollow(FOLLOW_start_status_in_statment80);
                     start_status();
 
                     state._fsp--;
@@ -214,7 +215,7 @@ public class makefsmParser extends FSMParser {
                 case 2 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:46:26: end_status_list
                     {
-                    pushFollow(FOLLOW_end_status_list_in_statment82);
+                    pushFollow(FOLLOW_end_status_list_in_statment83);
                     end_status_list();
 
                     state._fsp--;
@@ -225,7 +226,7 @@ public class makefsmParser extends FSMParser {
                 case 3 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:46:44: transfer
                     {
-                    pushFollow(FOLLOW_transfer_in_statment86);
+                    pushFollow(FOLLOW_transfer_in_statment87);
                     transfer();
 
                     state._fsp--;
@@ -257,8 +258,8 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:2: ( FSM a= ID ( ( DESC )? b= STRING )? SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:4: FSM a= ID ( ( DESC )? b= STRING )? SEMI
             {
-            match(input,FSM,FOLLOW_FSM_in_fsm_name96); 
-            a=(Token)match(input,ID,FOLLOW_ID_in_fsm_name101); 
+            match(input,FSM,FOLLOW_FSM_in_fsm_name97); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_fsm_name102); 
             fsmName=(a!=null?a.getText():null);
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:32: ( ( DESC )? b= STRING )?
             int alt5=2;
@@ -282,14 +283,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:33: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_fsm_name105); 
+                            match(input,DESC,FOLLOW_DESC_in_fsm_name106); 
 
                             }
                             break;
 
                     }
 
-                    b=(Token)match(input,STRING,FOLLOW_STRING_in_fsm_name110); 
+                    b=(Token)match(input,STRING,FOLLOW_STRING_in_fsm_name111); 
                     fsmDesc=(b!=null?b.getText():null);
 
                     }
@@ -297,7 +298,7 @@ public class makefsmParser extends FSMParser {
 
             }
 
-            match(input,SEMI,FOLLOW_SEMI_in_fsm_name116); 
+            match(input,SEMI,FOLLOW_SEMI_in_fsm_name117); 
 
             }
 
@@ -320,9 +321,9 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:52:3: ( STATUS COLON def_status ( COMMA def_status )* SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:53:3: STATUS COLON def_status ( COMMA def_status )* SEMI
             {
-            match(input,STATUS,FOLLOW_STATUS_in_status_list128); 
-            match(input,COLON,FOLLOW_COLON_in_status_list131); 
-            pushFollow(FOLLOW_def_status_in_status_list133);
+            match(input,STATUS,FOLLOW_STATUS_in_status_list129); 
+            match(input,COLON,FOLLOW_COLON_in_status_list132); 
+            pushFollow(FOLLOW_def_status_in_status_list134);
             def_status();
 
             state._fsp--;
@@ -342,8 +343,8 @@ public class makefsmParser extends FSMParser {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:53:29: COMMA def_status
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_status_list136); 
-            	    pushFollow(FOLLOW_def_status_in_status_list139);
+            	    match(input,COMMA,FOLLOW_COMMA_in_status_list137); 
+            	    pushFollow(FOLLOW_def_status_in_status_list140);
             	    def_status();
 
             	    state._fsp--;
@@ -357,7 +358,7 @@ public class makefsmParser extends FSMParser {
                 }
             } while (true);
 
-            match(input,SEMI,FOLLOW_SEMI_in_status_list144); 
+            match(input,SEMI,FOLLOW_SEMI_in_status_list145); 
 
             }
 
@@ -383,7 +384,7 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:56:2: (a= ID ( ( DESC )? b= STRING )? )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:56:5: a= ID ( ( DESC )? b= STRING )?
             {
-            a=(Token)match(input,ID,FOLLOW_ID_in_def_status157); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_def_status158); 
 
             	         symbolRedefined = mc.isSymbolExists((a!=null?a.getText():null),SymbolType.STATUS) ;
             	         if(symbolRedefined) throw new FailedPredicateException(input,"def_stauts", "stauts ["+(a!=null?a.getText():null)+"]defined again,please check");
@@ -416,14 +417,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:68:6: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_def_status185); 
+                            match(input,DESC,FOLLOW_DESC_in_def_status186); 
 
                             }
                             break;
 
                     }
 
-                    b=(Token)match(input,STRING,FOLLOW_STRING_in_def_status190); 
+                    b=(Token)match(input,STRING,FOLLOW_STRING_in_def_status191); 
                     sb.setDesc((b!=null?b.getText():null));
 
                     }
@@ -458,10 +459,10 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:76:2: ( START EQUAL a= ID SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:77:3: START EQUAL a= ID SEMI
             {
-            match(input,START,FOLLOW_START_in_start_status237); 
-            match(input,EQUAL,FOLLOW_EQUAL_in_start_status240); 
-            a=(Token)match(input,ID,FOLLOW_ID_in_start_status245); 
-            match(input,SEMI,FOLLOW_SEMI_in_start_status247); 
+            match(input,START,FOLLOW_START_in_start_status238); 
+            match(input,EQUAL,FOLLOW_EQUAL_in_start_status241); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_start_status246); 
+            match(input,SEMI,FOLLOW_SEMI_in_start_status248); 
                
             	   if(startFlag) throw new FailedPredicateException(input,"start_status", "you had defined the start status ,please check");
             	   
@@ -498,9 +499,9 @@ public class makefsmParser extends FSMParser {
 
               if(endFlag) throw new FailedPredicateException(input,"end_status_list", "you had defined the end status list ,please check");
 
-            match(input,END,FOLLOW_END_in_end_status_list264); 
-            match(input,EQUAL,FOLLOW_EQUAL_in_end_status_list266); 
-            pushFollow(FOLLOW_end_status_in_end_status_list269);
+            match(input,END,FOLLOW_END_in_end_status_list265); 
+            match(input,EQUAL,FOLLOW_EQUAL_in_end_status_list267); 
+            pushFollow(FOLLOW_end_status_in_end_status_list270);
             end_status();
 
             state._fsp--;
@@ -520,8 +521,8 @@ public class makefsmParser extends FSMParser {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:96:14: COMMA end_status
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_end_status_list273); 
-            	    pushFollow(FOLLOW_end_status_in_end_status_list275);
+            	    match(input,COMMA,FOLLOW_COMMA_in_end_status_list274); 
+            	    pushFollow(FOLLOW_end_status_in_end_status_list276);
             	    end_status();
 
             	    state._fsp--;
@@ -535,7 +536,7 @@ public class makefsmParser extends FSMParser {
                 }
             } while (true);
 
-            match(input,SEMI,FOLLOW_SEMI_in_end_status_list280); 
+            match(input,SEMI,FOLLOW_SEMI_in_end_status_list281); 
 
                endFlag = true;   
               
@@ -563,7 +564,7 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:103:2: (a= ID )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:104:2: a= ID
             {
-            a=(Token)match(input,ID,FOLLOW_ID_in_end_status303); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_end_status304); 
             	  
             	   SymbolBean end = mc.getSymbol((a!=null?a.getText():null),SymbolType.STATUS);
                  
@@ -602,11 +603,11 @@ public class makefsmParser extends FSMParser {
 
               SymbolBean s1 = new SymbolBean();
 
-            a=(Token)match(input,ID,FOLLOW_ID_in_transfer323); 
-            match(input,DIRECT,FOLLOW_DIRECT_in_transfer325); 
-            b=(Token)match(input,ID,FOLLOW_ID_in_transfer329); 
-            match(input,LSB,FOLLOW_LSB_in_transfer331); 
-            c=(Token)match(input,ID,FOLLOW_ID_in_transfer335); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_transfer324); 
+            match(input,DIRECT,FOLLOW_DIRECT_in_transfer326); 
+            b=(Token)match(input,ID,FOLLOW_ID_in_transfer330); 
+            match(input,LSB,FOLLOW_LSB_in_transfer332); 
+            c=(Token)match(input,ID,FOLLOW_ID_in_transfer336); 
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:120:25: ( ( DESC )? e= STRING )?
             int alt11=2;
             int LA11_0 = input.LA(1);
@@ -629,14 +630,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:120:26: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_transfer338); 
+                            match(input,DESC,FOLLOW_DESC_in_transfer339); 
 
                             }
                             break;
 
                     }
 
-                    e=(Token)match(input,STRING,FOLLOW_STRING_in_transfer343); 
+                    e=(Token)match(input,STRING,FOLLOW_STRING_in_transfer344); 
                     s1.setDesc((e!=null?e.getText():null));
 
                     }
@@ -644,8 +645,8 @@ public class makefsmParser extends FSMParser {
 
             }
 
-            match(input,RSB,FOLLOW_RSB_in_transfer349); 
-            match(input,SEMI,FOLLOW_SEMI_in_transfer351); 
+            match(input,RSB,FOLLOW_RSB_in_transfer350); 
+            match(input,SEMI,FOLLOW_SEMI_in_transfer352); 
 
             //check for whether the status undefined and whether event redefined;
 
@@ -690,47 +691,47 @@ public class makefsmParser extends FSMParser {
  
 
     public static final BitSet FOLLOW_26_in_prog56 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_27_in_prog58 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_fsm_name_in_prog63 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_status_list_in_prog65 = new BitSet(new long[]{0x0000000000005020L});
-    public static final BitSet FOLLOW_statment_in_prog67 = new BitSet(new long[]{0x0000000000005020L});
-    public static final BitSet FOLLOW_EOF_in_prog71 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_start_status_in_statment79 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_end_status_list_in_statment82 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_transfer_in_statment86 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FSM_in_fsm_name96 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_ID_in_fsm_name101 = new BitSet(new long[]{0x00000000000001C0L});
-    public static final BitSet FOLLOW_DESC_in_fsm_name105 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_STRING_in_fsm_name110 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_fsm_name116 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STATUS_in_status_list128 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_COLON_in_status_list131 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_def_status_in_status_list133 = new BitSet(new long[]{0x0000000000000900L});
-    public static final BitSet FOLLOW_COMMA_in_status_list136 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_def_status_in_status_list139 = new BitSet(new long[]{0x0000000000000900L});
-    public static final BitSet FOLLOW_SEMI_in_status_list144 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_def_status157 = new BitSet(new long[]{0x00000000000000C2L});
-    public static final BitSet FOLLOW_DESC_in_def_status185 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_STRING_in_def_status190 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_START_in_start_status237 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_EQUAL_in_start_status240 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_ID_in_start_status245 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_start_status247 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_END_in_end_status_list264 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_EQUAL_in_end_status_list266 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_end_status_in_end_status_list269 = new BitSet(new long[]{0x0000000000000900L});
-    public static final BitSet FOLLOW_COMMA_in_end_status_list273 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_end_status_in_end_status_list275 = new BitSet(new long[]{0x0000000000000900L});
-    public static final BitSet FOLLOW_SEMI_in_end_status_list280 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_end_status303 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_transfer323 = new BitSet(new long[]{0x0000000000020000L});
-    public static final BitSet FOLLOW_DIRECT_in_transfer325 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_ID_in_transfer329 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_LSB_in_transfer331 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_ID_in_transfer335 = new BitSet(new long[]{0x00000000000100C0L});
-    public static final BitSet FOLLOW_DESC_in_transfer338 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_STRING_in_transfer343 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_RSB_in_transfer349 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_SEMI_in_transfer351 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_27_in_prog59 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_fsm_name_in_prog64 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_status_list_in_prog66 = new BitSet(new long[]{0x0000000000005020L});
+    public static final BitSet FOLLOW_statment_in_prog68 = new BitSet(new long[]{0x0000000000005020L});
+    public static final BitSet FOLLOW_EOF_in_prog72 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_start_status_in_statment80 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_end_status_list_in_statment83 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_transfer_in_statment87 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FSM_in_fsm_name97 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_ID_in_fsm_name102 = new BitSet(new long[]{0x00000000000001C0L});
+    public static final BitSet FOLLOW_DESC_in_fsm_name106 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_STRING_in_fsm_name111 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_fsm_name117 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STATUS_in_status_list129 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_COLON_in_status_list132 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_def_status_in_status_list134 = new BitSet(new long[]{0x0000000000000900L});
+    public static final BitSet FOLLOW_COMMA_in_status_list137 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_def_status_in_status_list140 = new BitSet(new long[]{0x0000000000000900L});
+    public static final BitSet FOLLOW_SEMI_in_status_list145 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_def_status158 = new BitSet(new long[]{0x00000000000000C2L});
+    public static final BitSet FOLLOW_DESC_in_def_status186 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_STRING_in_def_status191 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_START_in_start_status238 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_EQUAL_in_start_status241 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_ID_in_start_status246 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_start_status248 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_END_in_end_status_list265 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_EQUAL_in_end_status_list267 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_end_status_in_end_status_list270 = new BitSet(new long[]{0x0000000000000900L});
+    public static final BitSet FOLLOW_COMMA_in_end_status_list274 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_end_status_in_end_status_list276 = new BitSet(new long[]{0x0000000000000900L});
+    public static final BitSet FOLLOW_SEMI_in_end_status_list281 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_end_status304 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_transfer324 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_DIRECT_in_transfer326 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_ID_in_transfer330 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_LSB_in_transfer332 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_ID_in_transfer336 = new BitSet(new long[]{0x00000000000100C0L});
+    public static final BitSet FOLLOW_DESC_in_transfer339 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_STRING_in_transfer344 = new BitSet(new long[]{0x0000000000010000L});
+    public static final BitSet FOLLOW_RSB_in_transfer350 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_SEMI_in_transfer352 = new BitSet(new long[]{0x0000000000000002L});
 
 }

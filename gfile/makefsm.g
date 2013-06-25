@@ -41,7 +41,7 @@ MidleCode mc = genMidleCode();
 
 
 }	
-  : ('MOORE'|'MEALY'{fsmType = FSMType.MOORE;})? fsm_name status_list statment+  EOF;
+  : ('MOORE'{fsmType = FSMType.MOORE;}|'MEALY'{fsmType = FSMType.MEALY;})? fsm_name status_list statment+  EOF;
 
 statment:	 start_status| end_status_list | transfer;
 

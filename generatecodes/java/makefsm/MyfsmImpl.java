@@ -2,34 +2,49 @@ package makefsm;
 
 public class MyfsmImpl extends Myfsm {
 
-
       @Override
-      protected void enterStart() {
-        System.out.println(" enterStart .....");
-      }
-     
-
+       protected void  onEven1(Event e){
+       System.out.println(" onEven1 .....");
+       System.out.println("...............event is "+e.toString());
+       }
       @Override
-      protected void enterS1() {
-        System.out.println(" enterS1 .....");
-      }
-     
-
+       protected void  onEven9(Event e){
+       System.out.println(" onEven9 .....");
+       System.out.println("...............event is "+e.toString());
+       }
       @Override
-      protected void enterS2() {
-        System.out.println(" enterS2 .....");
-      }
-     
-
+       protected void  onEven2(Event e){
+       System.out.println(" onEven2 .....");
+       System.out.println("...............event is "+e.toString());
+       }
       @Override
-      protected void enterS3() {
-        System.out.println(" enterS3 .....");
-      }
-     
-
+       protected void  onEven7(Event e){
+       System.out.println(" onEven7 .....");
+       System.out.println("...............event is "+e.toString());
+       }
       @Override
-      protected void enterEnd() {
-        System.out.println(" enterEnd .....");
-      }
-         
+       protected void  onEven5(Event e){
+       System.out.println(" onEven5 .....");
+       System.out.println("...............event is "+e.toString());
+       }
+      @Override
+       protected void  onEven4(Event e){
+       System.out.println(" onEven4 .....");
+       System.out.println("...............event is "+e.toString());
+       }
+      @Override
+       protected void  onEven6(Event e){
+       System.out.println(" onEven6 .....");
+       System.out.println("...............event is "+e.toString());
+       }
+      @Override
+       protected void  onEven8(Event e){
+       System.out.println(" onEven8 .....");
+       System.out.println("...............event is "+e.toString());
+       }
+      @Override
+       protected void  onEven10(Event e){
+       System.out.println(" onEven10 .....");
+       System.out.println("...............event is "+e.toString());
+       }    
   }    

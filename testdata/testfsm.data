@@ -1,4 +1,4 @@
-MOORE FSM Myfsm  "我的状态机代码生成框架";
+MEALY FSM Myfsm  "我的状态机代码生成框架";
 STATUS: start DESC "开始状态s0", s1 ,s2 "中间状态2" ,s3,end DESC "结束状态s4";
 START=start;
 END=s1,end;

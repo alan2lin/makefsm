@@ -11,6 +11,7 @@ import makefsm.generate.GenerateGraphviz;
 import makefsm.generate.GenerateJavaCode;
 import makefsm.generate.IGenerateCode;
 import makefsm.parser.MidleCode;
+import makefsm.parser.ParserWrapper;
 import makefsm.parser.makefsmLexer;
 import makefsm.parser.makefsmParser;
 import makefsm.util.FileMaker;
@@ -43,45 +44,37 @@ public class Run {
 		//srcFileName = args[0];
 		
 		
-		
-        makefsmLexer lex = null;
-		try {			
-			lex = new makefsmLexer(new ANTLRFileStream(srcFileName, "UTF8"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        CommonTokenStream tokens = new CommonTokenStream(lex);
-
-        makefsmParser g = new makefsmParser(tokens);
-        try {
-            g.prog();
-            MidleCode mc = g.genMidleCode();  //取得中间格式            
-            mc.pickupSymbols();            
-            mc.printSymbols();
-            mc.makeGraph();
-            ICheck icheck = new DefaultCheck();
-            if (!icheck.check(mc)) System.out.print(icheck.getErrorMsg());
-            
-            GenerateGraphviz genGraph = new GenerateGraphviz();
-            System.out.println(genGraph.makeGraphContent(mc,null));
-            IGenerateCode iGenJava = new GenerateJavaCode();
-            iGenJava.generateCode(mc);
-            
-            FileMaker fm = new FileMaker(mc.getFsmName());
-            
-            System.out.println(iGenJava.getAbstractClassContent());
-            System.out.println(iGenJava.getImplementClassContent());
-            System.out.println(iGenJava.getTestClassContent());
-            
-            fm.makeGraphvizImage(genGraph.makeGraphContent(mc, null));
-            fm.makeJavaSourceFile(iGenJava.getAbstractClassContent(), iGenJava.getImplementClassContent(), iGenJava.getTestClassContent());
-
-            
-        } catch (org.antlr.runtime.RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//解析得到中间代码格式
+        ParserWrapper pw = new ParserWrapper(srcFileName);
+        MidleCode mc = pw.parser4MidleCode();
+        
+        //分拣符号，构建状态图。
+        mc.pickupSymbols();            
+        mc.printSymbols();
+        mc.makeGraph();
+        
+        //调用默认检查器进行检查
+        ICheck icheck = new DefaultCheck();
+        if (!icheck.check(mc)) System.out.print(icheck.getErrorMsg());
+        
+        //生成graphviz的dot文件内容，用来显示状态图的。
+        GenerateGraphviz genGraph = new GenerateGraphviz();
+        System.out.println(genGraph.makeGraphContent(mc,null));
+        
+        
+        //产生java代码内容
+        IGenerateCode iGenJava = new GenerateJavaCode();
+        iGenJava.generateCode(mc);
+        
+        System.out.println(iGenJava.getAbstractClassContent());
+        System.out.println(iGenJava.getImplementClassContent());
+        System.out.println(iGenJava.getTestClassContent());
+        
+        
+        //将产生的代码内容写入到文件中
+        FileMaker fm = new FileMaker(mc.getFsmName());
+        fm.makeGraphvizImage(genGraph.makeGraphContent(mc, null));
+        fm.makeJavaSourceFile(iGenJava.getAbstractClassContent(), iGenJava.getImplementClassContent(), iGenJava.getTestClassContent());
 
 	}
 
