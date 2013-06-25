@@ -1,0 +1,15 @@
+MOORE FSM Door  "关于门的状态机生成 详细见 http://www.ibm.com/developerworks/cn/linux/l-fsmachine/index.html ";
+STATUS: opened DESC "打开状态", closed DESC "关闭状态" ,locked "锁定状态" ,unlocked "非锁定状态", end "自定义的结束状态";
+START=opened;
+END=end;
+
+//为了保证状态机可以退出，避免陷入死循环，增加了个自定义的结束状态，并规定，门在关闭后锁定了才允许离开。
+
+
+opened->closed[closeDoor DESC "关门"];
+closed->opened[openDoor DESC "开门"];
+closed->locked[lockDoor DESC "锁门"];
+locked->unlocked[unLockDoor DESC "不锁门"];
+unlocked->locked[lockDoor2 DESC "锁门"];
+unlocked->opened[openDoor2 DESC "解锁后开门"];
+locked->end[finish DESC "完结"];

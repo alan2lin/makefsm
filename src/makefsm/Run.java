@@ -41,7 +41,7 @@ public class Run {
 			System.out.println("Usage: java -cp makefsm.jar makefsm.Run <sourcefilename> ");
 			//return;
 		}		
-		//srcFileName = args[0];
+		srcFileName = args[0];
 		
 		
 		//解析得到中间代码格式
