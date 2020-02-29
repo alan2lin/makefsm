@@ -1,3 +1,10 @@
+
+#################
+## ideal
+#################
+.idea/
+target/
+
 #################
 ## Eclipse
 #################
@@ -15,7 +22,6 @@ local.properties
 .classpath
 .settings/
 .loadpath
-
 # External tool builders
 .externalToolBuilders/
 
