@@ -11,54 +11,54 @@ public abstract class <name> {
    //当前状态
    private States __Y;
    private boolean __exitFlag = false;
-   
+
    //状态队列
-   private ConcurrentLinkedQueue\<Event\> __events = new ConcurrentLinkedQueue\<Event\>();
-    
+   private ConcurrentLinkedQueue\<Event> __events = new ConcurrentLinkedQueue\<Event>();
+
     //状态和事件的枚举变量
    <members ; separator="\n">
-   
+
    //输出列表 ， 为事件响应或或则进入状态的动作，
    //事件响应 与动作的区别是 事件响应完后才改变状态。 mealy型状态机会生成这个
    //进入状态动作 ，是状态改变后，才触发该状态的动作  。moore型状态机会生成这个。
-   //这两者区分的的形式标准是  
+   //这两者区分的的形式标准是
    // 事件响应  onEvent(Event e) 以on开头，带参数，参数是为了代码重用方便
-   // 动作 enterAction()  以 enter开头，不带参数 
-      
+   // 动作 enterAction()  以 enter开头，不带参数
+
    <interfaces; separator="\n">
-   
+
    //主要实现的函数
    <functions; separator="\n">
-   
-   
+
+
    public void exit(States state) {
-   
-      __exitFlag = true; 
-            
+
+      __exitFlag = true;
+
       System.out.println(" exit from state["+state.toString()+"]");
-      
+
    }
-   
-     
- 
+
+
+
    public void emitEvent(Event e)
    {
      //往队列中添加事件
-     synchronized (__events) {      
+     synchronized (__events) {
        __events.add(e);
        if (__events.size()==1) __events.notify();
-         
-  }     
-      
-    }
-}    
->>
- 
 
- 
+  }
+
+    }
+}
+>>
+
+
+
 constants(typename, names) ::= <<
-public enum <typename> { 
-    <names; separator=",\n"> 
+public enum <typename> {
+    <names; separator=",\n">
     } ;
 >>
 
@@ -74,22 +74,22 @@ begin(beginState) ::= <<
    public void begin()
    {
      __Y = States.<beginState>;
-     
+
      while(!__exitFlag){
        Event  e = null;
-       synchronized (__events) {        
-         e = __events.poll();         
+       synchronized (__events) {
+         e = __events.poll();
          if(e==null)
          {
            try {
-          __events.wait();         
-           } catch (InterruptedException e1) {          
+          __events.wait();
+           } catch (InterruptedException e1) {
              e1.printStackTrace();
            }
            continue;
          }
     }
-       __processEvent(e);      
+       __processEvent(e);
      }
      }
 >>
@@ -97,26 +97,26 @@ begin(beginState) ::= <<
 
 processevent(caseblock) ::= <<
 
-void __processEvent( Event e ){    
-		   switch( __Y ) {   
-		   <caseblock; separator="\n"> 
-		   }  
-    } 
+void __processEvent( Event e ){
+		   switch( __Y ) {
+		   <caseblock; separator="\n">
+		   }
+    }
 >>
 
 
-case(statusName,ifblock) ::= <<case <statusName>:  
+case(statusName,ifblock) ::= <<case <statusName>:
       <if(ifblock)><ifblock ; separator=" else "><endif>
-      break;      
+      break;
 >>
-      
+
 
 //如果目标状态是终结状态，则还需要可以调用退出函数
-event_if(eventName,newStatusName,funName,isMooreType,isEndState) ::= <<if( e == Event.<eventName> ) {      
+event_if(eventName,newStatusName,funName,isMooreType,isEndState) ::= <<if( e == Event.<eventName> ) {
          <if(isMooreType)>
          __Y = States.<newStatusName>;
-         enter<funName>();           
-         <else>         
+         enter<funName>();
+         <else>
          on<funName>(e);
          __Y = States.<newStatusName>;<endif>
          <if(isEndState)>exit(__Y);<endif>
@@ -126,27 +126,27 @@ event_if(eventName,newStatusName,funName,isMooreType,isEndState) ::= <<if( e == 
 unexpect_event(isStrict) ::= <<
       {
          <if(isStrict)>
-         
-         if(ture) throw new Exception("event["+e.toString()+"] is unexpecting");        
-         
+
+         if(ture) throw new Exception("event["+e.toString()+"] is unexpecting");
+
          <else>
-         
+
          skipUnexpectEvent(e);
-                  
-         <endif>         
+
+         <endif>
       }
 >>
 
 unexpect_event_handle(isStrict) ::= <<
 
-         <if(isStrict)>        
-         
+         <if(isStrict)>
+
          private void skipUnexpectEvent(Event e) {
-         
+
          System.out.println("Event["+e.toString()+"] is skipping");
-         
-         }                  
-         <endif>         
+
+         }
+         <endif>
 
 >>
 

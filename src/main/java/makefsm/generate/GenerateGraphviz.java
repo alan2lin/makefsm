@@ -65,9 +65,11 @@ public class GenerateGraphviz {
 				break;
 			case TERMINAL:
 				shape="doublecircle";
+
 				break;
 			}
 			st_status_list[i].add("shape", shape);
+			st_status_list[i].add("width", "1.2");
 		}
 
 

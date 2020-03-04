@@ -15,5 +15,5 @@
 
  >>
 
- status_list(name,desc,shape) ::= <<<name>[label="\N<if(desc)>\n <desc><endif>"   shape=<shape>  ]; >>
+ status_list(name,desc,shape,width) ::= <<<name>[label="\N<if(desc)>\n <desc><endif>" fixedsize=true  shape=<shape>  <if(width)>  width=<width><endif>]; >>
  event_list(name,from_status,to_status,desc) ::= <<<from_status>-><to_status>[label="<name><if(desc)>\n <desc><endif>"];>>

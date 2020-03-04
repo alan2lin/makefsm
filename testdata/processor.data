@@ -1,0 +1,14 @@
+MOORE FSM ProcessorFSM  "处理器状态机";
+STATUS: start DESC "初始", ready DESC "就绪" ,running DESC "运行", pause_locked DESC "暂停锁定",pause DESC "暂停",pause_unlocked DESC "暂停解锁", stop_locked DESC "停止锁定", stop "自定义的结束状态";
+START=start;
+END=stop;
+
+start ->ready[init DESC "初始化"];
+ready ->running [start DESC "开始服务"];
+running -> pause_locked [pause DESC "暂停锁定"];
+pause_locked -> pause [pauseWaiting DESC "暂停"];
+pause -> pause_unlocked [resume DESC "暂停的恢复锁定"];
+pause_unlocked -> running [resumeWaiting DESC "暂停恢复"];
+running -> stop_locked [stop DESC "停止锁定"];
+stop_locked -> stop [stopWating DESC "停止"];
+
