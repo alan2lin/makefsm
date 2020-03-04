@@ -1,4 +1,4 @@
-MOORE FSM Door  "关于门的状态机生成 详细见 http://www.ibm.com/developerworks/cn/linux/l-fsmachine/index.html ";
+MEALY FSM Door  "关于门的状态机生成 详细见 http://www.ibm.com/developerworks/cn/linux/l-fsmachine/index.html ";
 STATUS: opened DESC "打开状态", closed DESC "关闭状态" ,locked "锁定状态" ,unlocked "非锁定状态", end "自定义的结束状态";
 START=opened;
 END=end;

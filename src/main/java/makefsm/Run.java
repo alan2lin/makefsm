@@ -3,7 +3,6 @@
  */
 package makefsm;
 
-import antlr.RecognitionException;
 import makefsm.check.DefaultCheck;
 import makefsm.check.ICheck;
 import makefsm.generate.GenerateGraphviz;
@@ -12,6 +11,7 @@ import makefsm.generate.IGenerateCode;
 import makefsm.parser.MidleCode;
 import makefsm.parser.ParserWrapper;
 import makefsm.util.FileMaker;
+import org.antlr.v4.runtime.RecognitionException;
 
 /**
  * @author "linc"

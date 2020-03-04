@@ -11,7 +11,7 @@
     <properties>
         <java.version>1.8</java.version>
         <st.version>4.3</st.version>
-        <antlr.version>3.3</antlr.version>
+        <antlr4.version>4.7.2</antlr4.version>
         <jgrapht.version>1.4.0</jgrapht.version>
         <springboot.version>2.2.0.RELEASE</springboot.version>
         <graphviz-java.version>0.14.2</graphviz-java.version>
@@ -24,11 +24,7 @@
             <version>${springboot.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>${antlr.version}</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.antlr</groupId>
@@ -80,24 +76,13 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
-        </dependency>
-
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
-            <version>4.7.1</version>
+            <version>${antlr4.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>ST4</artifactId>
-            <version>4.0.8</version>
-        </dependency>
+
 
     </dependencies>
 

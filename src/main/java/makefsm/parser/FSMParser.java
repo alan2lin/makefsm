@@ -5,8 +5,8 @@ package makefsm.parser;
 
 import makefsm.entity.SymbolBean;
 import makefsm.util.Constant.FSMType;
-import org.antlr.runtime.RecognizerSharedState;
-import org.antlr.runtime.TokenStream;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.TokenStream;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * time   :下午08:46:25
  *
  */
-public class FSMParser extends MyParser {
+public abstract class FSMParser extends Parser {
 
 	/**
 	 * 判断定义开始一次的标志
@@ -159,13 +159,7 @@ public class FSMParser extends MyParser {
 		super(input);
 	}
 
-	/**
-	 * @param input
-	 * @param state
-	 */
-	public FSMParser(TokenStream input, RecognizerSharedState state) {
-		super(input, state);
-	}
+
 
 	public MidleCode getMidleCode()
 	{

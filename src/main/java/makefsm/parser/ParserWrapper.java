@@ -1,11 +1,15 @@
 package makefsm.parser;
 
-import makefsm.parser.autogen.makefsmLexer;
-import makefsm.parser.autogen.makefsmParser;
-import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.CommonTokenStream;
+import makefsm.parser.autogen.MakefsmLexer;
+import makefsm.parser.autogen.MakefsmParser;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
 
 import java.io.IOException;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ParserWrapper {
 	String srcFileName ;
@@ -26,20 +30,25 @@ public class ParserWrapper {
 	{
 		 MidleCode mc = null ;
 
-        makefsmLexer lex = null;
+        MakefsmLexer lex = null;
 		try {
-			lex = new makefsmLexer(new ANTLRFileStream(srcFileName, "UTF8"));
+			CharStream charStream = CharStreams.fromFileName(srcFileName,UTF_8);
+			lex = new MakefsmLexer(charStream);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
         CommonTokenStream tokens = new CommonTokenStream(lex);
 
-        makefsmParser g = new makefsmParser(tokens);
+        MakefsmParser g = new MakefsmParser(tokens);
+        g.removeErrorListeners();
+        g.addErrorListener(new VerboseErrorListener());
+
         try {
             g.prog();
             mc = g.genMidleCode();
-        } catch (org.antlr.runtime.RecognitionException e) {
+        } catch (RecognitionException e) {
 			e.printStackTrace();
 		}
 
