@@ -1,5 +1,7 @@
 package makefsm.parser;
 
+import makefsm.parser.autogen.makefsmLexer;
+import makefsm.parser.autogen.makefsmParser;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 

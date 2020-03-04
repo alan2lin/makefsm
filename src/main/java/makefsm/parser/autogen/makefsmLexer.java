@@ -1,12 +1,9 @@
 // $ANTLR 3.3 Nov 30, 2010 12:50:56 F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g 2013-06-25 12:34:36
 
-package  makefsm.parser;
+package makefsm.parser.autogen;
 
 
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 
 public class makefsmLexer extends Lexer {
     public static final int EOF=-1;
@@ -38,7 +35,7 @@ public class makefsmLexer extends Lexer {
     // delegates
     // delegators
 
-    public makefsmLexer() {;} 
+    public makefsmLexer() {;}
     public makefsmLexer(CharStream input) {
         this(input, new RecognizerSharedState());
     }
@@ -56,7 +53,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:7:7: ( 'MOORE' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:7:9: 'MOORE'
             {
-            match("MOORE"); 
+            match("MOORE");
 
 
             }
@@ -77,7 +74,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:8:7: ( 'MEALY' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:8:9: 'MEALY'
             {
-            match("MEALY"); 
+            match("MEALY");
 
 
             }
@@ -98,7 +95,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:149:5: ( 'FSM' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:149:7: 'FSM'
             {
-            match("FSM"); 
+            match("FSM");
 
 
             }
@@ -119,7 +116,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:150:6: ( 'DESC' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:150:8: 'DESC'
             {
-            match("DESC"); 
+            match("DESC");
 
 
             }
@@ -140,7 +137,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:151:8: ( 'STATUS' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:151:10: 'STATUS'
             {
-            match("STATUS"); 
+            match("STATUS");
 
 
             }
@@ -161,7 +158,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:152:7: ( 'START' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:152:9: 'START'
             {
-            match("START"); 
+            match("START");
 
 
             }
@@ -182,7 +179,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:153:5: ( 'END' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:153:7: 'END'
             {
-            match("END"); 
+            match("END");
 
 
             }
@@ -203,7 +200,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:154:7: ( ':' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:154:9: ':'
             {
-            match(':'); 
+            match(':');
 
             }
 
@@ -223,7 +220,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:155:6: ( ';' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:155:8: ';'
             {
-            match(';'); 
+            match(';');
 
             }
 
@@ -243,7 +240,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:156:8: ( '->' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:156:10: '->'
             {
-            match("->"); 
+            match("->");
 
 
             }
@@ -264,7 +261,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:157:5: ( '[' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:157:7: '['
             {
-            match('['); 
+            match('[');
 
             }
 
@@ -284,7 +281,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:158:5: ( ']' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:158:7: ']'
             {
-            match(']'); 
+            match(']');
 
             }
 
@@ -304,7 +301,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:159:7: ( '=' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:159:9: '='
             {
-            match('='); 
+            match('=');
 
             }
 
@@ -324,7 +321,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:161:7: ( ',' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:161:9: ','
             {
-            match(','); 
+            match(',');
 
             }
 
@@ -421,7 +418,7 @@ public class makefsmLexer extends Lexer {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:167:7: '0' .. '9'
             	    {
-            	    matchRange('0','9'); 
+            	    matchRange('0','9');
 
             	    }
             	    break;
@@ -484,7 +481,7 @@ public class makefsmLexer extends Lexer {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:172:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
-                    match("//"); 
+                    match("//");
 
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:172:14: (~ ( '\\n' | '\\r' ) )*
                     loop3:
@@ -530,14 +527,14 @@ public class makefsmLexer extends Lexer {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:172:28: '\\r'
                             {
-                            match('\r'); 
+                            match('\r');
 
                             }
                             break;
 
                     }
 
-                    match('\n'); 
+                    match('\n');
                     _channel=HIDDEN;
 
                     }
@@ -545,7 +542,7 @@ public class makefsmLexer extends Lexer {
                 case 2 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:173:6: '#' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
-                    match('#'); 
+                    match('#');
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:173:10: (~ ( '\\n' | '\\r' ) )*
                     loop5:
                     do {
@@ -590,14 +587,14 @@ public class makefsmLexer extends Lexer {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:173:24: '\\r'
                             {
-                            match('\r'); 
+                            match('\r');
 
                             }
                             break;
 
                     }
 
-                    match('\n'); 
+                    match('\n');
                     _channel=HIDDEN;
 
                     }
@@ -605,7 +602,7 @@ public class makefsmLexer extends Lexer {
                 case 3 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:174:9: '/*' ( options {greedy=false; } : . )* '*/'
                     {
-                    match("/*"); 
+                    match("/*");
 
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:174:14: ( options {greedy=false; } : . )*
                     loop7:
@@ -634,7 +631,7 @@ public class makefsmLexer extends Lexer {
                     	case 1 :
                     	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:174:42: .
                     	    {
-                    	    matchAny(); 
+                    	    matchAny();
 
                     	    }
                     	    break;
@@ -644,7 +641,7 @@ public class makefsmLexer extends Lexer {
                         }
                     } while (true);
 
-                    match("*/"); 
+                    match("*/");
 
                     _channel=HIDDEN;
 
@@ -697,7 +694,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:185:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:185:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
             {
-            match('\"'); 
+            match('\"');
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:185:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
             loop9:
             do {
@@ -716,7 +713,7 @@ public class makefsmLexer extends Lexer {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:185:14: ESC_SEQ
             	    {
-            	    mESC_SEQ(); 
+            	    mESC_SEQ();
 
             	    }
             	    break;
@@ -741,7 +738,7 @@ public class makefsmLexer extends Lexer {
                 }
             } while (true);
 
-            match('\"'); 
+            match('\"');
 
             }
 
@@ -761,7 +758,7 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:188:5: ( '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\'' )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:188:8: '\\'' ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) ) '\\''
             {
-            match('\''); 
+            match('\'');
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:188:13: ( ESC_SEQ | ~ ( '\\'' | '\\\\' ) )
             int alt10=2;
             int LA10_0 = input.LA(1);
@@ -782,7 +779,7 @@ public class makefsmLexer extends Lexer {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:188:15: ESC_SEQ
                     {
-                    mESC_SEQ(); 
+                    mESC_SEQ();
 
                     }
                     break;
@@ -804,7 +801,7 @@ public class makefsmLexer extends Lexer {
 
             }
 
-            match('\''); 
+            match('\'');
 
             }
 
@@ -896,7 +893,7 @@ public class makefsmLexer extends Lexer {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:196:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
                     {
-                    match('\\'); 
+                    match('\\');
                     if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
                         input.consume();
 
@@ -912,14 +909,14 @@ public class makefsmLexer extends Lexer {
                 case 2 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:197:9: UNICODE_ESC
                     {
-                    mUNICODE_ESC(); 
+                    mUNICODE_ESC();
 
                     }
                     break;
                 case 3 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:198:9: OCTAL_ESC
                     {
-                    mOCTAL_ESC(); 
+                    mOCTAL_ESC();
 
                     }
                     break;
@@ -982,25 +979,25 @@ public class makefsmLexer extends Lexer {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
-                    match('\\'); 
+                    match('\\');
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:14: ( '0' .. '3' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:15: '0' .. '3'
                     {
-                    matchRange('0','3'); 
+                    matchRange('0','3');
 
                     }
 
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:25: ( '0' .. '7' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:26: '0' .. '7'
                     {
-                    matchRange('0','7'); 
+                    matchRange('0','7');
 
                     }
 
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:36: ( '0' .. '7' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:203:37: '0' .. '7'
                     {
-                    matchRange('0','7'); 
+                    matchRange('0','7');
 
                     }
 
@@ -1010,18 +1007,18 @@ public class makefsmLexer extends Lexer {
                 case 2 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:204:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
                     {
-                    match('\\'); 
+                    match('\\');
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:204:14: ( '0' .. '7' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:204:15: '0' .. '7'
                     {
-                    matchRange('0','7'); 
+                    matchRange('0','7');
 
                     }
 
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:204:25: ( '0' .. '7' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:204:26: '0' .. '7'
                     {
-                    matchRange('0','7'); 
+                    matchRange('0','7');
 
                     }
 
@@ -1031,11 +1028,11 @@ public class makefsmLexer extends Lexer {
                 case 3 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:205:9: '\\\\' ( '0' .. '7' )
                     {
-                    match('\\'); 
+                    match('\\');
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:205:14: ( '0' .. '7' )
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:205:15: '0' .. '7'
                     {
-                    matchRange('0','7'); 
+                    matchRange('0','7');
 
                     }
 
@@ -1056,12 +1053,12 @@ public class makefsmLexer extends Lexer {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:210:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:210:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
             {
-            match('\\'); 
-            match('u'); 
-            mHEX_DIGIT(); 
-            mHEX_DIGIT(); 
-            mHEX_DIGIT(); 
-            mHEX_DIGIT(); 
+            match('\\');
+            match('u');
+            mHEX_DIGIT();
+            mHEX_DIGIT();
+            mHEX_DIGIT();
+            mHEX_DIGIT();
 
             }
 
@@ -1071,6 +1068,7 @@ public class makefsmLexer extends Lexer {
     }
     // $ANTLR end "UNICODE_ESC"
 
+    @Override
     public void mTokens() throws RecognitionException {
         // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:8: ( T__26 | T__27 | FSM | DESC | STATUS | START | END | COLON | SEMI | DIRECT | LSB | RSB | EQUAL | COMMA | ID | INT | COMMENT | WS | STRING | CHAR )
         int alt13=20;
@@ -1079,140 +1077,140 @@ public class makefsmLexer extends Lexer {
             case 1 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:10: T__26
                 {
-                mT__26(); 
+                mT__26();
 
                 }
                 break;
             case 2 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:16: T__27
                 {
-                mT__27(); 
+                mT__27();
 
                 }
                 break;
             case 3 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:22: FSM
                 {
-                mFSM(); 
+                mFSM();
 
                 }
                 break;
             case 4 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:26: DESC
                 {
-                mDESC(); 
+                mDESC();
 
                 }
                 break;
             case 5 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:31: STATUS
                 {
-                mSTATUS(); 
+                mSTATUS();
 
                 }
                 break;
             case 6 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:38: START
                 {
-                mSTART(); 
+                mSTART();
 
                 }
                 break;
             case 7 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:44: END
                 {
-                mEND(); 
+                mEND();
 
                 }
                 break;
             case 8 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:48: COLON
                 {
-                mCOLON(); 
+                mCOLON();
 
                 }
                 break;
             case 9 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:54: SEMI
                 {
-                mSEMI(); 
+                mSEMI();
 
                 }
                 break;
             case 10 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:59: DIRECT
                 {
-                mDIRECT(); 
+                mDIRECT();
 
                 }
                 break;
             case 11 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:66: LSB
                 {
-                mLSB(); 
+                mLSB();
 
                 }
                 break;
             case 12 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:70: RSB
                 {
-                mRSB(); 
+                mRSB();
 
                 }
                 break;
             case 13 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:74: EQUAL
                 {
-                mEQUAL(); 
+                mEQUAL();
 
                 }
                 break;
             case 14 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:80: COMMA
                 {
-                mCOMMA(); 
+                mCOMMA();
 
                 }
                 break;
             case 15 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:86: ID
                 {
-                mID(); 
+                mID();
 
                 }
                 break;
             case 16 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:89: INT
                 {
-                mINT(); 
+                mINT();
 
                 }
                 break;
             case 17 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:93: COMMENT
                 {
-                mCOMMENT(); 
+                mCOMMENT();
 
                 }
                 break;
             case 18 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:101: WS
                 {
-                mWS(); 
+                mWS();
 
                 }
                 break;
             case 19 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:104: STRING
                 {
-                mSTRING(); 
+                mSTRING();
 
                 }
                 break;
             case 20 :
                 // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:1:111: CHAR
                 {
-                mCHAR(); 
+                mCHAR();
 
                 }
                 break;
@@ -1327,10 +1325,11 @@ public class makefsmLexer extends Lexer {
             this.special = DFA13_special;
             this.transition = DFA13_transition;
         }
+        @Override
         public String getDescription() {
             return "1:1: Tokens : ( T__26 | T__27 | FSM | DESC | STATUS | START | END | COLON | SEMI | DIRECT | LSB | RSB | EQUAL | COMMA | ID | INT | COMMENT | WS | STRING | CHAR );";
         }
     }
- 
+
 
 }

@@ -1,6 +1,8 @@
 // $ANTLR 3.3 Nov 30, 2010 12:50:56 F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g 2013-06-25 12:34:35
 
-package  makefsm.parser;
+package makefsm.parser.autogen;
+import makefsm.parser.FSMParser;
+import makefsm.parser.MidleCode;
 import makefsm.util.Constant.FSMType;
 import makefsm.util.Constant.StatusAttr;
 import makefsm.util.Constant.SymbolType;
@@ -9,9 +11,6 @@ import makefsm.entity.SymbolBean;
 
 
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 
 public class makefsmParser extends FSMParser {
     public static final String[] tokenNames = new String[] {
@@ -52,15 +51,15 @@ public class makefsmParser extends FSMParser {
         }
         public makefsmParser(TokenStream input, RecognizerSharedState state) {
             super(input, state);
-             
+
         }
-        
+
 
     public String[] getTokenNames() { return makefsmParser.tokenNames; }
     public String getGrammarFileName() { return "F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g"; }
 
-         
-     
+
+
 
 
     // $ANTLR start "prog"
@@ -84,7 +83,7 @@ public class makefsmParser extends FSMParser {
                 case 1 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:6: 'MOORE'
                     {
-                    match(input,26,FOLLOW_26_in_prog56); 
+                    match(input,26,FOLLOW_26_in_prog56);
                     fsmType = FSMType.MOORE;
 
                     }
@@ -92,7 +91,7 @@ public class makefsmParser extends FSMParser {
                 case 2 :
                     // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:44:40: 'MEALY'
                     {
-                    match(input,27,FOLLOW_27_in_prog59); 
+                    match(input,27,FOLLOW_27_in_prog59);
                     fsmType = FSMType.MEALY;
 
                     }
@@ -144,7 +143,7 @@ public class makefsmParser extends FSMParser {
                 cnt2++;
             } while (true);
 
-            match(input,EOF,FOLLOW_EOF_in_prog72); 
+            match(input,EOF,FOLLOW_EOF_in_prog72);
 
             }
 
@@ -258,8 +257,8 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:2: ( FSM a= ID ( ( DESC )? b= STRING )? SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:4: FSM a= ID ( ( DESC )? b= STRING )? SEMI
             {
-            match(input,FSM,FOLLOW_FSM_in_fsm_name97); 
-            a=(Token)match(input,ID,FOLLOW_ID_in_fsm_name102); 
+            match(input,FSM,FOLLOW_FSM_in_fsm_name97);
+            a=(Token)match(input,ID,FOLLOW_ID_in_fsm_name102);
             fsmName=(a!=null?a.getText():null);
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:32: ( ( DESC )? b= STRING )?
             int alt5=2;
@@ -283,14 +282,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:49:33: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_fsm_name106); 
+                            match(input,DESC,FOLLOW_DESC_in_fsm_name106);
 
                             }
                             break;
 
                     }
 
-                    b=(Token)match(input,STRING,FOLLOW_STRING_in_fsm_name111); 
+                    b=(Token)match(input,STRING,FOLLOW_STRING_in_fsm_name111);
                     fsmDesc=(b!=null?b.getText():null);
 
                     }
@@ -298,7 +297,7 @@ public class makefsmParser extends FSMParser {
 
             }
 
-            match(input,SEMI,FOLLOW_SEMI_in_fsm_name117); 
+            match(input,SEMI,FOLLOW_SEMI_in_fsm_name117);
 
             }
 
@@ -321,8 +320,8 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:52:3: ( STATUS COLON def_status ( COMMA def_status )* SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:53:3: STATUS COLON def_status ( COMMA def_status )* SEMI
             {
-            match(input,STATUS,FOLLOW_STATUS_in_status_list129); 
-            match(input,COLON,FOLLOW_COLON_in_status_list132); 
+            match(input,STATUS,FOLLOW_STATUS_in_status_list129);
+            match(input,COLON,FOLLOW_COLON_in_status_list132);
             pushFollow(FOLLOW_def_status_in_status_list134);
             def_status();
 
@@ -343,7 +342,7 @@ public class makefsmParser extends FSMParser {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:53:29: COMMA def_status
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_status_list137); 
+            	    match(input,COMMA,FOLLOW_COMMA_in_status_list137);
             	    pushFollow(FOLLOW_def_status_in_status_list140);
             	    def_status();
 
@@ -358,7 +357,7 @@ public class makefsmParser extends FSMParser {
                 }
             } while (true);
 
-            match(input,SEMI,FOLLOW_SEMI_in_status_list145); 
+            match(input,SEMI,FOLLOW_SEMI_in_status_list145);
 
             }
 
@@ -384,17 +383,17 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:56:2: (a= ID ( ( DESC )? b= STRING )? )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:56:5: a= ID ( ( DESC )? b= STRING )?
             {
-            a=(Token)match(input,ID,FOLLOW_ID_in_def_status158); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_def_status158);
 
             	         symbolRedefined = mc.isSymbolExists((a!=null?a.getText():null),SymbolType.STATUS) ;
             	         if(symbolRedefined) throw new FailedPredicateException(input,"def_stauts", "stauts ["+(a!=null?a.getText():null)+"]defined again,please check");
-            	         
-            	         SymbolBean sb = new SymbolBean(); 
+
+            	         SymbolBean sb = new SymbolBean();
                        sb.setIndex(mc.getCount());
-                       sb.setType(SymbolType.STATUS); 
-                       sb.setStatus(StatusAttr.NONTERMINAL);      
-                       sb.setName((a!=null?a.getText():null)); 
-            	        
+                       sb.setType(SymbolType.STATUS);
+                       sb.setStatus(StatusAttr.NONTERMINAL);
+                       sb.setName((a!=null?a.getText():null));
+
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:68:5: ( ( DESC )? b= STRING )?
             int alt8=2;
             int LA8_0 = input.LA(1);
@@ -417,14 +416,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:68:6: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_def_status186); 
+                            match(input,DESC,FOLLOW_DESC_in_def_status186);
 
                             }
                             break;
 
                     }
 
-                    b=(Token)match(input,STRING,FOLLOW_STRING_in_def_status191); 
+                    b=(Token)match(input,STRING,FOLLOW_STRING_in_def_status191);
                     sb.setDesc((b!=null?b.getText():null));
 
                     }
@@ -432,9 +431,9 @@ public class makefsmParser extends FSMParser {
 
             }
 
-            	
-            	         mc.addSymbol(sb); 
-            	       
+
+            	         mc.addSymbol(sb);
+
 
             }
 
@@ -459,21 +458,21 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:76:2: ( START EQUAL a= ID SEMI )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:77:3: START EQUAL a= ID SEMI
             {
-            match(input,START,FOLLOW_START_in_start_status238); 
-            match(input,EQUAL,FOLLOW_EQUAL_in_start_status241); 
-            a=(Token)match(input,ID,FOLLOW_ID_in_start_status246); 
-            match(input,SEMI,FOLLOW_SEMI_in_start_status248); 
-               
+            match(input,START,FOLLOW_START_in_start_status238);
+            match(input,EQUAL,FOLLOW_EQUAL_in_start_status241);
+            a=(Token)match(input,ID,FOLLOW_ID_in_start_status246);
+            match(input,SEMI,FOLLOW_SEMI_in_start_status248);
+
             	   if(startFlag) throw new FailedPredicateException(input,"start_status", "you had defined the start status ,please check");
-            	   
+
             	   SymbolBean start = mc.getSymbol((a!=null?a.getText():null),SymbolType.STATUS);
-            	   
+
             	   if(null == start) throw new FailedPredicateException(input,"start_status", "status ["+(a!=null?a.getText():null)+"] that you want to start is not defined yet");
-            	   
-            	   start.setStatus(StatusAttr.START); //denfine this status to start status;   	   	   
-            	   
+
+            	   start.setStatus(StatusAttr.START); //denfine this status to start status;
+
             	   startFlag = true;
-            	 
+
 
             }
 
@@ -499,8 +498,8 @@ public class makefsmParser extends FSMParser {
 
               if(endFlag) throw new FailedPredicateException(input,"end_status_list", "you had defined the end status list ,please check");
 
-            match(input,END,FOLLOW_END_in_end_status_list265); 
-            match(input,EQUAL,FOLLOW_EQUAL_in_end_status_list267); 
+            match(input,END,FOLLOW_END_in_end_status_list265);
+            match(input,EQUAL,FOLLOW_EQUAL_in_end_status_list267);
             pushFollow(FOLLOW_end_status_in_end_status_list270);
             end_status();
 
@@ -521,7 +520,7 @@ public class makefsmParser extends FSMParser {
             	case 1 :
             	    // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:96:14: COMMA end_status
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_end_status_list274); 
+            	    match(input,COMMA,FOLLOW_COMMA_in_end_status_list274);
             	    pushFollow(FOLLOW_end_status_in_end_status_list276);
             	    end_status();
 
@@ -536,10 +535,10 @@ public class makefsmParser extends FSMParser {
                 }
             } while (true);
 
-            match(input,SEMI,FOLLOW_SEMI_in_end_status_list281); 
+            match(input,SEMI,FOLLOW_SEMI_in_end_status_list281);
 
-               endFlag = true;   
-              
+               endFlag = true;
+
 
             }
 
@@ -564,15 +563,15 @@ public class makefsmParser extends FSMParser {
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:103:2: (a= ID )
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:104:2: a= ID
             {
-            a=(Token)match(input,ID,FOLLOW_ID_in_end_status304); 
-            	  
+            a=(Token)match(input,ID,FOLLOW_ID_in_end_status304);
+
             	   SymbolBean end = mc.getSymbol((a!=null?a.getText():null),SymbolType.STATUS);
-                 
+
                  if(null == end) throw new FailedPredicateException(input,"end_status", "status ["+(a!=null?a.getText():null)+"] that you want to start is not defined yet");
                  if(end.getStatus()==StatusAttr.START) throw new FailedPredicateException(input,"end_status", "status ["+(a!=null?a.getText():null)+"] have been defined as start status");
-                 
-                 end.setStatus(StatusAttr.TERMINAL); //denfine this status to end status;     
-            	
+
+                 end.setStatus(StatusAttr.TERMINAL); //denfine this status to end status;
+
 
             }
 
@@ -603,11 +602,11 @@ public class makefsmParser extends FSMParser {
 
               SymbolBean s1 = new SymbolBean();
 
-            a=(Token)match(input,ID,FOLLOW_ID_in_transfer324); 
-            match(input,DIRECT,FOLLOW_DIRECT_in_transfer326); 
-            b=(Token)match(input,ID,FOLLOW_ID_in_transfer330); 
-            match(input,LSB,FOLLOW_LSB_in_transfer332); 
-            c=(Token)match(input,ID,FOLLOW_ID_in_transfer336); 
+            a=(Token)match(input,ID,FOLLOW_ID_in_transfer324);
+            match(input,DIRECT,FOLLOW_DIRECT_in_transfer326);
+            b=(Token)match(input,ID,FOLLOW_ID_in_transfer330);
+            match(input,LSB,FOLLOW_LSB_in_transfer332);
+            c=(Token)match(input,ID,FOLLOW_ID_in_transfer336);
             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:120:25: ( ( DESC )? e= STRING )?
             int alt11=2;
             int LA11_0 = input.LA(1);
@@ -630,14 +629,14 @@ public class makefsmParser extends FSMParser {
                         case 1 :
                             // F:\\h\\git_repos\\makefsm\\gfile\\makefsm.g:120:26: DESC
                             {
-                            match(input,DESC,FOLLOW_DESC_in_transfer339); 
+                            match(input,DESC,FOLLOW_DESC_in_transfer339);
 
                             }
                             break;
 
                     }
 
-                    e=(Token)match(input,STRING,FOLLOW_STRING_in_transfer344); 
+                    e=(Token)match(input,STRING,FOLLOW_STRING_in_transfer344);
                     s1.setDesc((e!=null?e.getText():null));
 
                     }
@@ -645,32 +644,32 @@ public class makefsmParser extends FSMParser {
 
             }
 
-            match(input,RSB,FOLLOW_RSB_in_transfer350); 
-            match(input,SEMI,FOLLOW_SEMI_in_transfer352); 
+            match(input,RSB,FOLLOW_RSB_in_transfer350);
+            match(input,SEMI,FOLLOW_SEMI_in_transfer352);
 
             //check for whether the status undefined and whether event redefined;
 
                  symbolRedefined = mc.isSymbolExists((c!=null?c.getText():null),SymbolType.EVENT) ;
                  if(symbolRedefined) throw new FailedPredicateException(input,"transfer", "event ["+(c!=null?c.getText():null)+"] redefined!!! please check");
-                 
-                 
+
+
                  if(!mc.isSymbolExists((a!=null?a.getText():null),SymbolType.STATUS)) throw new FailedPredicateException(input,"transfer", "status ["+(a!=null?a.getText():null)+"] that transfer from is not  defined yet");
                  if(!mc.isSymbolExists((b!=null?b.getText():null),SymbolType.STATUS)) throw new FailedPredicateException(input,"transfer", "status ["+(b!=null?b.getText():null)+"] that transfer to is not  defined yet");
 
 
-                 
+
                  s1.setIndex(mc.getCount());
                  s1.setName((c!=null?c.getText():null));
                  s1.setType(SymbolType.EVENT);
                  s1.setPstart(mc.getSymbol((a!=null?a.getText():null),SymbolType.STATUS));
                  s1.setPend(mc.getSymbol((b!=null?b.getText():null),SymbolType.STATUS));
-                 
-                 mc.addSymbol(s1);
-                 
 
-                 
-                 
-                 
+                 mc.addSymbol(s1);
+
+
+
+
+
 
             }
 
@@ -688,7 +687,7 @@ public class makefsmParser extends FSMParser {
     // Delegated rules
 
 
- 
+
 
     public static final BitSet FOLLOW_26_in_prog56 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_27_in_prog59 = new BitSet(new long[]{0x0000000000000010L});
