@@ -85,7 +85,8 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
         if(symbolRedefined) {
             int line  = ctx.statusName.getLine();
             int position = ctx.statusName.getCharPositionInLine();
-            throw new FailedPredicateException(parser,"def_stauts check redefined", String.format("stauts [%s]defined again,please check, line[%d] position[%d] ",statusName,line,position));
+            //throw new FailedPredicateException(parser,"def_stauts check redefined", String.format("stauts [%s]defined again,please check, line[%d] position[%d] ",statusName,line,position));
+            parser.notifyErrorListeners( String.format("stauts [%s]defined again,please check, line[%d] position[%d] ",statusName,line,position));
         }
 
         SymbolBean sb = new SymbolBean();
@@ -103,8 +104,7 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
                int line  = output.getLine();
                int position = output.getCharPositionInLine();
                //throw new FailedPredicateException(parser,"def_stauts check output", String.format("stauts [%s] cannot have output definition[%s] in mealy fsm ,please check, line[%d] position[%d] ",statusName,output.getText(),line,position));
-
-               throw new FailedPredicateException(parser,"def_stauts check output") ;
+               parser.notifyErrorListeners(String.format("stauts [%s] cannot have output definition[%s] in mealy fsm ,please check, line[%d] position[%d] ",statusName,output.getText(),line,position));
            }
         }
 
@@ -135,7 +135,8 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
         if(null == starter) {
             int line = ctx.starter.getLine();
             int position = ctx.starter.getCharPositionInLine();
-            throw new FailedPredicateException(parser,"start_status_defined_check", String.format("status [%s] that you want to start is not defined yet ,line[%d] position[%d] ",starterString,line,position));
+            //throw new FailedPredicateException(parser,"start_status_defined_check", String.format("status [%s] that you want to start is not defined yet ,line[%d] position[%d] ",starterString,line,position));
+            parser.notifyErrorListeners( String.format("status [%s] that you want to start is not defined yet ,line[%d] position[%d] ",starterString,line,position));
         }
         starter.setStatus(Constant.StatusAttr.START); //denfine this status to start status;
 
@@ -160,11 +161,13 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
         int position = ctx.ender.getCharPositionInLine();
 
         if(null == ender) {
-            throw new FailedPredicateException(parser,"end_status_defined_check", String.format("status [%s] that you want to start is not defined yet,line[%d] position[%d]",enderString,line,position));
+            //throw new FailedPredicateException(parser,"end_status_defined_check", String.format("status [%s] that you want to start is not defined yet,line[%d] position[%d]",enderString,line,position));
+            parser.notifyErrorListeners(String.format("status [%s] that you want to start is not defined yet,line[%d] position[%d]",enderString,line,position));
         }
 
         if(ender.getStatus()== Constant.StatusAttr.START) {
-            throw new FailedPredicateException(parser,"end_status_defined_check", String.format("status [%s] have been defined as start status,line[%d] position[%d]",enderString,line,position));
+            //throw new FailedPredicateException(parser,"end_status_defined_check", String.format("status [%s] have been defined as start status,line[%d] position[%d]",enderString,line,position));
+            parser.notifyErrorListeners( String.format("status [%s] have been defined as start status,line[%d] position[%d]",enderString,line,position));
         }
         ender.setStatus(Constant.StatusAttr.TERMINAL);
 
@@ -193,21 +196,24 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
         if(symbolRedefined) {
             int line = ctx.eventName.getLine();
             int position = ctx.eventName.getCharPositionInLine();
-            throw new FailedPredicateException(parser,"transfer_check_redefined", String.format("event [%s] redefined!!! please check,line[%s] postion[%s]",eventName,line,position));
+            //throw new FailedPredicateException(parser,"transfer_check_redefined", String.format("event [%s] redefined!!! please check,line[%s] postion[%s]",eventName,line,position));
+            parser.notifyErrorListeners(String.format("event [%s] redefined!!! please check,line[%s] postion[%s]",eventName,line,position));
         }
 
         String srcStatusString = ctx.src.getText();
         if(!mc.isSymbolExists(srcStatusString, Constant.SymbolType.STATUS)) {
             int line = ctx.src.getLine();
             int position = ctx.src.getCharPositionInLine();
-            throw new FailedPredicateException(parser,"transfer_check_src_status", String.format("status [%s] that transfer from is not  defined yet,line[%d] position[%d]",srcStatusString,line,position));
+            //throw new FailedPredicateException(parser,"transfer_check_src_status", String.format("status [%s] that transfer from is not  defined yet,line[%d] position[%d]",srcStatusString,line,position));
+            parser.notifyErrorListeners(String.format("status [%s] that transfer from is not  defined yet,line[%d] position[%d]",srcStatusString,line,position));
         }
 
         String destStatusString  = ctx.dest.getText();
         if(!mc.isSymbolExists(destStatusString, Constant.SymbolType.STATUS)) {
             int line = ctx.dest.getLine();
             int position = ctx.dest.getCharPositionInLine();
-            throw new FailedPredicateException(parser,"transfer_check_dest_status", String.format( "status [%s] that transfer to is not  defined yet,line[%d] position[%d]",destStatusString,line,position));
+            //throw new FailedPredicateException(parser,"transfer_check_dest_status", String.format( "status [%s] that transfer to is not  defined yet,line[%d] position[%d]",destStatusString,line,position));
+            parser.notifyErrorListeners(String.format( "status [%s] that transfer to is not  defined yet,line[%d] position[%d]",destStatusString,line,position));
         }
 
         s1.setIndex(mc.getCount());
@@ -224,7 +230,8 @@ public class MakefsmParserVisitorImpl<T> extends MakefsmParserBaseVisitor<T> {
             if(output!=null) {
                 int line  = output.getLine();
                 int position = output.getCharPositionInLine();
-                throw new FailedPredicateException(parser,"def_transfer check output", String.format("transfer [%s] cannot have output definition[%s] in fsm moore,please check, line[%d] position[%d] ",eventName,output.getText(),line,position));
+                //throw new FailedPredicateException(parser,"def_transfer check output", String.format("transfer [%s] cannot have output definition[%s] in fsm moore,please check, line[%d] position[%d] ",eventName,output.getText(),line,position));
+                parser.notifyErrorListeners( String.format("transfer [%s] cannot have output definition[%s] in fsm moore,please check, line[%d] position[%d] ",eventName,output.getText(),line,position));
             }
         }else{
             String spliter = "__";
