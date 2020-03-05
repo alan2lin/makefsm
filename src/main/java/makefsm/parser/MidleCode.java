@@ -326,23 +326,29 @@ public class MidleCode {
 	 */
 	public void printSymbols()
 	{
-		System.out.println("序号\t 名字\t 类型\t 状态 \t 开始状态\t 结束状态\t 描述\t");
+	    //格式化
+		//表头信息
+		//ArrayList<String>  tableTiles = new ArrayList<>();
+		//tableTiles.add("序号 ");
+		System.out.println("序号 \t\t 名字 \t\t 类型 \t\t 状态 \t\t 输出 \t\t 开始状态 \t\t 结束状态 \t\t 描述 \t");
 		for (Iterator iterator = symbols.iterator(); iterator.hasNext();) {
 			SymbolBean e = (SymbolBean) iterator.next();
 			System.out.println(e.getIndex()
-					+ "\t "
+					+ "\t\t "
 					+ e.getName()
-					+ "\t "
+					+ "\t\t "
 					+ e.getType()
-					+ "\t "
+					+ "\t\t "
 					+ (e.getStatus() == null ? "null" : e.getStatus())
-					+ "\t "
+					+ "\t\t "
+					+ (e.getOutput() == null ? "null" : e.getOutput())
+					+ "\t\t "
 					+ (e.getPstart()== null ? "null" : e.getPstart()
 							.getName())
-					+ "\t "
+					+ "\t\t "
 					+ (e.getPend()== null ? "null" : e.getPend()
-							.getName()) + "\t "
-					+ (e.getDesc() == null ? "null" : e.getDesc()) + "\t");
+							.getName()) + "\t\t "
+					+ (e.getDesc() == null ? "null" : e.getDesc()) + "\t\t");
 
 		}
 	}
