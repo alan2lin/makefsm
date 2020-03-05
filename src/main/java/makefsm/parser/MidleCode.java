@@ -35,7 +35,7 @@ public class MidleCode {
 
 
 	/**
-	 * 状态机类型   moore类型     mealy类型
+	 * 状态机类型   moore类型     mealy类型 默认是 MOORE
 	 */
 	FSMType fsmType = FSMType.MOORE;
 
@@ -83,6 +83,7 @@ public class MidleCode {
 	 * 事件符号
 	 */
 	public SymbolBean[] eventSymbols ;
+
 	/**
 	 * 开始状态
 	 */
@@ -91,6 +92,7 @@ public class MidleCode {
 	 * 非终结状态
 	 */
 	public SymbolBean[]  nonterminalSymbols;
+
 	/**
 	 * 终结状态
 	 */
@@ -125,12 +127,12 @@ public class MidleCode {
 	}
 
 	/**
-	 * @param xfsmName the fsmName to set
+	 * @param fsmName the fsmName to set
 	 */
-	public void setFsmName(String xfsmName) {
+	public void setFsmName(String fsmName) {
 
 		//this.fsmName = xfsmName.substring(0,1).toUpperCase() + xfsmName.substring(1);
-		this.fsmName = xfsmName;
+		this.fsmName = fsmName;
 	}
 
 	/**

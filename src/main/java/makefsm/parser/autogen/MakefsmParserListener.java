@@ -26,15 +26,15 @@ public interface MakefsmParserListener extends ParseTreeListener {
 	 */
 	void exitProg(MakefsmParser.ProgContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MakefsmParser#statment}.
+	 * Enter a parse tree produced by {@link MakefsmParser#fsm_type}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatment(MakefsmParser.StatmentContext ctx);
+	void enterFsm_type(MakefsmParser.Fsm_typeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MakefsmParser#statment}.
+	 * Exit a parse tree produced by {@link MakefsmParser#fsm_type}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatment(MakefsmParser.StatmentContext ctx);
+	void exitFsm_type(MakefsmParser.Fsm_typeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MakefsmParser#fsm_name}.
 	 * @param ctx the parse tree
@@ -65,6 +65,16 @@ public interface MakefsmParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDef_status(MakefsmParser.Def_statusContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MakefsmParser#statment}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatment(MakefsmParser.StatmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MakefsmParser#statment}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatment(MakefsmParser.StatmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MakefsmParser#start_status}.
 	 * @param ctx the parse tree

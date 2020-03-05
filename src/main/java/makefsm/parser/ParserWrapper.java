@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 
@@ -46,8 +47,11 @@ public class ParserWrapper {
         g.addErrorListener(new VerboseErrorListener());
 
         try {
-            g.prog();
-            mc = g.genMidleCode();
+			ParseTree tree = g.prog();
+			MakefsmParserVisitorImpl visitor = new MakefsmParserVisitorImpl(g);
+
+			visitor.visit(tree);
+            mc = visitor.getMidleCode();
         } catch (RecognitionException e) {
 			e.printStackTrace();
 		}

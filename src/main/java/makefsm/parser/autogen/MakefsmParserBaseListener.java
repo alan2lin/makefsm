@@ -36,13 +36,13 @@ public class MakefsmParserBaseListener implements MakefsmParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatment(MakefsmParser.StatmentContext ctx) { }
+	@Override public void enterFsm_type(MakefsmParser.Fsm_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStatment(MakefsmParser.StatmentContext ctx) { }
+	@Override public void exitFsm_type(MakefsmParser.Fsm_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -79,6 +79,18 @@ public class MakefsmParserBaseListener implements MakefsmParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDef_status(MakefsmParser.Def_statusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStatment(MakefsmParser.StatmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStatment(MakefsmParser.StatmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
