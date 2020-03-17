@@ -34,7 +34,19 @@ public class Constant {
 	public enum FSMType{MOORE,MEALY};
 
 
-
+	//符号表信息输出控制, 对齐模式， 填充内容， 填充模式
+	public enum AlignMode{LEFT,RIGHT,MIDDLE};
+	public enum FillContent{SPACE(" "),TAB("\t");
+          private 	String content;
+          private FillContent(String content){
+          	this.content = content;
+		  }
+		  public String getContent(){
+          	return this.content;
+		  }
+	};
+	public enum FillSide{BOTH,LEFT,RIGHT};
+	public String split = "";
 
 
 }

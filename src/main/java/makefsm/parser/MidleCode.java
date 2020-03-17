@@ -5,14 +5,18 @@ package makefsm.parser;
 
 import makefsm.MyEdge;
 import makefsm.entity.SymbolBean;
+import makefsm.util.Constant;
 import makefsm.util.Constant.FSMType;
 import makefsm.util.Constant.SymbolType;
+import org.javatuples.Pair;
 import org.jgrapht.graph.DirectedMultigraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 /**中间代码类，从语法文件构造符号表，由于比较简单，就基本描述+符号表为中间文件
@@ -319,8 +323,17 @@ public class MidleCode {
 	}
 
 
+	//接受两个列表返回相对位置 比较大的元素组成的新列表
+	//要求两个列表的长度相同
+	public ArrayList<Integer> createNewMax(List <Integer> left, List<Integer> right){
+	   ArrayList<Integer> result = new ArrayList<Integer>();
+	   int size = left.size();
 
-
+	   for(int i =0; i< size;i++){
+	   	result.add( Math.max(left.get(i),right.get(i)));
+	   }
+	   return result;
+	}
 	/**打印所有符号
 	 *
 	 */
@@ -330,27 +343,90 @@ public class MidleCode {
 		//表头信息
 		//ArrayList<String>  tableTiles = new ArrayList<>();
 		//tableTiles.add("序号 ");
-		System.out.println("序号 \t\t 名字 \t\t 类型 \t\t 状态 \t\t 输出 \t\t 开始状态 \t\t 结束状态 \t\t 描述 \t");
-		for (Iterator iterator = symbols.iterator(); iterator.hasNext();) {
-			SymbolBean e = (SymbolBean) iterator.next();
-			System.out.println(e.getIndex()
-					+ "\t\t "
-					+ e.getName()
-					+ "\t\t "
-					+ e.getType()
-					+ "\t\t "
-					+ (e.getStatus() == null ? "null" : e.getStatus())
-					+ "\t\t "
-					+ (e.getOutput() == null ? "null" : e.getOutput())
-					+ "\t\t "
-					+ (e.getPstart()== null ? "null" : e.getPstart()
-							.getName())
-					+ "\t\t "
-					+ (e.getPend()== null ? "null" : e.getPend()
-							.getName()) + "\t\t "
-					+ (e.getDesc() == null ? "null" : e.getDesc()) + "\t\t");
+	    String titleString ="序号,名字,类型,状态,输出,开始状态,结束状态,描述" ;
+	    String[] titles = titleString.split(",");
 
-		}
+		Constant.AlignMode alignMode = Constant.AlignMode.MIDDLE;
+		Constant.FillContent fillContent = Constant.FillContent.SPACE;
+		Constant.FillSide fillSide = Constant.FillSide.BOTH;
+
+		Optional.ofNullable(titleString).orElse("null").length();
+		//获取 每一列中最大的长度
+
+		LinkedHashMap<Pair<String,String>,Integer> fieldTitleLenMap = new LinkedHashMap<>(){{
+			put(new Pair("index","序号"),0);
+			put(new Pair("name","名字"),0);
+			put(new Pair("type","类型"),0);
+			put(new Pair("status","状态"),0);
+			put(new Pair("output","输出"),0);
+			put(new Pair("pstart","开始状态"),0);
+			put(new Pair("pend","结束状态"),0);
+			put(new Pair("desc","描述"),0);
+		}};
+
+		//获取每一个属性的最大长度,包含标题
+		fieldTitleLenMap.keySet().
+			stream().forEach(
+			  f -> {
+				  try {
+					  fieldTitleLenMap.put(f,Math.max(f.getValue1().getBytes("GBK").length,
+							symbols.stream().map( x -> {
+								Field field = null;
+								Optional<Optional<String>> ret  = null;
+								try {
+									field = x.getClass().getDeclaredField(f.getValue0());
+									field.setAccessible(true);
+									ret = f.getValue0().equals("pstart")||f.getValue0().equals("pend") ?
+											(Optional.ofNullable(field.get(x)).map(t -> Optional.ofNullable(((SymbolBean) t).getName())))
+											:(Optional.ofNullable(field.get(x)).map(u -> Optional.ofNullable(String.valueOf(u))));
+
+								} catch (NoSuchFieldException | IllegalAccessException e) {
+									e.printStackTrace();
+								}
+								String content  = ret.orElse(Optional.ofNullable("null")).orElse("null");
+								int len = 0;
+								try {
+									len = content.getBytes("GBK").length;
+								} catch (UnsupportedEncodingException e) {
+									e.printStackTrace();
+								}
+
+								return new Pair<Pair<String,String>,Integer>(f,len);
+							}).max( (a,b) -> a.getValue1().intValue() - b.getValue1().intValue() ).get().getValue1())
+					  );
+				  } catch (UnsupportedEncodingException e) {
+					  e.printStackTrace();
+				  }
+			  }
+		);
+
+		//遍历 输出 表头 + 表体
+		String split = " | ";
+		System.out.println("");
+		//fieldTitleLenMap.keySet().stream().forEach(x -> System.out.print(String.format("%"+fieldTitleLenMap.get(x)+"s",x.getValue1()+fieldTitleLenMap.get(x)).toString()+split ));
+		fieldTitleLenMap.keySet().stream().forEach(x -> System.out.print(String.format("%"+fieldTitleLenMap.get(x)+"s",x.getValue1()).toString()+split ));
+
+		symbols.stream().forEach( x->{
+					System.out.println("");
+					Class c = x.getClass();
+					fieldTitleLenMap.keySet().stream().forEach( f -> {
+						Optional<Optional<String>>  ret  = null;
+						try {
+							Field  field = c.getDeclaredField(f.getValue0());
+							field.setAccessible(true);
+							 ret = f.getValue0().equals("pstart") || f.getValue0().equals("pend") ?
+									(Optional.ofNullable(field.get(x)).map(t -> Optional.ofNullable(((SymbolBean) t).getName())))
+									: (Optional.ofNullable(field.get(x)).map(u -> Optional.ofNullable(String.valueOf(u))));
+
+						} catch (NoSuchFieldException | IllegalAccessException e) {
+							e.printStackTrace();
+						}
+						String content = ret.orElse(Optional.ofNullable("null")).orElse("null");
+						System.out.print(String.format("%"+fieldTitleLenMap.get(f)+"s",content).toString()+split );
+					});
+				}
+		);
+		System.out.println("");
 	}
 
 
