@@ -14,14 +14,7 @@
 
     <task:annotation-driven/>
 
-    <!-- SpringBootApplication 已经自带 ComponentScan -->
-    <!--   <context:component-scan base-package="com.zhenai.cloud.salary.drools"/>  -->
-    <!--	<context:property-placeholder location="classpath:/jdbc.properties" /> -->
-
-
-    <!-- <bean class="com.zhenai.crm.common.utils.SpringContextUtil"/>  -->
     <context:annotation-config/>
-
     <!--    <import resource="spring-jdbc.xml"/> -->
 
 </beans>

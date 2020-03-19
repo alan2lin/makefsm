@@ -1,6 +1,6 @@
 
 
-package makefsm.runtime;
+package com.alan2lin.runtime.intf;
 
 /**
  * @Description: 错误的一场处理函数

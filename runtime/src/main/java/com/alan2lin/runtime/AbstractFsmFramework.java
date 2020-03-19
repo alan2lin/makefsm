@@ -1,10 +1,12 @@
 
-package makefsm.runtime;
+package com.alan2lin.runtime;
 
+import com.alan2lin.runtime.intf.*;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @Description: 状态机的运行时框架 构建输入事件队列， 输出队列，异常队列 以及 相关的守护线程。
@@ -12,19 +14,19 @@ import java.util.concurrent.Executor;
  * @Date: 2020/3/18 12:34
  * @Version V1.0
  */
-public class AbstractFsmFramework implements FsmFramework  {
+public class AbstractFsmFramework implements FsmFramework {
 
     private static FsmFramework fsmFramework = null;
 
     //输入队列
-    private static ConcurrentLinkedQueue<Event> __inputEvents ;
+    private static LinkedBlockingQueue<InputEvent> __inputInputEvents;
 
 
     //输出队列
-    private static  ConcurrentLinkedQueue<Event> __outputEvents ;
+    private static LinkedBlockingQueue<InputEvent> __outputInputEvents;
 
     //ERROR队列
-    private static ConcurrentLinkedQueue<Event> __errorEvents ;
+    private static LinkedBlockingQueue<InputEvent> __exceptionInputEvents;
 
     private AbstractFsmFramework(){
         synchronized (AbstractFsmFramework.class){
@@ -84,6 +86,17 @@ public class AbstractFsmFramework implements FsmFramework  {
     @Override
     public boolean start() {
        // 创建各个队列 线程并等待线程就绪
+        CountDownLatch latch = new CountDownLatch(3);
+        QueueGuardian inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch);
+        QueueGuardian outputGuardian = new QueueGuardian("outputGuardian", __outputInputEvents,latch);
+        QueueGuardian exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionInputEvents,latch);
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         return true;
     }
@@ -123,7 +136,7 @@ public class AbstractFsmFramework implements FsmFramework  {
     }
 
     @Override
-    public boolean emit(Fsm fsm, Event event) {
+    public boolean emit(Fsm fsm, InputEvent event) {
         return false;
     }
 }

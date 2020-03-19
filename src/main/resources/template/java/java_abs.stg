@@ -151,7 +151,7 @@ unexpect_event(isStrict) ::= <<
       {
          <if(isStrict)>
 
-         if(ture) throw new Exception("event["+e.toString()+"] is unexpecting");
+         if(ture) throw new Exception("inputEvent["+e.toString()+"] is unexpecting");
 
          <else>
 

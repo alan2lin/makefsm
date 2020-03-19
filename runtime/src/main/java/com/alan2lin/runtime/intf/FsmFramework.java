@@ -1,8 +1,6 @@
 
 
-package makefsm.runtime;
-
-import java.util.concurrent.Executor;
+package com.alan2lin.runtime.intf;
 
 /**
  * @Description: TODO
@@ -37,7 +35,7 @@ public interface  FsmFramework {
   int setExcepitonHandle(Fsm fsm,ExceptionHandle handle,HANDLE_APPEND method);
 
   // app可以对某一个状态机实例进行输入 ,以驱动状态机的状态迁移
-  boolean emit(Fsm fsm,Event event);
+  boolean emit(Fsm fsm, InputEvent inputEvent);
 
   //可能不建议的接口
   // getLastOutput(Fsm fsm)
