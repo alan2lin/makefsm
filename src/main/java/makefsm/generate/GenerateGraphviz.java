@@ -47,6 +47,12 @@ public class GenerateGraphviz {
 			String nodeName = statusSymbols[i].getName();
 			st_status_list[i].add("name", nodeName);
 
+			String output= statusSymbols[i].getOutput();
+			if(output!=null){
+				output = output.replace('"', ' ').trim();
+				st_status_list[i].add("output", output);
+			}
+
 			String nodeDesc = statusSymbols[i].getDesc();
 			if(null!=nodeDesc)
 			{
@@ -69,7 +75,7 @@ public class GenerateGraphviz {
 				break;
 			}
 			st_status_list[i].add("shape", shape);
-			st_status_list[i].add("width", "1.2");
+			st_status_list[i].add("width", "1.5");
 		}
 
 

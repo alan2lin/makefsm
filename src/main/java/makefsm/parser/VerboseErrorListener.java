@@ -1,9 +1,8 @@
-/**
- * Copyright (C), 2005-2020, 深圳市珍爱网信息技术有限公司
- */
+
 
 package makefsm.parser;
 
+import makefsm.parser.autogen.MakefsmParser;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
@@ -19,6 +18,10 @@ import java.util.List;
  * @Version V1.0
  */
 public class VerboseErrorListener extends BaseErrorListener {
+   ParserWrapper parserWrapper;
+    public VerboseErrorListener(ParserWrapper parserWrapper){
+       this.parserWrapper = parserWrapper;
+    }
 
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer,
@@ -32,5 +35,8 @@ public class VerboseErrorListener extends BaseErrorListener {
         System.err.println("rule stack: "+stack);
         System.err.println("line "+line+":"+charPositionInLine+" at "+
                 offendingSymbol+": "+msg);
+        parserWrapper.increaseErrors();
     }
+
+
 }

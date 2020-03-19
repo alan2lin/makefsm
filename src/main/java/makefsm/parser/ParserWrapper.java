@@ -15,6 +15,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ParserWrapper {
 	String srcFileName ;
 	String absoluteSrcFileName;
+	private int errors;
 
 	public ParserWrapper(String xsrcFileName){
 		this.srcFileName = xsrcFileName;
@@ -44,7 +45,7 @@ public class ParserWrapper {
 
         MakefsmParser g = new MakefsmParser(tokens);
         g.removeErrorListeners();
-        g.addErrorListener(new VerboseErrorListener());
+        g.addErrorListener(new VerboseErrorListener(this));
 
         try {
 			ParseTree tree = g.prog();
@@ -52,11 +53,26 @@ public class ParserWrapper {
 
 			visitor.visit(tree);
             mc = visitor.getMidleCode();
+
         } catch (RecognitionException e) {
+
 			e.printStackTrace();
 		}
 
 		return mc;
 	}
+
+	public boolean hasError(){
+		return errors>0;
+	}
+
+	public void increaseErrors(){
+		errors++;;
+	}
+
+	public int getErrors(){
+		return errors;
+	}
+
 
 }

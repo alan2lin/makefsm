@@ -5,6 +5,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class <name> {
 
+   //状态机的名字
+   String fsmName = "<name>";
+
+   // 状态机实例 uuid
+   String fsmInstanceId = "<name>".trim()+"_"+UUID.randomUUID().toString();
+
    //状态机类型
    String fsmType = "<type>";
 
@@ -12,24 +18,44 @@ public abstract class <name> {
    private States __Y;
    private boolean __exitFlag = false;
 
-   //状态队列
-   private ConcurrentLinkedQueue\<Event> __events = new ConcurrentLinkedQueue\<Event>();
+   //最后一次正确输入状态
+
+
+   //输入队列
+   private ConcurrentLinkedQueue\<Event> __inputEvents = new ConcurrentLinkedQueue\<Event>();
+
+   //输出队列
+   private ConcurrentLinkedQueue\<Event> __outputEvents = new ConcurrentLinkedQueue\<Event>();
+
+   //异常队列
+   private ConcurrentLinkedQueue\<Event> __errorEvents = new ConcurrentLinkedQueue\<Event>();
 
     //状态和事件的枚举变量
    <members ; separator="\n">
 
-   //输出列表 ， 为事件响应或或则进入状态的动作，
-   //事件响应 与动作的区别是 事件响应完后才改变状态。 mealy型状态机会生成这个
-   //进入状态动作 ，是状态改变后，才触发该状态的动作  。moore型状态机会生成这个。
-   //这两者区分的的形式标准是
-   // 事件响应  onEvent(Event e) 以on开头，带参数，参数是为了代码重用方便
-   // 动作 enterAction()  以 enter开头，不带参数
+   //输入列表,状态机的输入，体现为事件。
+   //输出列表,是状态机的一个响应输出，如果是moore状态机 则和 当前状态有关。 如果是mealy 状态机 则和当前输入和当前状态有关。 在这里实现为， moore 是事件触发，状态迁移完成时触发。 mealy 状态机 则是在事件触发后， 状态为迁移前触发。
+   //每一个状态机还维护一个最后的输出状态，该状态包含了时间,输入，和迁移前状态。
+   //迁移函数，直接体现在事件响应中。
+   //状态迁移过程:
+   //   1. 判断输入是否是当前状态允许接受的输入。 如果不是，则触发 未预期警告
+   //   2. 迁移前状态检查。
+   //   3. 迁移时动作响应内容，不成功则执行回滚函数。
+   //   4. 迁移前状态检查。
+   //   5. 发射输出
+
+   // 关于错误处理, 对于未受控的行为将都会发布到 异常队列里面， 由应用具体去判断，
+   //  包括
+   //   1. 当前状态下的非法输入序列。
+   //   2. 状态迁移前检查异常，无法迁移
+   //   3. 状态迁移中动作异常，无法迁移
+   //   4. 状态迁移后检查异常，已经迁移
+   //   5. 其他异常
 
    <interfaces; separator="\n">
 
    //主要实现的函数
    <functions; separator="\n">
-
 
    public void exit(States state) {
 
@@ -38,7 +64,6 @@ public abstract class <name> {
       System.out.println(" exit from state["+state.toString()+"]");
 
    }
-
 
 
    public void emitEvent(Event e)
@@ -53,7 +78,6 @@ public abstract class <name> {
     }
 }
 >>
-
 
 
 constants(typename, names) ::= <<
@@ -149,12 +173,6 @@ unexpect_event_handle(isStrict) ::= <<
          <endif>
 
 >>
-
-
-
-
-
-
 
 
 

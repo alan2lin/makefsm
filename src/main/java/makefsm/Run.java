@@ -46,6 +46,12 @@ public class Run {
         ParserWrapper pw = new ParserWrapper(srcFileName);
         MidleCode mc = pw.parser4MidleCode();
 
+        if(pw.hasError()){
+            System.out.println("syntax error["+pw.getErrors()+"] detects, program stop...");
+            return ;
+        }
+
+
         //分拣符号，构建状态图。
         mc.pickupSymbols();
         mc.printSymbols();
