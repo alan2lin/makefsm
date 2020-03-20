@@ -20,6 +20,7 @@ public class DefaultInputHandle implements IntputHandle {
     @Override
     public void processEvent(Event event) {
        InputEvent e = (InputEvent) event;
+       log.debug("processing event[{}]...",e.getOwner().getInstanceId());
     }
 
 

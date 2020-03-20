@@ -31,6 +31,7 @@ public class DefaultFsmFramework implements FsmFramework {
     //ERROR队列
     private static LinkedBlockingQueue<ExceptionEvent> __exceptionEvents = new LinkedBlockingQueue<>();
 
+
     //状态机实例的存储
     private static ConcurrentHashMap<String,Fsm> fsmInstances = new ConcurrentHashMap<>() ;
 
@@ -191,6 +192,18 @@ public class DefaultFsmFramework implements FsmFramework {
 
     @Override
     public boolean emit(Fsm fsm, InputEvent event) {
-        return false;
+        try {
+            if(event.isEmited()){
+                log.debug("消息已经被消费过了,如果需要消费请reset");
+                return false;
+            }
+            __inputInputEvents.put(event);
+            event.emited();
+            log.debug("input event[{}] enqueue",event.toString());
+        } catch (InterruptedException e) {
+            log.error("入队被中断",e);
+            return false;
+        }
+        return true;
     }
 }

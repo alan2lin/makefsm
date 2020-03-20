@@ -125,8 +125,12 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             if(!event.isPresent()){
+                log.debug("[{}] 未取到元素",this.name);
                 continue;
+            }else{
+                log.debug("[{}] 取到元素[{}]",this.name,event.get().getOwner().getInstanceId());
             }
 
           //生成这个事件的处理任务，并提交到线程池运行， 要确保
@@ -134,8 +138,8 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
            CompletableFuture<Handle> cf = asyncQueueMap.get(key) ;
            if(null == cf){
                //创建一个任务处理器并放入这个处理链条中
-
                cf = CompletableFuture.completedFuture(handle);
+               log.debug("[{}] 为[{}]创建 任务链",this.name,key);
                asyncQueueMap.put(key,cf);
            }
 

@@ -10,4 +10,12 @@ package com.alan2lin.runtime.intf;
  */
 public interface InputEvent extends Event{
 
+    void setInputValue(String input);
+    //如果已经消费过的事件，需要转换一下状态。没有被消费过的事件才可以被消费
+    void emited();
+    //读取状态读取标志
+    boolean isEmited();
+    //对已经消费过的事件 进行重置，让其可以重用
+    void reset();
+
 }
