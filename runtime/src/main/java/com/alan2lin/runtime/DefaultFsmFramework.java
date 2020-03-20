@@ -8,9 +8,7 @@ import com.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 /**
  * @Description: 状态机的运行时框架 构建输入事件队列， 输出队列，异常队列 以及 相关的守护线程。
@@ -32,6 +30,9 @@ public class DefaultFsmFramework implements FsmFramework {
 
     //ERROR队列
     private static LinkedBlockingQueue<ExceptionEvent> __exceptionEvents = new LinkedBlockingQueue<>();
+
+    //状态机实例的存储
+    private static ConcurrentHashMap<String,Fsm> fsmInstances = new ConcurrentHashMap<>() ;
 
     private DefaultFsmFramework(){
         synchronized (DefaultFsmFramework.class){
@@ -136,12 +137,41 @@ public class DefaultFsmFramework implements FsmFramework {
 
     @Override
     public boolean register(Fsm fsm) {
-        return false;
+        String key = fsm.getInstanceId();
+        boolean contained = fsmInstances.containsKey(key);
+        boolean debugFlag = log.isDebugEnabled();
+        if(contained){
+            if(debugFlag){
+                log.debug("fsm[{}]  already exists,do not need register...",key);
+            }
+            return false;
+        }else{
+            fsmInstances.put(key,fsm);
+            if(debugFlag){
+                log.debug("fsm[{}] registered",key);
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean unregister(Fsm fsm) {
-        return false;
+        String key = fsm.getInstanceId();
+        boolean contained = fsmInstances.containsKey(key);
+        boolean debugFlag = log.isDebugEnabled();
+
+        if(!contained){
+            if(debugFlag){
+               log.debug("fsm[{}] does not exists,do not need register",key);
+            }
+            return false;
+        }
+
+        fsmInstances.remove(key);
+        if(debugFlag){
+            log.debug("fsm[{}] unregisterd",key);
+        }
+        return true;
     }
 
     @Override

@@ -15,7 +15,11 @@ public interface  FsmFramework {
   // 框架终止退出， 清理动作都都在这里做， 这对函数的目的是为了让运行时框架能够热插拔
   boolean end();
 
-  // 注册一个状态机 实例
+  /**
+   * 注册一个状态机 实例.无论如何这个函数都会存在这个名字的状态机实例，但是如果已经存在了，结果会返回false，以便调用者知晓
+   * @param fsm
+   * @return  false: 如果该名字的实例已经存在，  true:该名字实例不存在,且已经添加。
+   */
   boolean register(Fsm fsm);
 
   // 注销状态机实例
