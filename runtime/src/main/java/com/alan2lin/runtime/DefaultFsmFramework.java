@@ -1,7 +1,11 @@
 
 package com.alan2lin.runtime;
 
+import com.alan2lin.runtime.impl.DefaultExceptionHandle;
+import com.alan2lin.runtime.impl.DefaultInputHandle;
+import com.alan2lin.runtime.impl.DefaultOutputHandle;
 import com.alan2lin.runtime.intf.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.CountDownLatch;
@@ -14,27 +18,29 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @Date: 2020/3/18 12:34
  * @Version V1.0
  */
-public class AbstractFsmFramework implements FsmFramework {
+@Slf4j
+public class DefaultFsmFramework implements FsmFramework {
 
     private static FsmFramework fsmFramework = null;
 
     //输入队列
-    private static LinkedBlockingQueue<InputEvent> __inputInputEvents;
+    private static LinkedBlockingQueue<InputEvent> __inputInputEvents = new LinkedBlockingQueue<>();
 
 
     //输出队列
-    private static LinkedBlockingQueue<InputEvent> __outputInputEvents;
+    private static LinkedBlockingQueue<OutputEvent> __outputEvents = new LinkedBlockingQueue<>();
 
     //ERROR队列
-    private static LinkedBlockingQueue<InputEvent> __exceptionInputEvents;
+    private static LinkedBlockingQueue<ExceptionEvent> __exceptionEvents = new LinkedBlockingQueue<>();
 
-    private AbstractFsmFramework(){
-        synchronized (AbstractFsmFramework.class){
+    private DefaultFsmFramework(){
+        synchronized (DefaultFsmFramework.class){
             if(executorHolder == null){
+                log.info("executorHolder have not been set,buiding default thread pool");
                 int corePoolSize = 5;
                 int maxPoolSize = 30;
                 int queueCpacity = 500;
-                int keepAliveSecends = 60;
+                int keepAliveSeconds = 60;
                 String namePrefix = "fsmframework";
                 ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
                 //核心线程数15：线程池创建时候初始化的线程数
@@ -44,11 +50,12 @@ public class AbstractFsmFramework implements FsmFramework {
                 //缓冲队列500：用来缓冲执行任务的队列
                 executor.setQueueCapacity(queueCpacity);
                 //允许线程的空闲时间60秒：当超过了核心线程出之外的线程在空闲时间到达之后会被销毁
-                executor.setKeepAliveSeconds(keepAliveSecends);
+                executor.setKeepAliveSeconds(keepAliveSeconds);
                 //线程池名的前缀：设置好了之后可以方便我们定位处理任务所在的线程池
                 executor.setThreadNamePrefix(namePrefix);
                 executor.initialize();
                 executorHolder = executor;
+                log.info("thread pool built corePoolSize[{}] maxPoolSize[{}] queueCpacity[{}],keepAliveSeconds[{}]",corePoolSize,maxPoolSize,queueCpacity,keepAliveSeconds);
             }
         }
     }
@@ -57,11 +64,11 @@ public class AbstractFsmFramework implements FsmFramework {
     private static  Executor executorHolder = null;
 
     public static void setExecutorHolder(Executor executorHolder) {
-        synchronized (AbstractFsmFramework.class){
-            if(AbstractFsmFramework.executorHolder == null){
-                AbstractFsmFramework.executorHolder = executorHolder;
+        synchronized (DefaultFsmFramework.class){
+            if(DefaultFsmFramework.executorHolder == null){
+                DefaultFsmFramework.executorHolder = executorHolder;
             }else{
-               System.out.println("thread pools already exists!");
+               log.info("thread pools already exists!");
             }
         }
     }
@@ -71,12 +78,15 @@ public class AbstractFsmFramework implements FsmFramework {
      *
      * @return
      */
-    static FsmFramework getInstance(){
+    public static FsmFramework getInstance(){
         return SingletonHolder.sInstance;
     }
 
     private static class SingletonHolder {
-        private static final FsmFramework sInstance = new AbstractFsmFramework();
+        private static final FsmFramework sInstance = new DefaultFsmFramework();
+        static {
+            sInstance.start();
+        }
     }
 
     /**
@@ -86,13 +96,27 @@ public class AbstractFsmFramework implements FsmFramework {
     @Override
     public boolean start() {
        // 创建各个队列 线程并等待线程就绪
-        CountDownLatch latch = new CountDownLatch(3);
-        QueueGuardian inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch);
-        QueueGuardian outputGuardian = new QueueGuardian("outputGuardian", __outputInputEvents,latch);
-        QueueGuardian exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionInputEvents,latch);
+
+        log.info("create inputqueue guardian....");
+        CountDownLatch latch = new CountDownLatch(2);
+
+        QueueGuardian<DefaultInputHandle> inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch,DefaultInputHandle.class);
+        inputGuardian.start();
+        log.info("inputQueue guardian created") ;
+
+        log.info("create outputqueue guardian....");
+        QueueGuardian<DefaultOutputHandle> outputGuardian = new QueueGuardian("outputGuardian", __outputEvents,latch,DefaultOutputHandle.class);
+        outputGuardian.start();
+        log.info("outputQueue guardian created") ;
+
+        log.info("create exceptionqueue guardian....");
+        QueueGuardian<DefaultExceptionHandle> exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionEvents,latch,DefaultExceptionHandle.class);
+        log.info("exceptionQueue guardian created") ;
 
         try {
+            log.info("waiting all guardian is ready.....") ;
             latch.await();
+            log.info("all guardian is  ready..... go!") ;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

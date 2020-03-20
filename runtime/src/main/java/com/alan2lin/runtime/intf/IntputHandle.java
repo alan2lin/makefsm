@@ -15,7 +15,5 @@ package com.alan2lin.runtime.intf;
  * @Date: 2020/3/18 11:27
  * @Version V1.0
  */
-@FunctionalInterface
-public interface IntputHandle {
-    void apply(InputEvent event);
+public interface IntputHandle extends Handle<InputEvent> {
 }
