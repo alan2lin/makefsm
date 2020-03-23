@@ -10,4 +10,5 @@ package com.alan2lin.runtime.intf;
  */
 public interface Fsm {
    String getInstanceId();
+
 }

@@ -39,7 +39,7 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
     int detectTimeMax = 60000;        // 60s
     int detectTime = detectTimeMin;   //
     int intervalForChecking = 10000;  // 10s 暂停时线程检测恢复标记的间隔
-    int pollTimeout = 2000;           // 2s 线程拉取元素的超时时间
+    int pollTimeout = 10000;           // 10s 线程拉取元素的超时时间
 
     /**
      * 队列守护者构造器

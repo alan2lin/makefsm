@@ -2,10 +2,7 @@
 
 package com.alan2lin.runtime.impl;
 
-import com.alan2lin.runtime.intf.Event;
-import com.alan2lin.runtime.intf.Handle;
-import com.alan2lin.runtime.intf.InputEvent;
-import com.alan2lin.runtime.intf.IntputHandle;
+import com.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,6 +17,10 @@ public class DefaultInputHandle implements IntputHandle {
     @Override
     public void processEvent(Event event) {
        InputEvent e = (InputEvent) event;
+       //迁移前完整性检查
+        Fsm fsm = e.getOwner();
+
+
        log.debug("processing event[{}]...",e.getOwner().getInstanceId());
     }
 
