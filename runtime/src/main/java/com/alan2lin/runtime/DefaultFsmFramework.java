@@ -8,6 +8,7 @@ import com.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.HashSet;
 import java.util.concurrent.*;
 
 /**
@@ -31,11 +32,30 @@ public class DefaultFsmFramework implements FsmFramework {
     //ERROR队列
     private static LinkedBlockingQueue<ExceptionEvent> __exceptionEvents = new LinkedBlockingQueue<>();
 
+    //延迟注销的集合
+    HashSet<Fsm> delayUnregisterFsms = new HashSet<>();
+    ExecutorService executorService;
+
+
 
     //状态机实例的存储
     private static ConcurrentHashMap<String,Fsm> fsmInstances = new ConcurrentHashMap<>() ;
 
+    private void delayDetectAndUnregisterFsm(){
+       delayUnregisterFsms.stream().forEach( x -> {
+           if(x.isClearToUnregister()){
+               fsmInstances.remove(x.getInstanceId());
+               delayUnregisterFsms.remove(x);
+               log.debug("fsm[{}] delay to unregistered",x.getInstanceId());
+           }
+       });
+    }
+
     private DefaultFsmFramework(){
+        //启动延迟注销检测单元
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate( ()-> delayDetectAndUnregisterFsm() ,2,2,TimeUnit.SECONDS);
+
         synchronized (DefaultFsmFramework.class){
             if(executorHolder == null){
                 log.info("executorHolder have not been set,buiding default thread pool");
@@ -66,6 +86,7 @@ public class DefaultFsmFramework implements FsmFramework {
     private static  Executor executorHolder = null;
 
     public static void setExecutorHolder(Executor executorHolder) {
+
         synchronized (DefaultFsmFramework.class){
             if(DefaultFsmFramework.executorHolder == null){
                 DefaultFsmFramework.executorHolder = executorHolder;
@@ -102,17 +123,17 @@ public class DefaultFsmFramework implements FsmFramework {
         log.info("create inputqueue guardian....");
         CountDownLatch latch = new CountDownLatch(2);
 
-        QueueGuardian<DefaultInputHandle> inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch,DefaultInputHandle.class);
+        QueueGuardian<InputEvent,DefaultInputHandle> inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch,DefaultInputHandle.class);
         inputGuardian.start();
         log.info("inputQueue guardian created") ;
 
         log.info("create outputqueue guardian....");
-        QueueGuardian<DefaultOutputHandle> outputGuardian = new QueueGuardian("outputGuardian", __outputEvents,latch,DefaultOutputHandle.class);
+        QueueGuardian<OutputEvent,DefaultOutputHandle> outputGuardian = new QueueGuardian("outputGuardian", __outputEvents,latch,DefaultOutputHandle.class);
         outputGuardian.start();
         log.info("outputQueue guardian created") ;
 
         log.info("create exceptionqueue guardian....");
-        QueueGuardian<DefaultExceptionHandle> exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionEvents,latch,DefaultExceptionHandle.class);
+        QueueGuardian<ExceptionEvent,DefaultExceptionHandle> exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionEvents,latch,DefaultExceptionHandle.class);
         log.info("exceptionQueue guardian created") ;
 
         try {
@@ -157,6 +178,8 @@ public class DefaultFsmFramework implements FsmFramework {
 
     @Override
     public boolean unregister(Fsm fsm) {
+        //需要考虑fsm没有输入事件，输出事件 才能清除， 这个需要在fsm上写入计数器
+
         String key = fsm.getInstanceId();
         boolean contained = fsmInstances.containsKey(key);
         boolean debugFlag = log.isDebugEnabled();
@@ -164,6 +187,14 @@ public class DefaultFsmFramework implements FsmFramework {
         if(!contained){
             if(debugFlag){
                log.debug("fsm[{}] does not exists,do not need register",key);
+            }
+            return false;
+        }
+        if(!fsm.isClearToUnregister()){
+           //移动入 延迟注销区
+            delayUnregisterFsms.add(fsm);
+            if(debugFlag){
+                log.debug("fsm[{}]移动至延迟注销区",fsm.getInstanceId());
             }
             return false;
         }
@@ -191,17 +222,57 @@ public class DefaultFsmFramework implements FsmFramework {
     }
 
     @Override
-    public boolean emit(Fsm fsm, InputEvent event) {
+    public boolean emit(InputEvent event) {
         try {
             if(event.isEmited()){
                 log.debug("消息已经被消费过了,如果需要消费请reset");
                 return false;
             }
+            //增加引用计数
+            Fsm fsm = event.getOwner();
+            int inputCount = fsm.increaseInputCount();
+            log.debug("fsm[{}] 输入事件等待队列原长度[{}],入队后[{}]",fsm.getInstanceId(),inputCount,inputCount+1);
             __inputInputEvents.put(event);
             event.emited();
             log.debug("input event[{}] enqueue",event.toString());
         } catch (InterruptedException e) {
             log.error("入队被中断",e);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * fsm 在运行过程中遇到的一些标准或者自定义 警告，错误，和异常信息 可以通过这个接口送到 exception 队列
+     *
+     * @param exceptionEvent
+     * @return
+     */
+    @Override
+    public boolean exception(ExceptionEvent exceptionEvent) {
+
+        try {
+            __exceptionEvents.put(exceptionEvent);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * fsm 在运行过程中的输出
+     * @param outputEvent
+     * @return
+     */
+    @Override
+    public boolean output(OutputEvent outputEvent) {
+        try {
+            outputEvent.getOwner().increaseInputCount();
+            __outputEvents.put(outputEvent);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
             return false;
         }
         return true;

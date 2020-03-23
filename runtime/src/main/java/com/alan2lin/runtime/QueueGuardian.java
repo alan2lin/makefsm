@@ -1,9 +1,7 @@
 
 package com.alan2lin.runtime;
 
-import com.alan2lin.runtime.intf.Event;
-import com.alan2lin.runtime.intf.Handle;
-import com.alan2lin.runtime.intf.InputEvent;
+import com.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -18,10 +16,10 @@ import java.util.function.Function;
  * @Version V1.0
  */
 @Slf4j
-public class  QueueGuardian<T extends Handle> extends  Thread {
+public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thread {
     private String name;
     private CountDownLatch latch;
-    private LinkedBlockingQueue<InputEvent> queue;
+    private LinkedBlockingQueue<P> queue;
     //是否还活着，如果设置为false 则推出
     volatile boolean liveFlag = true;
     //是否就绪,只在初始化过程中进行判断
@@ -30,6 +28,8 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
     volatile boolean runFlag = false;
     private Class<T> handleClazz;
     private T handle;
+
+    HashMap<String,String> map ;
 
 
     private HashMap<String, CompletableFuture> asyncQueueMap = new HashMap<>();
@@ -48,7 +48,7 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
      * @param latch  信号灯 用来决定就绪后的运行的
      * @param handleClazz 用来创建特定的处理类实例
      */
-    public QueueGuardian(String name, LinkedBlockingQueue<InputEvent> queue, CountDownLatch latch,Class<T> handleClazz){
+    public QueueGuardian(String name, LinkedBlockingQueue<P> queue, CountDownLatch latch,Class<T> handleClazz){
         this.name = name;
         this.queue = queue;
         this.latch = latch;
@@ -82,7 +82,6 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
     public void run() {
         if(!ready){
             log.info("[{}] check ready...",this.name);
-
 
             log.info("thread[{}] is ready latch will countdown from [{}] to [{}]",this.name,this.latch.getCount(),this.latch.getCount()-1);
             ready=true;
@@ -119,22 +118,35 @@ public class  QueueGuardian<T extends Handle> extends  Thread {
           }
 
           //线程体处理过程 从队列里面获取元素，并进行处理
-            Optional<InputEvent> event = null;
+            Optional<P> event = null;
             try {
                  event = Optional.ofNullable( queue.poll(pollTimeout, TimeUnit.MILLISECONDS) );
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+            String key;
             if(!event.isPresent()){
                 log.debug("[{}] 未取到元素",this.name);
                 continue;
             }else{
+               P eventeElement = event.get();
+               Fsm fsm = eventeElement.getOwner();
+               key = fsm.getInstanceId();
+
+               //取到数据后，需要更改引用计数
+               if(eventeElement instanceof InputEvent){
+                  int inputCount = fsm.decreaseInputCount();
+                  log.debug("fsm[{}] 输入事件等待原队长[{}],移除后[{}]",key,inputCount,inputCount-1);
+               }
+               if(eventeElement instanceof OutputEvent){
+                  int outputCount = fsm.decreaseOutputCount();
+                   log.debug("fsm[{}] 输出事件等待队长[{}],移除后[{}]",key,outputCount,outputCount-1);
+               }
                 log.debug("[{}] 取到元素[{}]",this.name,event.get().getOwner().getInstanceId());
             }
 
           //生成这个事件的处理任务，并提交到线程池运行， 要确保
-           String key =  event.get().getOwner().getInstanceId();
            CompletableFuture<Handle> cf = asyncQueueMap.get(key) ;
            if(null == cf){
                //创建一个任务处理器并放入这个处理链条中

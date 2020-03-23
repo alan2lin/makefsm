@@ -14,15 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultInputHandle implements IntputHandle {
 
+
+
+
     @Override
-    public void processEvent(Event event) {
+    public void processEvent(InputEvent event) {
        InputEvent e = (InputEvent) event;
        //迁移前完整性检查
         Fsm fsm = e.getOwner();
-
-
-       log.debug("processing event[{}]...",e.getOwner().getInstanceId());
+        fsm.fireEvent(e.getInputEventType());
+       log.debug("processing fsm[{}] event type[{}] ",e.getOwner().getInstanceId(),e.getInputEventType());
     }
-
-
 }

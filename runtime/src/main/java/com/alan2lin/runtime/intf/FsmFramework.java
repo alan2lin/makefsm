@@ -38,8 +38,28 @@ public interface  FsmFramework {
   //注册状态机实例异常处理回调函数 可选
   int setExcepitonHandle(Fsm fsm,ExceptionHandle handle,HANDLE_APPEND method);
 
-  // app可以对某一个状态机实例进行输入 ,以驱动状态机的状态迁移
-  boolean emit(Fsm fsm, InputEvent inputEvent);
+  /**
+   * app可以对某一个状态机实例进行输入 ,以驱动状态机的状态迁移
+   * @param inputEvent 输入事件
+   * @return
+   */
+  boolean emit(InputEvent inputEvent);
+
+
+  /**
+   * fsm 在运行过程中遇到的一些标准或者自定义 警告，错误，和异常信息 可以通过这个接口送到 exception 队列
+   * @param exceptionEvent
+   * @return
+   */
+  boolean exception(ExceptionEvent exceptionEvent);
+
+
+  /**
+   * fsm 在运行过程中的输出
+   * @param outputEvent
+   * @return
+   */
+  boolean output(OutputEvent outputEvent);
 
   //可能不建议的接口
   // getLastOutput(Fsm fsm)

@@ -21,17 +21,18 @@ public class AppTest
     {
         FsmFramework fsmfw =  DefaultFsmFramework.getInstance();
 
-        Fsm fsm = new TFsm();
+
+        Fsm fsm = new TFsmImpl();
 
         // 1. 注册一个fsm
         fsmfw.register(fsm);
         // 2. 替换输出处理/输入处理/异常处理
         // 3. 进行输入
-        DefaultInputEvent event = new DefaultInputEvent(fsm,TFsm.EVENT.aa.getText());
-        fsmfw.emit(fsm,event);
-        DefaultInputEvent event2 = new DefaultInputEvent(fsm,TFsm.EVENT.bb.getText());
-        fsmfw.emit(fsm,event2);
-        fsmfw.emit(fsm,event);
+        DefaultInputEvent event = new DefaultInputEvent(fsm,TFsm.EVENT.start__init.getName());
+        fsmfw.emit(event);
+        DefaultInputEvent event2 = new DefaultInputEvent(fsm,TFsm.EVENT.ready__start.getName());
+        fsmfw.emit(event2);
+        fsmfw.emit(event);
 
 
         fsmfw.unregister(fsm);

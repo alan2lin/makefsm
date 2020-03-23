@@ -10,7 +10,12 @@ package com.alan2lin.runtime.intf;
  */
 public interface InputEvent extends Event{
 
-    void setInputValue(String input);
+    /**
+     * 获取 输入事件的类型
+     * @return
+     */
+    String getInputEventType();
+
     //如果已经消费过的事件，需要转换一下状态。没有被消费过的事件才可以被消费
     void emited();
     //读取状态读取标志

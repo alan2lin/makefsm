@@ -12,6 +12,6 @@ import java.util.function.Function;
  */
 public interface Handle<A extends Event> {
 
-    void processEvent(Event event);
+    void processEvent(A event);
 
 }

@@ -17,7 +17,7 @@ public class DefaultExceptionHandle implements ExceptionHandle {
 
 
     @Override
-    public void processEvent(Event event) {
+    public void processEvent(ExceptionEvent event) {
       ExceptionEvent e =  (ExceptionEvent)  event;
     }
 }

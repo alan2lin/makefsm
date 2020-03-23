@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultOutputHandle implements OutputHandle {
 
     @Override
-    public void processEvent(Event event) {
+    public void processEvent(OutputEvent event) {
       OutputEvent e =  (OutputEvent)  event;
       //进行处理
     }
