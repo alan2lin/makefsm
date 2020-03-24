@@ -46,7 +46,7 @@ public class DefaultFsmFramework implements FsmFramework {
            if(x.isClearToUnregister()){
                fsmInstances.remove(x.getInstanceId());
                delayUnregisterFsms.remove(x);
-               log.debug("fsm[{}] delay to unregistered",x.getInstanceId());
+               log.debug("fsm[{}] unregistered in delay region",x.getInstanceId());
            }
        });
     }
@@ -211,15 +211,9 @@ public class DefaultFsmFramework implements FsmFramework {
         return 0;
     }
 
-    @Override
-    public int setOutputHandle(Fsm fsm, OutputHandle handle, HANDLE_APPEND method) {
-        return 0;
-    }
 
-    @Override
-    public int setExcepitonHandle(Fsm fsm, ExceptionHandle handle, HANDLE_APPEND method) {
-        return 0;
-    }
+
+
 
     @Override
     public boolean emit(InputEvent event) {
@@ -231,10 +225,10 @@ public class DefaultFsmFramework implements FsmFramework {
             //增加引用计数
             Fsm fsm = event.getOwner();
             int inputCount = fsm.increaseInputCount();
-            log.debug("fsm[{}] 输入事件等待队列原长度[{}],入队后[{}]",fsm.getInstanceId(),inputCount,inputCount+1);
+            log.debug("fsm[{}] 输入事件[{}]等待队列原长度[{}],入队后[{}]",fsm.getInstanceId(),event.getInputEventType(),inputCount,inputCount+1);
             __inputInputEvents.put(event);
             event.emited();
-            log.debug("input event[{}] enqueue",event.toString());
+            log.debug("emit event[{}] 入队完成",event.toString());
         } catch (InterruptedException e) {
             log.error("入队被中断",e);
             return false;
@@ -269,7 +263,9 @@ public class DefaultFsmFramework implements FsmFramework {
     @Override
     public boolean output(OutputEvent outputEvent) {
         try {
-            outputEvent.getOwner().increaseInputCount();
+            Fsm fsm = outputEvent.getOwner();
+            fsm.increaseOutputCount();
+
             __outputEvents.put(outputEvent);
         } catch (InterruptedException e) {
             e.printStackTrace();

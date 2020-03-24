@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package makefsm;
 
@@ -10,25 +10,27 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * @author "linc"
- * date   :2012-4-23 
+ * date   :2012-4-23
  * time   :下午09:28:35
  *
  */
 public class MyEdge extends DefaultEdge {
-	
-	
+
+
 	   //TODO 边同事件的符号关联，以便减少查找，可能这个可以省略
 	   public SymbolBean  eb;
-	
+
 	   public MyEdge()
 	   {
 		   super();
 	   }
 
+		@Override
 		public SymbolBean getSource()
 		{
 			return (SymbolBean) super.getSource();
 		}
+		@Override
 		public SymbolBean getTarget()
 		{
 			return (SymbolBean) super.getTarget();
@@ -47,7 +49,7 @@ public class MyEdge extends DefaultEdge {
 		public void setBindEvent(SymbolBean eb) {
 			this.eb = eb;
 		}
-		
-	
+
+
 
 }

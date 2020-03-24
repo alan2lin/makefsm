@@ -17,6 +17,7 @@ public class DefaultOutputHandle implements OutputHandle {
     @Override
     public void processEvent(OutputEvent event) {
       OutputEvent e =  (OutputEvent)  event;
-      //进行处理
+      Fsm fsm = e.getOwner();
+      log.debug("#######fsm[{}] output[{}] ",e.getOwner().getInstanceId(),e.getOutputValue());
     }
 }

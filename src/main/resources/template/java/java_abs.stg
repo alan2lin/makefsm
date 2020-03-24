@@ -1,9 +1,15 @@
 class(name,type, members,interfaces,functions) ::= <<
 
-package makefsm;
+package com.alan2lin.runtime;
+
+import com.alan2lin.runtime.impl.BaseFsm;
+import com.alan2lin.runtime.impl.DefaultExceptionEvent;
+import com.alan2lin.runtime.intf.EnumInterface;
+import com.alan2lin.runtime.intf.ExceptionEvent;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class <name> {
+
+public abstract class <name> extends BaseFsm {
 
    //状态机的名字
    String fsmName = "<name>";
@@ -33,6 +39,13 @@ public abstract class <name> {
     //状态和事件的枚举变量
    <members ; separator="\n">
 
+     @Override
+     public String getInstanceId() {
+         return instanceId;
+     }
+
+   protected  States __currentState;
+
    //输入列表,状态机的输入，体现为事件。
    //输出列表,是状态机的一个响应输出，如果是moore状态机 则和 当前状态有关。 如果是mealy 状态机 则和当前输入和当前状态有关。 在这里实现为， moore 是事件触发，状态迁移完成时触发。 mealy 状态机 则是在事件触发后， 状态为迁移前触发。
    //每一个状态机还维护一个最后的输出状态，该状态包含了时间,输入，和迁移前状态。
@@ -48,7 +61,7 @@ public abstract class <name> {
    //  包括
    //   1. 当前状态下的非法输入序列。
    //   2. 状态迁移前检查异常，无法迁移
-   //   3. 状态迁移中动作异常，无法迁移
+   //   3. 状态迁移中动作异常，无法迁移 TODO
    //   4. 状态迁移后检查异常，已经迁移
    //   5. 其他异常
 

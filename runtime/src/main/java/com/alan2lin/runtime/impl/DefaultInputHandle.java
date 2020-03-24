@@ -20,9 +20,8 @@ public class DefaultInputHandle implements IntputHandle {
     @Override
     public void processEvent(InputEvent event) {
        InputEvent e = (InputEvent) event;
-       //迁移前完整性检查
         Fsm fsm = e.getOwner();
         fsm.fireEvent(e.getInputEventType());
-       log.debug("processing fsm[{}] event type[{}] ",e.getOwner().getInstanceId(),e.getInputEventType());
+       log.debug("**************processing fsm[{}] event type[{}] ",e.getOwner().getInstanceId(),e.getInputEventType());
     }
 }

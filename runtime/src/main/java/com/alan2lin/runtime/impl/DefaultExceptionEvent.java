@@ -14,10 +14,8 @@ import java.util.Date;
  * @Version V1.0
  */
 @Data
-public class DefaultExceptionEvent implements ExceptionEvent {
-    Fsm owner ;
-    Date createTime;
-    Date emitTime;
+public class DefaultExceptionEvent extends DefaultEvent implements ExceptionEvent {
+
     EXCETPION_TYPE excetpionType;
     String value;
 
@@ -25,16 +23,7 @@ public class DefaultExceptionEvent implements ExceptionEvent {
        this.owner = eventOwner;
        this.excetpionType = excetpionType;
        this.value = value;
-    }
-
-    /**
-     * 获取事件所绑定的状态机实例
-     *
-     * @return
-     */
-    @Override
-    public Fsm getOwner() {
-        return owner;
+       this.createTime = new Date();
     }
 
     /**

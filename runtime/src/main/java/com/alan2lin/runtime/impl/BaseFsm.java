@@ -15,21 +15,11 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
  * @Version V1.0
  */
 public abstract class BaseFsm implements Fsm {
-    String instanceId ="justtest";
-
-
 
     private AtomicInteger inputRefCnt = new AtomicInteger(0);
     private AtomicInteger outputRefCnt = new AtomicInteger(0);
 
-
     public FsmFramework fsmFramework = DefaultFsmFramework.getInstance();
-
-    @Override
-    public String getInstanceId() {
-        return instanceId;
-    }
-
 
     /**
      * 判断是否可以注销，条件是 待处理的输入事件和输出事件计数为零。

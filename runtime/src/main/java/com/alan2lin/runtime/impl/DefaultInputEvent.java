@@ -14,9 +14,7 @@ import java.util.Date;
  * @Version V1.0
  */
 @Data
-public class DefaultInputEvent implements InputEvent {
-    Fsm owner ;
-    Date createTime;
+public class DefaultInputEvent extends DefaultEvent implements InputEvent {
     Date emitTime;
 
     // 输入事件类型在同一个状态机内是唯一的， 但是不同的输入事件类型可以携带同一个值.
@@ -25,7 +23,6 @@ public class DefaultInputEvent implements InputEvent {
     String inputEventValue;  //输入的事件值
 
     boolean emited = false;
-
 
     //TODO: 后续需要利用类型 进行输入的强校验，避免被误杀
 
@@ -46,15 +43,7 @@ public class DefaultInputEvent implements InputEvent {
     }
 
 
-    /**
-     * 获取事件所绑定的状态机实例
-     *
-     * @return
-     */
-    @Override
-    public Fsm getOwner() {
-        return owner;
-    }
+
 
     @Override
     public void emited() {

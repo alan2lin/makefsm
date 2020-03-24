@@ -10,4 +10,6 @@ package com.alan2lin.runtime.intf;
  */
 public interface OutputEvent extends Event {
 
+    String getOutputValue();
+
 }

@@ -20,7 +20,7 @@ public interface Fsm {
     * @param eventName
     * @return
     */
-   String fireEvent(String eventName);
+   void fireEvent(String eventName);
 
    /**
     * 增加输入事件的计数。

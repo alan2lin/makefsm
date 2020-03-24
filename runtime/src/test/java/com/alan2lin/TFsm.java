@@ -1,17 +1,21 @@
 package com.alan2lin;
 
-import com.alan2lin.runtime.DefaultFsmFramework;
 import com.alan2lin.runtime.impl.BaseFsm;
 import com.alan2lin.runtime.impl.DefaultExceptionEvent;
-import com.alan2lin.runtime.impl.DefaultInputEvent;
 import com.alan2lin.runtime.intf.EnumInterface;
 import com.alan2lin.runtime.intf.ExceptionEvent;
-import com.alan2lin.runtime.intf.Fsm;
-import com.alan2lin.runtime.intf.FsmFramework;
-import org.junit.Test;
 
- public abstract class TFsm extends BaseFsm {
+import java.util.HashMap;
 
+public abstract class TFsm extends BaseFsm {
+
+     String instanceId ="justtest";
+     String fsmType = "MEALY";
+
+     @Override
+     public String getInstanceId() {
+         return instanceId;
+     }
 
      //状态和事件的枚举变量
      public enum States {
@@ -25,11 +29,20 @@ import org.junit.Test;
          stop
      } ;
 
+     //构造输出表  TODO: 最好的做法是  符号映射成数组，再通过数组进行映射. 后续统一规划这个
+     public HashMap<String,String>  outputTable = new HashMap<>(){
+         {
+             put("start__init","aa");
+             put("ready__start","bb");
+         }
+     };
 
-     protected abstract void enterStart__init();
-     protected abstract void enterReady__start();
 
-     private States __Y;
+
+     protected abstract void enterStart__init(EVENT event);
+     protected abstract void enterReady__start(EVENT event);
+
+     protected  States __currentState = States.start;
 
         public enum EVENT implements EnumInterface<EVENT> {start__init("start__init","init"),ready__start("ready__start","start");
 
@@ -62,29 +75,26 @@ import org.junit.Test;
       * @return
       */
      @Override
-     public String fireEvent(String eventName) {
+     public void fireEvent(String eventName) {
         //利用反射 从事件类型名称 调用相关的响应函数
-
        EVENT event =   EnumInterface.getFromTypeName(eventName,EVENT.class);
        __processEvent(event);
-
-       return null;
      }
 
 
 
      void __processEvent( EVENT event ){
 
-         switch( __Y ) {
+         switch(__currentState) {
              case start:
                  if( event == EVENT.start__init) {
-                     enterStart__init();
+                     enterStart__init(event);
                  }
                  break;
              case ready:
                  if( event == EVENT.ready__start) {
 
-                     enterReady__start();
+                     enterReady__start(event);
                  }
                  break;
 
@@ -94,6 +104,7 @@ import org.junit.Test;
                  fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.TRANSITION_NOT_DEFINED,null));
                  break;
          }
+
      }
 
  }

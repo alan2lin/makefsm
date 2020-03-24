@@ -136,7 +136,9 @@ public class GenerateJavaCode implements IGenerateCode{
 					String tmp = e.getTarget().getName();
 					ifblock[i_ifblock].add("newStatusName", tmp);
 
-					if(e.getTarget().getStatus()==StatusAttr.TERMINAL) ifblock[i_ifblock].add("isEndState", "endState");
+					if(e.getTarget().getStatus()==StatusAttr.TERMINAL) {
+						ifblock[i_ifblock].add("isEndState", "endState");
+					}
 
 
 					if(mc.getFsmType().equals( FSMType.MOORE))
@@ -263,7 +265,9 @@ public class GenerateJavaCode implements IGenerateCode{
 			DirectedMultigraph<SymbolBean, MyEdge>  g_tmp = (DirectedMultigraph<SymbolBean, MyEdge>) g.clone();
 
 			for (int j = 0; j < endStatusSymbols.length; j++) {
-				if (i!=j) g_tmp.removeVertex(endStatusSymbols[j]);
+				if (i!=j) {
+					g_tmp.removeVertex(endStatusSymbols[j]);
+				}
 			}
 
 			//构造辅助信息 每一个顶点配置一个堆栈
@@ -340,7 +344,9 @@ public class GenerateJavaCode implements IGenerateCode{
 		{
 			for (Iterator it = set.iterator(); it.hasNext();) {
 				MyEdge myEdge = (MyEdge) it.next();
-					if (!( est.contains(myEdge) ) ) tmpE.add(myEdge);
+					if (!( est.contains(myEdge) ) ){
+						tmpE.add(myEdge);
+					}
 			}
 		}else
 		{
@@ -384,7 +390,6 @@ public class GenerateJavaCode implements IGenerateCode{
 	public String generateTestCode(){
 		String strRet = "";
 
-
 		return strRet;
 
 	}
@@ -392,19 +397,25 @@ public class GenerateJavaCode implements IGenerateCode{
 
 	@Override
 	public void setAbstractClassTemplate(String fileName) {
-		if (fileName!=null && ! "".equals(fileName.trim())) 	abstractClassTemplate = fileName;
+		if (fileName!=null && ! "".equals(fileName.trim())) {
+			abstractClassTemplate = fileName;
+		}
 	}
 
 
 	@Override
 	public void setImplementClassTemplate(String fileName) {
-		if (fileName!=null && ! "".equals(fileName.trim())) 	implementClassTemplate = fileName;
+		if (fileName!=null && ! "".equals(fileName.trim())) {
+			implementClassTemplate = fileName;
+		}
 	}
 
 
 	@Override
 	public void setTestClassTemplate(String fileName) {
-		if (fileName!=null && ! "".equals(fileName.trim())) 	testClassTemplate = fileName;
+		if (fileName!=null && ! "".equals(fileName.trim())) {
+			testClassTemplate = fileName;
+		}
 
 	}
 

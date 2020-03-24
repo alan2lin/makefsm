@@ -83,7 +83,7 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
         if(!ready){
             log.info("[{}] check ready...",this.name);
 
-            log.info("thread[{}] is ready latch will countdown from [{}] to [{}]",this.name,this.latch.getCount(),this.latch.getCount()-1);
+            log.info("QG[{}] is ready latch will countdown from [{}] to [{}]",this.name,this.latch.getCount(),this.latch.getCount()-1);
             ready=true;
             latch.countDown();
 
@@ -127,7 +127,7 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
 
             String key;
             if(!event.isPresent()){
-                log.debug("[{}] 未取到元素",this.name);
+                log.debug("QG[{}] 未取到元素",this.name);
                 continue;
             }else{
                P eventeElement = event.get();
@@ -137,13 +137,15 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
                //取到数据后，需要更改引用计数
                if(eventeElement instanceof InputEvent){
                   int inputCount = fsm.decreaseInputCount();
-                  log.debug("fsm[{}] 输入事件等待原队长[{}],移除后[{}]",key,inputCount,inputCount-1);
+                  String eventType = ( (InputEvent) eventeElement ).getInputEventType();
+                  log.debug("QG[{}] fsm[{}]事件[{}] 原输入事件等待队长[{}],移除后[{}]",this.name,key,eventType,inputCount,inputCount-1);
                }
                if(eventeElement instanceof OutputEvent){
                   int outputCount = fsm.decreaseOutputCount();
-                   log.debug("fsm[{}] 输出事件等待队长[{}],移除后[{}]",key,outputCount,outputCount-1);
+                  String outputValue = ((OutputEvent)eventeElement).getOutputValue();
+                   log.debug("QG[{}] fsm[{}]输出[{}] 输出事件等待队长[{}],移除后[{}]",this.name, key,outputValue,outputCount,outputCount-1);
                }
-                log.debug("[{}] 取到元素[{}]",this.name,event.get().getOwner().getInstanceId());
+                log.debug("QG[{}] 取出状态机实例[{}]事件",this.name,event.get().getOwner().getInstanceId());
             }
 
           //生成这个事件的处理任务，并提交到线程池运行， 要确保
@@ -151,12 +153,15 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
            if(null == cf){
                //创建一个任务处理器并放入这个处理链条中
                cf = CompletableFuture.completedFuture(handle);
-               log.debug("[{}] 为[{}]创建 任务链",this.name,key);
+               log.debug("QG[{}] 为[{}]创建 任务链",this.name,key);
                asyncQueueMap.put(key,cf);
            }
 
-           final Event fEvent = event.get();
-            cf.thenApplyAsync(new Function<Handle, Handle >() {
+
+
+            final Event fEvent = event.get();
+            log.debug("QG[{}]为[{}] 添加任务[{}]",this.name,key,fEvent.toString());
+            cf.thenApply(new Function<Handle, Handle >() {
                 @Override
                 public Handle apply(Handle handle) {
                     handle.processEvent(fEvent);
