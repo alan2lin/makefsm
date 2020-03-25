@@ -20,8 +20,6 @@ public class AppTest
     public void shouldAnswerWithTrue()
     {
         FsmFramework fsmfw =  DefaultFsmFramework.getInstance();
-
-
         Fsm fsm = new TFsmImpl();
 
         // 1. 注册一个fsm
