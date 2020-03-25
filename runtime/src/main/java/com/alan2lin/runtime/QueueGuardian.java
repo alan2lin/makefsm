@@ -1,6 +1,8 @@
 
 package com.alan2lin.runtime;
 
+import com.alan2lin.runtime.impl.DefaultHandle;
+import com.alan2lin.runtime.impl.DefaultInputHandle;
 import com.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +29,6 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
     //是否在运行的状态 ，这个状态可以反复设置
     volatile boolean runFlag = false;
     private Class<T> handleClazz;
-
-
-    //private T handleHeadTail;  //头尾指针 这个指针next 指向 next ，prev指向tail
 
     HashMap<String,String> map ;
 
@@ -177,11 +176,18 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
             cf.thenApply(new Function<Handle, Handle >() {
                 @Override
                 public Handle apply(Handle handle) {
-                    if(handle.getNext().equals(handle)){
-                       //空子节点
-                    }else{
-                        handle.processEvent(fEvent);
 
+                    if(handle.getNext().equals(handle)){
+                       //空子节点 则执行默认行为
+                        handle.processEvent(fEvent);
+                    }else{
+                        //inputhandle 不参与 链式处理方式 但反正也没有后续的事务节点，所以不需要担心
+                        // output 和 excepiton 如果有设置了节点就不用默认的 head 节点，而采用其他的节点
+                        Handle current = handle.getNext();
+                        while (current!=null){
+                           current.processEvent(fEvent);
+                           current = current.getNext();
+                        }
                     }
                     return handle;
                 }
