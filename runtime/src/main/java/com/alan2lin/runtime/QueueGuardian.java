@@ -27,12 +27,20 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
     //是否在运行的状态 ，这个状态可以反复设置
     volatile boolean runFlag = false;
     private Class<T> handleClazz;
-    private T handle;
+
+
+    //private T handleHeadTail;  //头尾指针 这个指针next 指向 next ，prev指向tail
 
     HashMap<String,String> map ;
 
 
-    private HashMap<String, CompletableFuture> asyncQueueMap = new HashMap<>();
+
+    private HashMap<String, CompletableFuture> taskForFsmInstance = new HashMap<>();
+    private HashMap<String, T> handleChainForFsmInstance = new HashMap<>();
+
+    public T getHandleHeadTail(String key) {
+        return handleChainForFsmInstance.get(key);
+    }
 
     //检测时间
     int detectTimeMin = 6000;         // 6s
@@ -54,13 +62,7 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
         this.latch = latch;
         this.handleClazz = handleClazz;
 
-        try {
-            handle = this.handleClazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
@@ -73,10 +75,6 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
         super.start();
     }
 
-    private boolean  check(){
-       //目前只检查 handle 是否正确被创建
-      return  handle!=null;
-    }
 
     @Override
     public void run() {
@@ -148,13 +146,28 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
                 log.debug("QG[{}] 取出状态机实例[{}]事件",this.name,event.get().getOwner().getInstanceId());
             }
 
+
           //生成这个事件的处理任务，并提交到线程池运行， 要确保
-           CompletableFuture<Handle> cf = asyncQueueMap.get(key) ;
+           CompletableFuture<Handle> cf = taskForFsmInstance.get(key) ;
            if(null == cf){
                //创建一个任务处理器并放入这个处理链条中
-               cf = CompletableFuture.completedFuture(handle);
+               T handleHeadTail = handleChainForFsmInstance.get(key);
+               if(handleHeadTail==null){
+                   try {
+                       handleHeadTail = this.handleClazz.newInstance();
+                       handleHeadTail.setPrev(handleHeadTail);
+                       handleHeadTail.setNext(handleHeadTail);
+                       handleChainForFsmInstance.put(key,handleHeadTail);
+                   } catch (InstantiationException e) {
+                       log.error("创建处理器链条实例出错",e);
+                   } catch (IllegalAccessException e) {
+                       log.error("创建处理器链条出错,非法访问",e);
+                   }
+               }
+
+               cf = CompletableFuture.completedFuture(handleHeadTail);
                log.debug("QG[{}] 为[{}]创建 任务链",this.name,key);
-               asyncQueueMap.put(key,cf);
+               taskForFsmInstance.put(key,cf);
            }
 
 
@@ -164,7 +177,12 @@ public class  QueueGuardian< P extends  Event,T extends Handle<P> > extends  Thr
             cf.thenApply(new Function<Handle, Handle >() {
                 @Override
                 public Handle apply(Handle handle) {
-                    handle.processEvent(fEvent);
+                    if(handle.getNext().equals(handle)){
+                       //空子节点
+                    }else{
+                        handle.processEvent(fEvent);
+
+                    }
                     return handle;
                 }
             });

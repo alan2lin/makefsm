@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Version V1.0
  */
 @Slf4j
-public class DefaultExceptionHandle implements ExceptionHandle {
+public class DefaultExceptionHandle extends DefaultHandle<ExceptionEvent> implements ExceptionHandle {
     private ExceptionEvent event ;
 
 

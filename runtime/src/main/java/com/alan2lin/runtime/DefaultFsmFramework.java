@@ -24,13 +24,15 @@ public class DefaultFsmFramework implements FsmFramework {
 
     //输入队列
     private static LinkedBlockingQueue<InputEvent> __inputInputEvents = new LinkedBlockingQueue<>();
-
+    private static QueueGuardian<InputEvent,DefaultInputHandle> inputGuardian = null;
 
     //输出队列
     private static LinkedBlockingQueue<OutputEvent> __outputEvents = new LinkedBlockingQueue<>();
+    private static QueueGuardian<OutputEvent,DefaultOutputHandle> outputGuardian = null;
 
     //ERROR队列
     private static LinkedBlockingQueue<ExceptionEvent> __exceptionEvents = new LinkedBlockingQueue<>();
+    private static QueueGuardian<ExceptionEvent,DefaultExceptionHandle> exceptionGuardian = null;
 
     //延迟注销的集合
     HashSet<Fsm> delayUnregisterFsms = new HashSet<>();
@@ -123,17 +125,17 @@ public class DefaultFsmFramework implements FsmFramework {
         log.info("create inputqueue guardian....");
         CountDownLatch latch = new CountDownLatch(2);
 
-        QueueGuardian<InputEvent,DefaultInputHandle> inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch,DefaultInputHandle.class);
+        inputGuardian = new QueueGuardian("inputGuardian", __inputInputEvents,latch,DefaultInputHandle.class);
         inputGuardian.start();
         log.info("inputQueue guardian created") ;
 
         log.info("create outputqueue guardian....");
-        QueueGuardian<OutputEvent,DefaultOutputHandle> outputGuardian = new QueueGuardian("outputGuardian", __outputEvents,latch,DefaultOutputHandle.class);
+        outputGuardian = new QueueGuardian("outputGuardian", __outputEvents,latch,DefaultOutputHandle.class);
         outputGuardian.start();
         log.info("outputQueue guardian created") ;
 
         log.info("create exceptionqueue guardian....");
-        QueueGuardian<ExceptionEvent,DefaultExceptionHandle> exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionEvents,latch,DefaultExceptionHandle.class);
+        exceptionGuardian = new QueueGuardian("exceptionGuardian", __exceptionEvents,latch,DefaultExceptionHandle.class);
         log.info("exceptionQueue guardian created") ;
 
         try {
@@ -143,8 +145,6 @@ public class DefaultFsmFramework implements FsmFramework {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
         return true;
     }
 
@@ -208,11 +208,57 @@ public class DefaultFsmFramework implements FsmFramework {
 
     @Override
     public int setOutputHandle(Fsm fsm, OutputHandle handle) {
+        //默认在头部插入
+        return setOutputHandle(fsm,handle,HANDLE_APPEND.HEAD);
+    }
+
+    @Override
+    public int setOutputHandle(Fsm fsm, OutputHandle handle, HANDLE_APPEND method) {
+        Handle headTail = outputGuardian.getHandleHeadTail(fsm.getInstanceId());
+        addHandleToQueue(headTail,handle, method);
         return 0;
     }
 
+    /**
+     * 追加处理到处理链中，可以在头部或者尾部追加
+     * @param headTail
+     * @param handle
+     * @param method
+     */
+    private void addHandleToQueue(Handle headTail,Handle handle, HANDLE_APPEND method) {
+        if(method.equals(HANDLE_APPEND.HEAD)){
+            Handle head = headTail.getNext();
+            handle.setPrev(headTail);
+            if(head.equals(headTail)){
+               handle.setNext(null);
+               headTail.setPrev(handle);
+            }else{
+               handle.setNext(head);
+               head.setPrev(handle);
+            }
+            headTail.setNext(handle);
+        }
 
+        if(method.equals(HANDLE_APPEND.TAIL)){
+            Handle tail = headTail.getPrev();
+            tail.setNext(handle);
+            handle.setPrev(tail);
+            headTail.setPrev(handle);
+        }
+    }
 
+    @Override
+    public int setExcepitonHandle(Fsm fsm, ExceptionHandle handle) {
+        setExcepitonHandle(fsm,handle,HANDLE_APPEND.TAIL);
+        return 0;
+    }
+
+    @Override
+    public int setExcepitonHandle(Fsm fsm, ExceptionHandle handle, HANDLE_APPEND method) {
+        Handle headTail = exceptionGuardian.getHandleHeadTail(fsm.getInstanceId());
+        addHandleToQueue(headTail,handle, method);
+        return 0;
+    }
 
 
     @Override

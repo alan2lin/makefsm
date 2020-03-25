@@ -34,11 +34,14 @@ public interface  FsmFramework {
   // 注册状态机实例输出处理回调函数，可选
   //对于输出，处理的方式交由 应用来管控， 默认的输出处理是是一个 打印的动作。 应用可以定制自己的 处理函数链条。
   //TODO: 暂时先关闭 output的handle链条的实现，默认是实现其中某一个
-  //int setOutputHandle(Fsm fsm,OutputHandle handle,HANDLE_APPEND method);
+  int setOutputHandle(Fsm fsm,OutputHandle handle,HANDLE_APPEND method);
+
+  //注册状态机实例异常处理回调函数 可选
+  int setExcepitonHandle(Fsm fsm,ExceptionHandle handle);
 
   //注册状态机实例异常处理回调函数 可选
   //TODO: 暂时先关闭 output的handle链条的实现，默认是实现其中某一个
-  //int setExcepitonHandle(Fsm fsm,ExceptionHandle handle,HANDLE_APPEND method);
+  int setExcepitonHandle(Fsm fsm,ExceptionHandle handle,HANDLE_APPEND method);
 
   /**
    * app可以对某一个状态机实例进行输入 ,以驱动状态机的状态迁移

@@ -12,9 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Version V1.0
  */
 @Slf4j
-public class DefaultInputHandle implements IntputHandle {
-
-
+public class DefaultInputHandle  extends  DefaultHandle<InputEvent> implements IntputHandle {
 
 
     @Override
