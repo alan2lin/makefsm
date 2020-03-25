@@ -10,6 +10,7 @@ import java.util.HashMap;
 public abstract class TFsm extends BaseFsm {
 
      String instanceId ="justtest";
+
      String fsmType = "MEALY";
 
      @Override
@@ -38,12 +39,6 @@ public abstract class TFsm extends BaseFsm {
      };
 
 
-
-     protected abstract void enterStart__init(EVENT event);
-     protected abstract void enterReady__start(EVENT event);
-
-     protected  States __currentState = States.start;
-
         public enum EVENT implements EnumInterface<EVENT> {start__init("start__init","init"),ready__start("ready__start","start");
 
             String name;
@@ -67,8 +62,13 @@ public abstract class TFsm extends BaseFsm {
         }
 
 
+    protected  States __currentState = States.start;
 
-     /**
+    protected abstract void enterStart__init(EVENT event);
+    protected abstract void enterReady__start(EVENT event);
+
+
+    /**
       * 激发某一个事件
       *
       * @param eventName

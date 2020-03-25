@@ -21,11 +21,7 @@ public abstract class <name> extends BaseFsm {
    String fsmType = "<type>";
 
    //当前状态
-   private States __Y;
-   private boolean __exitFlag = false;
-
-   //最后一次正确输入状态
-
+   private States __current = States.<start>;
 
    //输入队列
    private ConcurrentLinkedQueue\<Event> __inputEvents = new ConcurrentLinkedQueue\<Event>();
@@ -93,10 +89,39 @@ public abstract class <name> extends BaseFsm {
 >>
 
 
-constants(typename, names) ::= <<
+state_constants(typename, names) ::= <<
 public enum <typename> {
     <names; separator=",\n">
     } ;
+>>
+
+event_constants(typename, events) ::= <<
+        public enum <typename> implements EnumInterface\<<typename>> {
+        <event_member(events); separator=",\n" >
+        ;
+            String name;
+            String value;
+
+            private <typename>(String name,String value){
+                this.name = name;
+                this.value = value;
+            }
+
+            @Override
+            public String getName() {
+                return this.name;
+            }
+
+            @Override
+            public String getValue(){
+                return this.value;
+            }
+
+        }
+
+>>
+event_members(events) ::= <<
+<events.state_name>__<events.event_name>("<events.state_name>__<events.event_name>","<events.event_name>")
 >>
 
 enteractions(name) ::=<<

@@ -24,6 +24,7 @@ public class GenerateJavaCode implements IGenerateCode{
 	String testClassContent;
 
 
+	@Override
 	public boolean generateCode(MidleCode mc){
 		boolean bRet = false;
 
@@ -53,19 +54,27 @@ public class GenerateJavaCode implements IGenerateCode{
 
 		SymbolBean[] eventSymbols = mc.getEventSymbols();
 		String[] eventNames = new String[eventSymbols.length];
+
+		ArrayList<HashMap<String,String>> fixedEvents = new ArrayList<>() ;
 		for (int i = 0; i < eventSymbols.length; i++) {
+			HashMap<String, String> fixedEvent = new HashMap<String, String>();
+			fixedEvent.put("state_name", eventSymbols[i].getPstart().getName());
+			fixedEvent.put("event_name", eventSymbols[i].getName());
+			fixedEvents.add(fixedEvent);
+
 			eventNames[i] = eventSymbols[i].getName();
 		}
 
 		ST[] constats = new ST[2];
-		constats[0] = absTpl.getInstanceOf("constants");
+		constats[0] = absTpl.getInstanceOf("state_constants");
 		constats[0].add("typename", "States");
 		constats[0].add("names", statusNames);
 
 
-		constats[1] = absTpl.getInstanceOf("constants");
-		constats[1].add("typename", "Event");
-		constats[1].add("names", eventNames);
+		constats[1] = absTpl.getInstanceOf("events_constants");
+		constats[1].add("typename", "EVENT");
+		//constats[1].add("names", eventNames);
+		constats[1].add("events",fixedEvents );
 
 		absST.add("members", constats);
 
