@@ -63,6 +63,22 @@ public abstract class <name> extends BaseFsm {
 
    <interfaces; separator="\n">
 
+
+       /**
+         * 激发某一个事件
+         *
+         * @param eventName
+         * @return
+         */
+        @Override
+        public void fireEvent(String eventName) {
+           //利用反射 从事件类型名称 调用相关的响应函数
+          EVENT event =   EnumInterface.getFromTypeName(eventName,EVENT.class);
+          __processEvent(event);
+        }
+
+
+
    //主要实现的函数
    <functions; separator="\n">
 
@@ -96,75 +112,51 @@ public enum <typename> {
 >>
 
 event_constants(typename, events) ::= <<
-        public enum <typename> implements EnumInterface\<<typename>> {
-        <event_member(events); separator=",\n" >
-        ;
-            String name;
-            String value;
+    public enum <typename> implements EnumInterface\<<typename> > {
+      <events:{v |  <v.state_name>__<v.event_name>("<v.state_name>__<v.event_name>","<v.event_name>") };separator=",\n">;
+       String name;
+       String value;
 
-            private <typename>(String name,String value){
-                this.name = name;
-                this.value = value;
-            }
-
-            @Override
-            public String getName() {
-                return this.name;
-            }
-
-            @Override
-            public String getValue(){
-                return this.value;
-            }
-
-        }
-
->>
-event_members(events) ::= <<
-<events.state_name>__<events.event_name>("<events.state_name>__<events.event_name>","<events.event_name>")
+       private <typename>(String name,String value){
+            this.name = name;
+              this.value = value;
+       }
+       @Override
+       public String getName() {
+          return this.name;
+       }
+       @Override
+       public String getValue(){
+          return this.value;
+       }
+    }
 >>
 
-enteractions(name) ::=<<
-   protected abstract void enter<name>();
+
+enteractions(state_name,event_name) ::=<<
+   protected abstract void enter<state_name>__<event_name>(Event event);
 >>
 
-onevent(name) ::=<<
-   protected abstract void  on<name>(Event e);
->>
-
-begin(beginState) ::= <<
-   public void begin()
-   {
-     __Y = States.<beginState>;
-
-     while(!__exitFlag){
-       Event  e = null;
-       synchronized (__events) {
-         e = __events.poll();
-         if(e==null)
-         {
-           try {
-          __events.wait();
-           } catch (InterruptedException e1) {
-             e1.printStackTrace();
-           }
-           continue;
+process_event(transition_table) ::= <<
+     void __processEvent( EVENT event ){
+         switch(__currentState) {
+<transition_table:{v|
+            case <v.value0>:
+<v.value1:{p|
+              if (event == EVENT.<v.value0>__<p>){
+                  enter<v.value0; format="capitalize">__<p>(event);
+              \}
+              break;
+              }> }>
+             default:
+                 fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.TRANSITION_NOT_DEFINED,null));
+                 break;
          }
-    }
-       __processEvent(e);
-     }
      }
 >>
 
 
-processevent(caseblock) ::= <<
 
-void __processEvent( Event e ){
-		   switch( __Y ) {
-		   <caseblock; separator="\n">
-		   }
-    }
->>
 
 
 case(statusName,ifblock) ::= <<case <statusName>:

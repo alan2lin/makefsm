@@ -5,12 +5,19 @@ import com.alan2lin.makefsm.entity.SymbolBean;
 import com.alan2lin.makefsm.parser.MidleCode;
 import com.alan2lin.makefsm.util.Constant.FSMType;
 import com.alan2lin.makefsm.util.Constant.StatusAttr;
+import com.alan2lin.makefsm.util.CustomStringRenderer;
+import org.abego.treelayout.internal.util.java.lang.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.javatuples.Pair;
 import org.jgrapht.graph.DirectedMultigraph;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GenerateJavaCode implements IGenerateCode{
 
@@ -33,6 +40,10 @@ public class GenerateJavaCode implements IGenerateCode{
 		STGroup absTpl = new STGroupFile(abstractClassTemplate);
 		STGroup implTpl = new STGroupFile(implementClassTemplate);
 		STGroup testTpl = new STGroupFile(testClassTemplate);
+
+		absTpl.registerRenderer(String.class, new CustomStringRenderer());
+		implTpl.registerRenderer(String.class, new CustomStringRenderer());
+		testTpl.registerRenderer(String.class, new CustomStringRenderer());
 
 
 
@@ -71,7 +82,7 @@ public class GenerateJavaCode implements IGenerateCode{
 		constats[0].add("names", statusNames);
 
 
-		constats[1] = absTpl.getInstanceOf("events_constants");
+		constats[1] = absTpl.getInstanceOf("event_constants");
 		constats[1].add("typename", "EVENT");
 		//constats[1].add("names", eventNames);
 		constats[1].add("events",fixedEvents );
@@ -82,105 +93,43 @@ public class GenerateJavaCode implements IGenerateCode{
 		ST[] interfaces = null;
 		ST[] interfaceImpls = null;
 
-		if(mc.getFsmType().equals(FSMType.MOORE))
-		{
-			interfaces= new ST[statusSymbols.length];
-			interfaceImpls= new ST[statusSymbols.length];
+		//不管是 moore 还是 mealy 状态机 都采用同一套生成代码
+		//生成的代码为
+		interfaces= new ST[eventSymbols.length];
+		interfaceImpls= new ST[eventSymbols.length];
+		for (int i = 0; i < eventSymbols.length; i++) {
+			String eventName = eventSymbols[i].getName();
+			//tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);
+			String stateName =StringUtils.capitalize(eventSymbols[i].getPstart().getName());
 
-			for (int i = 0; i < statusSymbols.length; i++) {
-				String tmp = statusSymbols[i].getName();
-				tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);
-				interfaces[i] = absTpl.getInstanceOf("enteractions");
-				interfaces[i].add("name", tmp);
+			interfaces[i] = absTpl.getInstanceOf("enteractions");
+			interfaces[i].add("state_name", stateName);
+			interfaces[i].add("event_name", eventName);
 
-				interfaceImpls[i] = implTpl.getInstanceOf("mooreImpl");
-				interfaceImpls[i].add("name", tmp);
-
-			}
-		}else
-		{
-			interfaces= new ST[eventSymbols.length];
-			interfaceImpls= new ST[eventSymbols.length];
-			for (int i = 0; i < eventSymbols.length; i++) {
-				String tmp = eventSymbols[i].getName();
-				tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);
-				interfaces[i] = absTpl.getInstanceOf("onevent");
-				interfaces[i].add("name", tmp);
-
-				interfaceImpls[i] = implTpl.getInstanceOf("mealyImpl");
-				interfaceImpls[i].add("name", tmp);
-			}
+			// TODO: 具体类待生成
+			interfaceImpls[i] = implTpl.getInstanceOf("mealyImpl");
+			interfaceImpls[i].add("name", eventName);
 		}
+
 
 		absST.add("interfaces", interfaces);
 		implST.add("implFunctions", interfaceImpls);
 
 
 		//生成实现函数体
-		//第一个是processevent
+        //将每一个状态以及它可接受的时间列表 传给 process_event 模板
+		// 参数是一个列表  形式 [ {state_name:xx,event_name:{yy,yy2}},...]
+		ST processEventFun = absTpl.getInstanceOf("process_event");
 
-		   ST beginfun = absTpl.getInstanceOf("begin");
-		//对每一个状态，都产生一个case模块,顺便如果是开始状态，也产生begin模块
+		Map<String, Set<String>> transitionMap =
+				Arrays.stream(eventSymbols).map(x -> new Pair<String, String>(x.getPstart().getName(), x.getName())).collect(Collectors.groupingBy(Pair<String, String>::getValue0, Collectors.mapping(Pair::getValue1, Collectors.toSet())));
+		//变换成 list
+		List<Pair<String, Set<String>>> transitionList= transitionMap.entrySet().stream().map(x -> new Pair<String, Set<String>>(x.getKey(), x.getValue())).collect(Collectors.toList());
 
-		ST[] caseblock = new ST[statusSymbols.length];
-		for (int i = 0; i < statusSymbols.length; i++) {
-			caseblock[i] = absTpl.getInstanceOf("case");
-			caseblock[i].add("statusName", statusSymbols[i].getName());
-			//根据配置的出度产生if的语句模块
-			if(statusSymbols[i].getStatus()==StatusAttr.TERMINAL)
-			{
-				//如果是终结状态，则不能产生任何东西，如果有跳入的，则错了
-			}else
-			{
-				Set<MyEdge> tmpEdges = g.outgoingEdgesOf(statusSymbols[i]);
-				ST[] ifblock = new ST[tmpEdges.size()];
-				int i_ifblock =0;
-				for (Iterator it = tmpEdges.iterator(); it
-						.hasNext();) {
-					MyEdge e = (MyEdge) it.next();
-					ifblock[i_ifblock] = absTpl.getInstanceOf("event_if");
-
-					ifblock[i_ifblock].add("eventName", e.getBindEvent().getName());
-
-					String tmp = e.getTarget().getName();
-					ifblock[i_ifblock].add("newStatusName", tmp);
-
-					if(e.getTarget().getStatus()==StatusAttr.TERMINAL) {
-						ifblock[i_ifblock].add("isEndState", "endState");
-					}
+		processEventFun.add("transition_table",transitionList);
 
 
-					if(mc.getFsmType().equals( FSMType.MOORE))
-					{
-						ifblock[i_ifblock].add("isMooreType", "moore");
-
-						tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);
-						ifblock[i_ifblock].add("funName", tmp);
-
-					}else
-					{
-						String tmp2 = e.getBindEvent().getName();
-						tmp2 = tmp2.substring(0,1).toUpperCase() + tmp2.substring(1);
-						ifblock[i_ifblock].add("funName", tmp2);
-					}
-
-					i_ifblock++;
-
-				}
-				caseblock[i].add("ifblock", ifblock);
-			}
-			if(statusSymbols[i].getStatus()==StatusAttr.START)
-			{
-				beginfun.add("beginState", statusSymbols[i].getName());
-			}
-		}
-
-
-
-	   ST processevent = absTpl.getInstanceOf("processevent");
-	   processevent.add("caseblock", caseblock);
-
-	   absST.add("functions", new ST[]{ beginfun, processevent});
+	   absST.add("functions", new ST[]{processEventFun  });
 
 
 	   abstractClassContent = absST.render();
