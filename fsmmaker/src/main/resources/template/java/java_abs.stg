@@ -173,7 +173,7 @@ event_constants(typename, events) ::= <<
 >>
 
 
-enteractions(state_name,event_name) ::=<<
+enter_actions(state_name,event_name) ::=<<
 
   public boolean checkBefore<state_name>__<event_name>(EVENT event){
      return true;

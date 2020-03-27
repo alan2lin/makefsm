@@ -115,13 +115,13 @@ public class GenerateJavaCode implements IGenerateCode{
 			//tmp = tmp.substring(0,1).toUpperCase() + tmp.substring(1);
 			String stateName =StringUtils.capitalize(eventSymbols[i].getPstart().getName());
 
-			interfaces[i] = absTpl.getInstanceOf("enteractions");
+			interfaces[i] = absTpl.getInstanceOf("enter_actions");
 			interfaces[i].add("state_name", stateName);
 			interfaces[i].add("event_name", eventName);
 
-			// TODO: 具体类待生成
-			interfaceImpls[i] = implTpl.getInstanceOf("mealyImpl");
-			interfaceImpls[i].add("name", eventName);
+			interfaceImpls[i] = implTpl.getInstanceOf("enter_actions");
+			interfaceImpls[i].add("state_name", stateName);
+			interfaceImpls[i].add("event_name", eventName);
 		}
 
 
