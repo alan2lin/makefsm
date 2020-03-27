@@ -2,73 +2,57 @@ class(name, pathtests) ::= <<
 
 package makefsm;
 
-import makefsm.<name>.Event;
-import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertTrue;
+
+import com.alan2lin.runtime.DefaultFsmFramework;
+import com.alan2lin.runtime.<name>;
+import com.alan2lin.runtime.<name>Impl;
+import com.alan2lin.runtime.impl.DefaultInputEvent;
+import com.alan2lin.runtime.intf.*;
 import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
 
-
+@Slf4j
 public class <name>Test  {
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  FsmFramework fsmfw = null;
+
+  @BeforeAll
+  public void init(){
+    fsmfw =  DefaultFsmFramework.getInstance();
   }
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @AfterClass
-  public static void tearDownAfterClass() throws Exception {
-  }
-
-  /**
-   * @throws java.lang.Exception
-   */
-  @Before
-  public void setUp() throws Exception {
-  }
-
-  /**
-   * @throws java.lang.Exception
-   */
-  @After
-  public void tearDown() throws Exception {
-  }
-  
   <pathtests;separator="\n">
 
-    
-    
-  }    
+  }
 >>
- 
 
- 
-pathtest(order,name,emitEvents,path) ::= <<
+
+
+pathtest(order,name,emit_events,path) ::= <<
 
   @Test
   public void testPath<order>() {
-     System.out.println("\n  testPath<order> start.......");   
-     System.out.println("<path> \n");   
-     <name>Impl a = new <name>Impl();     
-     <emitEvents;separator="\n">     
-     a.begin();
-          
-     System.out.println("\n  testPath<order> end.......");
+     log.info("\n  testPath<order> start.......");
+     log.info("<path> \n");
+
+     Fsm fsm = new <name>Impl();
+     fsmfw.register(fsm);
+
+     <emit_events:{v|
+      DefaultInputEvent event<i0> = new DefaultInputEvent(fsm, <name>.EVENT.<v.value0>__<v.value1>.getName());
+      fsmfw.emit(event<i0>);
+     } ;separator="\n">
+
+     fsmfw.unregister(fsm);
+     log.info("\n  testPath<order> end.......");
   }
-  
+
 >>
 
-emitEvent(eventName) ::=<<
-    a.emitEvent(Event.<eventName>);   
->>
+
 
 
 

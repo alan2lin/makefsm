@@ -160,30 +160,35 @@ public class GenerateJavaCode implements IGenerateCode{
 		testST.add("name", mc.getFsmName());
 
 
-
 		if(!paths.isEmpty())
 		{
 			ST[] stpath = new ST[paths.size()];
- 			for (int i = 0; i < paths.size(); i++) {
+			for (int i = 0; i < paths.size(); i++) {
 				ArrayList<SymbolBean> path = paths.get(i);
 				stpath[i] = testTpl.getInstanceOf("pathtest");
 				stpath[i].add("order", i);
 				stpath[i].add("name",mc.getFsmName());
 
-				ST[] emitEvents = new ST[path.size()-1];
+				//ST[] emitEvents = new ST[path.size()-1];
+
+
 
 				SymbolBean preV = null;
 				int count=0;
 				String strPath = "";
+
+				ArrayList<Pair<String,String>> emitEvents = new ArrayList<>();
+
 				for (Iterator it = path.iterator(); it.hasNext();) {
 					SymbolBean sb = (SymbolBean) it.next();
 
 
 					if(preV!=null){
 						strPath = strPath + "->" +sb.getName();
+
 						String eventName=g.getEdge(preV,sb ).getBindEvent().getName();
-						emitEvents[count]=testTpl.getInstanceOf("emitEvent");
-						emitEvents[count].add("eventName", eventName);
+					    emitEvents.add( new Pair<String,String>(preV.getName(),eventName));
+
 						count++;
 					}else
 					{
@@ -192,8 +197,8 @@ public class GenerateJavaCode implements IGenerateCode{
 
 					preV = sb;
 				}
-				stpath[i].add("emitEvents",emitEvents );
 				stpath[i].add("path",strPath );
+				stpath[i].add("emit_events",emitEvents);
 
 			}
  			testST.add("pathtests", stpath);
