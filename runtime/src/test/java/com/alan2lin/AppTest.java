@@ -3,6 +3,8 @@ package com.alan2lin;
 import static org.junit.Assert.assertTrue;
 
 import com.alan2lin.runtime.DefaultFsmFramework;
+import com.alan2lin.runtime.TFsm;
+import com.alan2lin.runtime.TFsmImpl;
 import com.alan2lin.runtime.impl.DefaultInputEvent;
 import com.alan2lin.runtime.intf.*;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class AppTest
         fsmfw.register(fsm);
         // 2. 替换输出处理/输入处理/异常处理
         // 3. 进行输入
-        DefaultInputEvent event = new DefaultInputEvent(fsm,TFsm.EVENT.start__init.getName());
+        DefaultInputEvent event = new DefaultInputEvent(fsm, TFsm.EVENT.start__init.getName());
         fsmfw.emit(event);
         DefaultInputEvent event2 = new DefaultInputEvent(fsm,TFsm.EVENT.ready__start.getName());
         fsmfw.emit(event2);

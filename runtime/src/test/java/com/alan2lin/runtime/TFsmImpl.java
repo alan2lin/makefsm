@@ -1,4 +1,4 @@
-package com.alan2lin;
+package com.alan2lin.runtime;
 
 import com.alan2lin.runtime.DefaultFsmFramework;
 import com.alan2lin.runtime.impl.DefaultExceptionEvent;
