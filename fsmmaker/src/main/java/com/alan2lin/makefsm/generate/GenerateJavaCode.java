@@ -133,14 +133,14 @@ public class GenerateJavaCode implements IGenerateCode{
 
 
 		//生成实现函数体
-        //将每一个状态以及它可接受的时间列表 传给 process_event 模板
-		// 参数是一个列表  形式 [ {state_name:xx,event_name:{yy,yy2}},...]
+        //将每一个状态以及它可接受的事件列表含到达的目标状态 传给 process_event 模板
+		// 参数是一个列表  形式 [ {state_name:xx,event_name:{<event_name,target_state>,...}},...]
 		ST processEventFun = absTpl.getInstanceOf("process_event");
 
-		Map<String, Set<String>> transitionMap =
-				Arrays.stream(eventSymbols).map(x -> new Pair<String, String>(x.getPstart().getName(), x.getName())).collect(Collectors.groupingBy(Pair<String, String>::getValue0, Collectors.mapping(Pair::getValue1, Collectors.toSet())));
+		Map<String, Set<Pair<String,String>>> transitionMap =
+				Arrays.stream(eventSymbols).map(x -> new Pair<String, Pair<String,String>>(x.getPstart().getName(), new Pair<String,String>(x.getName(),x.getPend().getName()))).collect(Collectors.groupingBy(Pair<String, Pair<String,String>>::getValue0, Collectors.mapping(Pair::getValue1, Collectors.toSet())));
 		//变换成 list
-		List<Pair<String, Set<String>>> transitionList= transitionMap.entrySet().stream().map(x -> new Pair<String, Set<String>>(x.getKey(), x.getValue())).collect(Collectors.toList());
+		List<Pair<String, Set<Pair<String,String>>>> transitionList= transitionMap.entrySet().stream().map(x -> new Pair<String, Set<Pair<String,String>>>(x.getKey(), x.getValue())).collect(Collectors.toList());
 
 		processEventFun.add("transition_table",transitionList);
 

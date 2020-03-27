@@ -9,9 +9,15 @@ import com.alan2lin.runtime.intf.Event;
 import com.alan2lin.runtime.intf.ExceptionEvent;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.alan2lin.runtime.intf.FsmFramework;
+import com.alan2lin.runtime.impl.DefaultOutputEvent;
+
 import java.util.UUID;
 import java.util.HashMap;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class <name> extends BaseFsm {
 
    //状态机的名字
@@ -73,10 +79,67 @@ public abstract class <name> extends BaseFsm {
           __processEvent(event);
         }
 
+    // 检查函数指针
+    @FunctionalInterface
+    interface CheckFunctionPointer{
+        public boolean check(EVENT event);
+    }
+
+    // 执行函数指针
+    @FunctionalInterface
+    interface ExecFunctionPointer{
+        public boolean exec(EVENT event);
+    }
+
+
+
+
+    void standProcedure(CheckFunctionPointer prefixCheck, CheckFunctionPointer postfixCheck,ExecFunctionPointer onTransition,EVENT event,States target){
+
+        log.debug("fsm[{}] 事件[{}]响应中....",getInstanceId(),event.name);
+        FsmFramework fsmFramework = DefaultFsmFramework.getInstance();
+        //检查迁移前状态
+        if(!prefixCheck.check(event)){
+            log.debug("无法通过检查，迁移中止，触发一个警告"); //
+            fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.PREFIX_CHECK_FAILED,null));
+            return ;
+        }
+
+        //如果是mealy 则进行输出
+
+        if(fsmType.equals("MEALY")){
+            log.debug("fsm[{}] 事件[{}] 进行输出....",getInstanceId(),event.name);
+
+            fsmFramework.output(new DefaultOutputEvent(this,outputTable.get(event.getName())));
+        }
+
+        //状态迁移
+        transition(target);
+        onTransition.exec(event);
+        //触发相应动作,TODO:未来考虑 事务完整型，如果迁移失败，应当可以回滚
+
+        //如果是moore ，则进行输出
+        if(fsmType.equals("MOORE")){
+            fsmFramework.output(new DefaultOutputEvent(this,outputTable.get(__currentState.name())));
+        }
+
+
+
+        if(!postfixCheck.check(event)){
+            log.debug("迁移后无法通过检查，已经无法终止，将触发一个警告"); //
+            fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.POSTFIX_CHECK_FAILED,null));
+        }
+    }
+
+
+
    //主要实现的函数
    <functions; separator="\n">
 
-
+       public boolean transition(States target){
+            __currentState = target;
+            return true;
+       }
 
 }
 >>
@@ -111,7 +174,26 @@ event_constants(typename, events) ::= <<
 
 
 enteractions(state_name,event_name) ::=<<
-   protected abstract void enter<state_name>__<event_name>(EVENT event);
+
+  public boolean checkBefore<state_name>__<event_name>(EVENT event){
+     return true;
+  }
+
+  public boolean on<state_name>__<event_name>(EVENT event){
+      return true;
+  }
+
+      public boolean checkAfter<state_name>__<event_name>(EVENT event){
+      return true;
+  }
+
+   public void enter<state_name>__<event_name>(EVENT event,States target){
+        CheckFunctionPointer prefixCheck = this::checkBefore<state_name>__<event_name>;
+        CheckFunctionPointer postfixCheck = this::checkAfter<state_name>__<event_name>;
+        ExecFunctionPointer  onTransition = this::on<state_name>__<event_name>;
+
+        standProcedure(prefixCheck,postfixCheck,onTransition,event, target);
+   }
 >>
 
 output_table(outputs) ::= <<
@@ -129,8 +211,8 @@ process_event(transition_table) ::= <<
 <transition_table:{v|
             case <v.value0>:
 <v.value1:{p|
-              if (event == EVENT.<v.value0>__<p>){
-                  enter<v.value0; format="capitalize">__<p>(event);
+              if (event == EVENT.<v.value0>__<p.value0>){
+                  enter<v.value0; format="capitalize">__<p.value0>(event,States.<p.value1>);
               \}
               }>
               break;

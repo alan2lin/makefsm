@@ -55,13 +55,12 @@ public class TFsmImpl extends TFsm{
 
 
 
-
-
         if(!checkAfterStart__init(event)){
             log.debug("迁移后无法通过检查，已经无法终止，将触发一个警告"); //
             fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.POSTFIX_CHECK_FAILED,null));
         }
     }
+
 
     @Override
     protected void enterReady__start(EVENT event) {
