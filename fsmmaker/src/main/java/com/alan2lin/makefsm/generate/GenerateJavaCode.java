@@ -50,6 +50,7 @@ public class GenerateJavaCode implements IGenerateCode{
 		ST absST = absTpl.getInstanceOf("class");
 		absST.add("name", mc.getFsmName());
 		absST.add("type", mc.getFsmType());
+		absST.add("start", mc.getStartSymbol().getName());
 
 		ST implST = implTpl.getInstanceOf("class");
 		implST.add("name", mc.getFsmName());
@@ -76,7 +77,17 @@ public class GenerateJavaCode implements IGenerateCode{
 			eventNames[i] = eventSymbols[i].getName();
 		}
 
-		ST[] constats = new ST[2];
+		//生成输出表
+		ST outputTableFun = absTpl.getInstanceOf("output_table");
+		List<Pair<String, String>> outputList = null;
+		if(mc.getFsmType().equals(FSMType.MOORE)){
+			outputList = Arrays.stream(statusSymbols).map(x -> new Pair<String, String>(x.getName(), x.getOutput())).collect(Collectors.toList());
+		}else{
+			outputList = Arrays.stream(eventSymbols).map(x -> new Pair<String, String>(x.getName(), x.getOutput())).collect(Collectors.toList());
+		}
+		outputTableFun.add("outputs",outputList);
+
+		ST[] constats = new ST[3];
 		constats[0] = absTpl.getInstanceOf("state_constants");
 		constats[0].add("typename", "States");
 		constats[0].add("names", statusNames);
@@ -86,6 +97,8 @@ public class GenerateJavaCode implements IGenerateCode{
 		constats[1].add("typename", "EVENT");
 		//constats[1].add("names", eventNames);
 		constats[1].add("events",fixedEvents );
+
+		constats[2] = outputTableFun;
 
 		absST.add("members", constats);
 
@@ -114,6 +127,9 @@ public class GenerateJavaCode implements IGenerateCode{
 
 		absST.add("interfaces", interfaces);
 		implST.add("implFunctions", interfaceImpls);
+
+
+
 
 
 		//生成实现函数体
@@ -237,7 +253,6 @@ public class GenerateJavaCode implements IGenerateCode{
 				//est[sb.getId()]= new Stack<MyEdge>() ;
 				hshest.put(sb,new Stack<MyEdge>());
 			}
-
 
 			//if(!st.isEmpty()) System.out.println("sth wrong...");
 

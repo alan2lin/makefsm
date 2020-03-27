@@ -1,13 +1,16 @@
-class(name,type, members,interfaces,functions) ::= <<
+class(name,type,start, members,interfaces,functions) ::= <<
 
 package com.alan2lin.runtime;
 
 import com.alan2lin.runtime.impl.BaseFsm;
 import com.alan2lin.runtime.impl.DefaultExceptionEvent;
 import com.alan2lin.runtime.intf.EnumInterface;
+import com.alan2lin.runtime.intf.Event;
 import com.alan2lin.runtime.intf.ExceptionEvent;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import java.util.UUID;
+import java.util.HashMap;
 
 public abstract class <name> extends BaseFsm {
 
@@ -23,21 +26,14 @@ public abstract class <name> extends BaseFsm {
    //当前状态
    private States __current = States.<start>;
 
-   //输入队列
-   private ConcurrentLinkedQueue\<Event> __inputEvents = new ConcurrentLinkedQueue\<Event>();
 
-   //输出队列
-   private ConcurrentLinkedQueue\<Event> __outputEvents = new ConcurrentLinkedQueue\<Event>();
-
-   //异常队列
-   private ConcurrentLinkedQueue\<Event> __errorEvents = new ConcurrentLinkedQueue\<Event>();
 
     //状态和事件的枚举变量
    <members ; separator="\n">
 
      @Override
      public String getInstanceId() {
-         return instanceId;
+         return fsmInstanceId;
      }
 
    protected  States __currentState;
@@ -77,30 +73,11 @@ public abstract class <name> extends BaseFsm {
           __processEvent(event);
         }
 
-
-
    //主要实现的函数
    <functions; separator="\n">
 
-   public void exit(States state) {
-
-      __exitFlag = true;
-
-      System.out.println(" exit from state["+state.toString()+"]");
-
-   }
 
 
-   public void emitEvent(Event e)
-   {
-     //往队列中添加事件
-     synchronized (__events) {
-       __events.add(e);
-       if (__events.size()==1) __events.notify();
-
-  }
-
-    }
 }
 >>
 
@@ -134,7 +111,16 @@ event_constants(typename, events) ::= <<
 
 
 enteractions(state_name,event_name) ::=<<
-   protected abstract void enter<state_name>__<event_name>(Event event);
+   protected abstract void enter<state_name>__<event_name>(EVENT event);
+>>
+
+output_table(outputs) ::= <<
+
+     public HashMap\< String,String >  outputTable = new HashMap\<>(){
+         {
+           <outputs:{v|put("<v.value0>","<v.value1;format="trimQuotes">");};separator="\n">
+         \}
+     \};
 >>
 
 process_event(transition_table) ::= <<
@@ -146,66 +132,14 @@ process_event(transition_table) ::= <<
               if (event == EVENT.<v.value0>__<p>){
                   enter<v.value0; format="capitalize">__<p>(event);
               \}
+              }>
               break;
-              }> }>
+              }>
              default:
                  fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.TRANSITION_NOT_DEFINED,null));
                  break;
          }
      }
 >>
-
-
-
-
-
-case(statusName,ifblock) ::= <<case <statusName>:
-      <if(ifblock)><ifblock ; separator=" else "><endif>
-      break;
->>
-
-
-//如果目标状态是终结状态，则还需要可以调用退出函数
-event_if(eventName,newStatusName,funName,isMooreType,isEndState) ::= <<if( e == Event.<eventName> ) {
-         <if(isMooreType)>
-         __Y = States.<newStatusName>;
-         enter<funName>();
-         <else>
-         on<funName>(e);
-         __Y = States.<newStatusName>;<endif>
-         <if(isEndState)>exit(__Y);<endif>
-      }
->>
-
-unexpect_event(isStrict) ::= <<
-      {
-         <if(isStrict)>
-
-         if(ture) throw new Exception("inputEvent["+e.toString()+"] is unexpecting");
-
-         <else>
-
-         skipUnexpectEvent(e);
-
-         <endif>
-      }
->>
-
-unexpect_event_handle(isStrict) ::= <<
-
-         <if(isStrict)>
-
-         private void skipUnexpectEvent(Event e) {
-
-         System.out.println("Event["+e.toString()+"] is skipping");
-
-         }
-         <endif>
-
->>
-
-
-
-
 
 

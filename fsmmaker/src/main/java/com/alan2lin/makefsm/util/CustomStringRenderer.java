@@ -21,6 +21,11 @@ public class CustomStringRenderer extends StringRenderer {
     	 if ("uncapitalize".equals(formatString)) {
     		 return StringUtils.uncapitalize((String) o);
     	 }
+		if ("trimQuotes".equals(formatString)) {
+			String ret = ((String) o).replace("\"","");
+			ret = ret.replace("'","");
+			return ret;
+		}
 
     	 if (formatString!=null && Pattern.matches("^random\\d+",formatString)) {
     		 String numberOnly = formatString.replaceAll("[^0-9]", "");
