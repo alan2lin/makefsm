@@ -66,7 +66,13 @@ public interface  FsmFramework {
    */
   boolean output(OutputEvent outputEvent);
 
+
   //可能不建议的接口
   // getLastOutput(Fsm fsm)
 
+  /**
+   * 是否可以销毁,判断依据是  状态机实例池和延迟缓冲池 是空的
+   * @return
+   */
+  boolean  canDestory();
 }

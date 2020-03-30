@@ -47,11 +47,12 @@ public class FileMaker {
 
 	public void makeJavaSourceFile(String absClassContent,String implClassContent,String testClassContent)
 	{
+		 String packagePath ="/com/alan2lin/runtime" ;
+		String fileDir =genFolder+target+ packagePath ;
 
-		  write2file(genFolder+target+ "/com/alan2lin/makefsm",fsmName+".java",absClassContent);
-		  write2file(genFolder+target+ "/com/alan2lin/makefsm",fsmName+"Impl.java",implClassContent);
-		  write2file(genFolder+target+ "/com/alan2lin/makefsm",fsmName+"Test.java",testClassContent);
-
+		  write2file(fileDir, fsmName+".java",absClassContent);
+		  write2file(fileDir, fsmName+"Impl.java",implClassContent);
+		  write2file(fileDir, fsmName+"Test.java",testClassContent);
 	}
 
 	private void write2file(String fileDir,String xfileName,String fileContent)

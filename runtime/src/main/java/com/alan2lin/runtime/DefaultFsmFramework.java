@@ -319,4 +319,14 @@ public class DefaultFsmFramework implements FsmFramework {
         }
         return true;
     }
+
+    /**
+     * 是否可以销毁,判断依据是  状态机实例池和延迟缓冲池 是空的
+     *
+     * @return
+     */
+    @Override
+    public boolean canDestory() {
+        return fsmInstances.isEmpty() && delayUnregisterFsms.isEmpty();
+    }
 }

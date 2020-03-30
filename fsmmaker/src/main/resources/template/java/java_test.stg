@@ -3,26 +3,57 @@ class(name, pathtests) ::= <<
 package makefsm;
 
 
-import static org.junit.Assert.assertTrue;
-
-import com.alan2lin.runtime.DefaultFsmFramework;
 import com.alan2lin.runtime.<name>;
 import com.alan2lin.runtime.<name>Impl;
 import com.alan2lin.runtime.impl.DefaultInputEvent;
 import com.alan2lin.runtime.intf.*;
-import org.junit.Test;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
+
+import org.junit.jupiter.api.*;
+
+import java.util.concurrent.CountDownLatch;
+
 
 @Slf4j
 public class <name>Test  {
 
-  FsmFramework fsmfw = null;
+  static FsmFramework fsmfw = null;
+  static Thread fortest;
+
+  static CountDownLatch cdl = new CountDownLatch(1);
 
   @BeforeAll
-  public void init(){
+  public static void init(){
+
+      fortest = new Thread( ()->{
+          try {
+              log.info("latch[{}] start to waiting",cdl.toString());
+              cdl.await();
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+      });
+      fortest.start();;
+
     fsmfw =  DefaultFsmFramework.getInstance();
+
   }
+
+  @AfterAll
+  public static void destory(){
+      log.info("latch[{}] count down",cdl.toString());
+      while (!fsmfw.canDestory()){
+          try {
+              Thread.sleep(200);
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+          log.info("framework cannot be shut down ,try again after [{}]ms",200);
+      }
+      log.info("framework shutting down now");
+      cdl.countDown();
+  }
+
 
   <pathtests;separator="\n">
 
