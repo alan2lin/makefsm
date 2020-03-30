@@ -1,0 +1,141 @@
+
+
+ digraph G {
+ node[fontname="FangSong" shape=record];
+ edge[fontname="FangSong"];
+ graph[fontname="FangSong"];
+ compound=true;
+ //clusterrank=local;
+rankdir="TB";
+ subgraph cluster_r0 {
+     label ="FSM Runtime Framework";
+	 style=bold;
+	   
+	
+	     topa[fixedsize=true width=0.01 style=invis];
+	 	 subgraph cluster_r0_a0 {
+		 label ="FSM Instances Area";
+			 style=bold;
+			 rankdir="LR";
+
+			 node[shape=ellipse];
+			 inst1[label="Instance 1"];
+			 inst2[label="Instance 2"];
+			 instn[label="Instance n"];
+			 
+			 inst1 -> {inst2,instn} [style=invis];
+			 
+		 }
+
+	 
+	 	 subgraph cluster_r0_a1 {
+		 label ="Delay Unregister Area";
+		 style=bold;
+		 rankdir="TB";
+		 	 node[shape=ellipse];
+			 inst4[label="Instance 3"];
+			 instm[label="Instance m"];			 
+			 
+			 inst4 -> instm [style=invis];		 
+        }
+		
+		unreg[label ="Delay Unregister"];
+		instm -> unreg [dir=back label="延迟移除状态机实例" ltail=cluster_r0_a1];
+		
+		
+	 
+	 
+	 	 subgraph cluster_r0_a2 {
+		 label ="input event guardian";
+		 style=bold;
+		 rankdir="TB";
+		 node[shape=record];
+		 ig[label="<f0>fsmid|<f1>task1|<f2>...|<fn>taskn"];		 
+		 
+		 ihandle1[label="{head_tail|Default\nInput\nHandle}"];	
+		 ihandlen[label="{head_tail|Default\nInput\nHandle}"];
+		 ig:f1 -> ihandle1 [label="3 状态迁移响应" style = dashed];
+		 ihandlen -> ig:fn [label="3 状态迁移响应" dir=back style = dashed];
+		 		 
+     }
+	 subgraph cluster_r0_a3 {
+		 label ="output event guardian";
+		 style=bold;
+		 rankdir="TB";
+		 node[shape=record];
+		 
+		 og[label="<f0>fsmid|<f1>task1|<f2>...|<fn>taskn"];		 
+		 
+		 ohandle1[label="{head|handle1|...|handlen}"];	
+		 ohandlen[label="{head|handle1|...|handlen}"];	
+		 
+		 
+
+		 ohandle1 ->  og:f1 [dir=back style = dashed];
+		 ohandlen ->  og:fn [dir=back style = dashed];		 		 
+				 
+     }
+	 
+	 subgraph cluster_r0_a4 {
+		 label ="exception event guardian";
+		 style=bold;
+		 rankdir="TB";
+		 node[shape=record];
+		 
+		 eg[label="<f0>fsmid|<f1>task1|<f2>...|<fn>taskn"];		 
+		 
+		 ehandle1[label="{head|handle1|...|handlen}"];	
+		 ehandlen[label="{head|handle1|...|handlen}"];	
+
+		 ehandle1 -> eg:f1 [dir=back style = dashed];
+		 ehandlen -> eg:fn [dir=back style = dashed] ;		 		 
+				 
+     }
+	
+	 //out_guard[label="output\n event\n guardian"];
+	 //exception_guard[label="output\n event\n guardian"];
+	 
+	 topa -> {inst1,inst4} [style=invis];
+	 
+	 //[style=invis];
+
+	 
+	 	 subgraph cluster_r0_a5 {
+		 label ="队列池";
+		 style=bold;
+		 rankdir="LR";
+		 
+		 node[shape=record];
+		 
+		 in_q[label="{<f0>input\n event\n queue ||||||<f1>}"];
+		 out_q[label="{<f0>output\n event\n queue ||||||<f1>}"];
+		 exception_q[label="{<f0>exception\n event\n queue ||||||<f1>}"];
+
+     }
+	 
+	 
+	 
+	 inst2 -> ihandlen  [label="3.2 状态改变" dir=back ltail=cluster_r0_a0 ];
+	 
+	 instn -> ihandlen  [style=invis];
+	 
+	 ig:fn -> in_q [dir=back label="2 增加到任务链"];
+	 
+	 og -> out_q [dir=back] ;
+	 eg -> exception_q [dir=back] ;
+	 ihandle1 -> out_q [label="3.1 如果产生输出"];
+	 
+	 app[label="Application"];
+	 in_q -> app [label="1. emit input event" dir=back];
+	 
+	 
+
+
+	 
+
+
+	 
+   }
+ }
+
+ 

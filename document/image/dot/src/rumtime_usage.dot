@@ -1,0 +1,58 @@
+
+
+ digraph G {
+ node[fontname="FangSong" shape=record];
+ edge[fontname="FangSong"];
+ graph[fontname="FangSong"];
+ compound=true;
+ //clusterrank=local;
+rankdir="TB";
+ subgraph cluster_r0 {
+     label ="runtime usage";
+	 style=bold;
+	   
+    get_fw[label=" 获取框架实例 \n fsmfw =DefaultFsmFramework.getInstance()"];
+    create_fsm[label=" 创建状态机实例 \nFsm fsm = new XXXmpl();"];
+    register_fsm[label=" 注册状态机实例 \nfsmfw.register(fsm);"];
+    register_output[label=" 注册输出处理 \nfsmfw.setOutputHandle(xxx);"];
+    register_exception[label=" 注册异常处理\n fsmfw.setExcepitonHandle(xxx);"];
+	
+	emit_event[label="进行输入\n fsmfw.emit(fsm,eventX)"];
+	unregister_fsm[label="注销状态机实例 \n fsmfw.unregister(fsm)"];
+	get_fw -> create_fsm -> register_fsm ->register_output -> register_exception  -> emit_event -> unregister_fsm;
+	emit_event ->emit_event [label="重复"];
+    	 
+   }
+   
+ subgraph cluster_r1 {
+     label ="FSM Fire Event";
+	 style=bold;
+	  
+	 start;
+     precheck[label=" 迁移前检查\n prefixCheck( )"];
+	 dcs1[label=" 是否mealy状态机" shape=diamond];
+     	 
+     mealy_output[label=" mealy输出\n output"];		 
+     transition[label=" 状态迁移\n output"];		 
+     ontransition[label=" 状态迁移响应处理函数\n onTransition()"];
+	 dcs2[label="是否moore状态机" shape=diamond];
+     moore_output[label=" moore输出\n output"];		 
+     postcheck[label=" 迁移后检查\n postfixCheck()"]; 
+	 end;
+	 
+	 start -> precheck -> dcs1 ;
+	 dcs1 -> mealy_output [label="是"];
+	 dcs1 -> transition [label="否"];
+	 mealy_output -> transition -> ontransition -> dcs2;
+	 dcs2 -> moore_output [label="是"]; 
+	 dcs2 -> postcheck [label="否"];
+     moore_output -> postcheck -> end;	    	 
+   }   
+   //emit_event -> dcs2[style=dashed lhead=cluster_r1];
+   emit_event -> start[style=dashed lhead=cluster_r1 constraint=false];
+  
+   
+   
+ }
+
+ 
