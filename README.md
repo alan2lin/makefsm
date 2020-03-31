@@ -32,11 +32,11 @@
 ##第一章  框架图示
 
 运行时框架
-![运行时框架](./document/image/dot/dest/framework.svg "运行时框架")
+![运行时框架](./document/image/dot/dest/framework.svg "运行时框架 在gitlab看不到的话请点击")
 
 
 使用过程
-![使用过程](./document/image/dot/dest/rumtime_usage.svg "使用过程")
+![使用过程](./document/image/dot/dest/rumtime_usage.svg "使用过程 在gitlab看不到的话请点击")
 
 
 ##第二章 	安装篇:
@@ -98,5 +98,13 @@ locked->end[finish DESC "完结"];<br/>
 *2	游戏的npc的状态控制。<br/>
 *3	其他的...暂时没想到。<br/>
 
+
+## 传统状态机与 uml状态机的区别
+
+| 差异点 | 传统状态机 | uml状态机 |
+|-----|-------|--------|
+| 输入  | 无事件概念，可将输入视为事件 |  事件待值 |
+| 扩展状态 | 无，将可能导致大量状态重复 | 有，还附带guad condition可以简化设计，但是可能会违反形式化定义  |
+| Hierarchically nested states | 无，将可能导致大量事件重复 | 有 |
 
 
