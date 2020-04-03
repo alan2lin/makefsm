@@ -2,15 +2,15 @@ class(name,type,start, members,interfaces,functions) ::= <<
 
 package com.alan2lin.runtime;
 
-import com.alan2lin.runtime.impl.BaseFsm;
-import com.alan2lin.runtime.impl.DefaultExceptionEvent;
-import com.alan2lin.runtime.intf.EnumInterface;
-import com.alan2lin.runtime.intf.Event;
-import com.alan2lin.runtime.intf.ExceptionEvent;
+import BaseFsm;
+import DefaultExceptionEvent;
+import EnumInterface;
+import Event;
+import ExceptionEvent;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.alan2lin.runtime.intf.FsmFramework;
-import com.alan2lin.runtime.impl.DefaultOutputEvent;
+import FsmFramework;
+import DefaultOutputEvent;
 
 import java.util.UUID;
 import java.util.HashMap;

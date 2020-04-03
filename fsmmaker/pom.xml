@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>makefsm</artifactId>
-        <groupId>com.alan2lin</groupId>
+        <groupId>com.github.alan2lin</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,7 @@
 
     <name>fsmmaker</name>
     <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>http://github.com/alan2lin/makefsm</url>
 
 
 
@@ -97,7 +97,7 @@
         <version>${springboot.version}</version>
         <configuration>
             <fork>true</fork>
-            <mainClass>com.alan2lin.makefsm.Application</mainClass>
+            <mainClass>com.github.alan2lin.makefsm.Application</mainClass>
         </configuration>
         <executions>
             <execution>
@@ -125,10 +125,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-            <source>9</source>
-            <target>9</target>
+            <source>8</source>
+            <target>8</target>
         </configuration>
     </plugin>
 </plugins>
     </build>
+
 </project>

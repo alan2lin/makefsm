@@ -2,11 +2,11 @@ class(name, implFunctions) ::= <<
 
 package com.alan2lin.runtime;
 
-import com.alan2lin.runtime.DefaultFsmFramework;
-import com.alan2lin.runtime.impl.DefaultExceptionEvent;
-import com.alan2lin.runtime.impl.DefaultOutputEvent;
-import com.alan2lin.runtime.intf.ExceptionEvent;
-import com.alan2lin.runtime.intf.FsmFramework;
+import DefaultFsmFramework;
+import DefaultExceptionEvent;
+import DefaultOutputEvent;
+import ExceptionEvent;
+import FsmFramework;
 import lombok.extern.slf4j.Slf4j;
 
 

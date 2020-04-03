@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.alan2lin</groupId>
+    <groupId>com.github.alan2lin</groupId>
     <artifactId>makefsm</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -23,6 +23,16 @@
         <graphviz-java.version>0.14.2</graphviz-java.version>
         <logback.version>1.2.3</logback.version>
     </properties>
+
+    <scm>
+        <connection>scm:git@github.com:alan2lin/makefsm.git</connection>
+        <developerConnection>scm:git@github.com:alan2lin/makefsm.git</developerConnection>
+        <url>https://github.com/alan2lin/makefsm</url>
+    </scm>
+
+
+
+
     <dependencyManagement>
 
     <dependencies>
@@ -128,4 +138,15 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

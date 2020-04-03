@@ -12,11 +12,11 @@ tokenVocab=MakefsmLexer;
 
 package  com.alan2lin.makefsm.parser.autogen;
 
-import com.alan2lin.makefsm.parser.FSMParser;
-import com.alan2lin.makefsm.util.Constant.FSMType;
-import com.alan2lin.makefsm.util.Constant.StatusAttr;
-import com.alan2lin.makefsm.util.Constant.SymbolType;
-import com.alan2lin.makefsm.entity.SymbolBean;
+import FSMParser;
+import Constant.FSMType;
+import Constant.StatusAttr;
+import Constant.SymbolType;
+import SymbolBean;
 }
 
 
