@@ -7,7 +7,7 @@
     <groupId>com.github.alan2lin</groupId>
     <artifactId>makefsm</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.5.4</version>
     <modules>
         <module>runtime</module>
         <module>fsmmaker</module>
@@ -125,6 +125,7 @@
     <plugins>
 
 
+
     </plugins>
 </build>
     <repositories>
@@ -138,15 +139,20 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
         </repository>
     </repositories>
-
     <distributionManagement>
-        <snapshotRepository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://nexus.zhenai.com/content/repositories/releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://nexus.zhenai.com/content/repositories/snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
+
+
+
+
 </project>

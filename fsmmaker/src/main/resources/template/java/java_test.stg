@@ -3,10 +3,10 @@ class(name, pathtests) ::= <<
 package makefsm;
 
 
-import com.alan2lin.runtime.<name>;
-import com.alan2lin.runtime.<name>Impl;
+import com.github.alan2lin.runtime.<name>;
+import com.github.alan2lin.runtime.<name>Impl;
 import DefaultInputEvent;
-import com.alan2lin.runtime.intf.*;
+import com.github.alan2lin.runtime.intf.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.jupiter.api.*;

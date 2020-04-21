@@ -47,7 +47,7 @@ public class FileMaker {
 
 	public void makeJavaSourceFile(String absClassContent,String implClassContent,String testClassContent)
 	{
-		 String packagePath ="/com/alan2lin/runtime" ;
+		 String packagePath ="/com/github/alan2lin/runtime" ;
 		String fileDir =genFolder+target+ packagePath ;
 
 		  write2file(fileDir, fsmName+".java",absClassContent);

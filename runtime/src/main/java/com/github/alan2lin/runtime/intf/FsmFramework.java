@@ -75,4 +75,6 @@ public interface  FsmFramework {
    * @return
    */
   boolean  canDestory();
+
 }
+

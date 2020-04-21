@@ -41,5 +41,8 @@ public interface Fsm {
     */
    boolean isClearToUnregister();
 
+   <T> T getCurrentState();
+
+
 
 }

@@ -194,6 +194,11 @@ public abstract class TFsm extends BaseFsm {
 
      }
 
+    @Override
+    public <T> T getCurrentState() {
+        return (T)__currentState;
+    }
+
  }
 
 

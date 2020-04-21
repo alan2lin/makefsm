@@ -1,17 +1,16 @@
 class(name,type,start, members,interfaces,functions) ::= <<
 
-package com.alan2lin.runtime;
+package com.github.alan2lin.runtime;
 
-import BaseFsm;
-import DefaultExceptionEvent;
-import EnumInterface;
-import Event;
-import ExceptionEvent;
+import com.github.alan2lin.runtime.DefaultFsmFramework;
+import com.github.alan2lin.runtime.impl.BaseFsm;
+import com.github.alan2lin.runtime.impl.DefaultExceptionEvent;
+import com.github.alan2lin.runtime.impl.DefaultOutputEvent;
+import com.github.alan2lin.runtime.intf.EnumInterface;
+import com.github.alan2lin.runtime.intf.ExceptionEvent;
+import com.github.alan2lin.runtime.intf.FsmFramework;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import FsmFramework;
-import DefaultOutputEvent;
-
 import java.util.UUID;
 import java.util.HashMap;
 
@@ -94,7 +93,7 @@ public abstract class <name> extends BaseFsm {
 
 
 
-    void standProcedure(CheckFunctionPointer prefixCheck, CheckFunctionPointer postfixCheck,ExecFunctionPointer onTransition,EVENT event,States target){
+    void standProcedure(CheckFunctionPointer prefixCheck, CheckFunctionPointer postfixCheck,ExecFunctionPointer onTransition,ExecFunctionPointer recoverTransition,EVENT event,States target){
 
         log.debug("fsm[{}] 事件[{}]响应中....",getInstanceId(),event.name);
         FsmFramework fsmFramework = DefaultFsmFramework.getInstance();
@@ -114,16 +113,26 @@ public abstract class <name> extends BaseFsm {
         }
 
         //状态迁移
+        try{
+            onTransition.exec(event);
+        }catch (Throwable t){
+            log.error("状态迁移出错，无法迁移状态，将会执行恢复补偿函数",t);
+            fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.TRANSITION_FAILED,null));
+
+            try{
+                recoverTransition.exec(event);
+            }catch (Throwable t2){
+            fsmFramework.exception(new DefaultExceptionEvent(this, ExceptionEvent.EXCETPION_TYPE.TRANSITION_RECOVER_FAILED,null));
+                log.error("状态迁移恢复出错",t2);
+            }
+            return;
+        }
         transition(target);
-        onTransition.exec(event);
-        //触发相应动作,TODO:未来考虑 事务完整型，如果迁移失败，应当可以回滚
 
         //如果是moore ，则进行输出
         if(fsmType.equals("MOORE")){
             fsmFramework.output(new DefaultOutputEvent(this,outputTable.get(__currentState.name())));
         }
-
-
 
         if(!postfixCheck.check(event)){
             log.debug("迁移后无法通过检查，已经无法终止，将触发一个警告"); //
@@ -139,6 +148,11 @@ public abstract class <name> extends BaseFsm {
        public boolean transition(States target){
             __currentState = target;
             return true;
+       }
+
+       @Override
+       public \<T> T getCurrentState() {
+          return (T)__currentState;
        }
 
 }
@@ -183,22 +197,27 @@ enter_actions(state_name,event_name) ::=<<
       return true;
   }
 
-      public boolean checkAfter<state_name>__<event_name>(EVENT event){
+  public boolean recover<state_name>__<event_name>(EVENT event){
       return true;
   }
+  public boolean checkAfter<state_name>__<event_name>(EVENT event){
+      return true;
+  }
+
 
    public void enter<state_name>__<event_name>(EVENT event,States target){
         CheckFunctionPointer prefixCheck = this::checkBefore<state_name>__<event_name>;
         CheckFunctionPointer postfixCheck = this::checkAfter<state_name>__<event_name>;
         ExecFunctionPointer  onTransition = this::on<state_name>__<event_name>;
+        ExecFunctionPointer  recoverTransition = this::recover<state_name>__<event_name>;
 
-        standProcedure(prefixCheck,postfixCheck,onTransition,event, target);
+        standProcedure(prefixCheck,postfixCheck,onTransition,recoverTransition,event, target);
    }
 >>
 
 output_table(outputs) ::= <<
 
-     public HashMap\< String,String >  outputTable = new HashMap\<>(){
+     public HashMap\< String,String >  outputTable = new HashMap\<String,String>(){
          {
            <outputs:{v|put("<v.value0>","<v.value1;format="trimQuotes">");};separator="\n">
          \}

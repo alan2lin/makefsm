@@ -1,12 +1,7 @@
 class(name, implFunctions) ::= <<
 
-package com.alan2lin.runtime;
+package com.github.alan2lin.runtime;
 
-import DefaultFsmFramework;
-import DefaultExceptionEvent;
-import DefaultOutputEvent;
-import ExceptionEvent;
-import FsmFramework;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -30,6 +25,11 @@ enter_actions(state_name,event_name) ::=<<
   @Override
   public boolean on<state_name>__<event_name>(EVENT event){
      return super.on<state_name>__<event_name>(event);
+  }
+
+  @Override
+  public boolean recover<state_name>__<event_name>(EVENT event){
+     return super.recover<state_name>__<event_name>(event);
   }
 
   @Override
