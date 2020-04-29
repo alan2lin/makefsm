@@ -1,0 +1,109 @@
+<svg width="492px" height="800px"
+ viewBox="0.00 0.00 387.00 629.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 625)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-625 383,-625 383,4 -4,4"/>
+<g id="clust1" class="cluster"><title>cluster_r0</title>
+<polygon fill="none" stroke="black" points="8,-8 8,-613 353,-613 353,-8 8,-8"/>
+<text text-anchor="middle" x="180.5" y="-597.8" font-family="FangSong" font-size="14.00">ProcessorFSM &#160;</text>
+<text text-anchor="middle" x="180.5" y="-582.8" font-family="FangSong" font-size="14.00"> &#160;处理器状态机 </text>
+</g>
+<!-- start -->
+<g id="node1" class="node"><title>start</title>
+<ellipse fill="none" stroke="black" cx="196" cy="-549" rx="54" ry="18"/>
+<text text-anchor="middle" x="196" y="-552.8" font-family="FangSong" font-size="14.00">start/[开始]</text>
+<text text-anchor="middle" x="196" y="-537.8" font-family="FangSong" font-size="14.00"> &#160;初始 </text>
+</g>
+<!-- ready -->
+<g id="node2" class="node"><title>ready</title>
+<polygon fill="none" stroke="black" points="250,-480 142,-480 142,-444 250,-444 250,-480"/>
+<text text-anchor="middle" x="196" y="-465.8" font-family="FangSong" font-size="14.00">ready/[就绪]</text>
+<text text-anchor="middle" x="196" y="-450.8" font-family="FangSong" font-size="14.00"> &#160;就绪 </text>
+</g>
+<!-- start&#45;&gt;ready -->
+<g id="edge1" class="edge"><title>start&#45;&gt;ready</title>
+<path fill="none" stroke="black" d="M196,-530.799C196,-519.163 196,-503.548 196,-490.237"/>
+<polygon fill="black" stroke="black" points="199.5,-490.175 196,-480.175 192.5,-490.175 199.5,-490.175"/>
+<text text-anchor="middle" x="211.5" y="-501.8" font-family="FangSong" font-size="14.00">init</text>
+</g>
+<!-- running -->
+<g id="node3" class="node"><title>running</title>
+<polygon fill="none" stroke="black" points="250,-393 142,-393 142,-357 250,-357 250,-393"/>
+<text text-anchor="middle" x="196" y="-378.8" font-family="FangSong" font-size="14.00">running/[running]</text>
+<text text-anchor="middle" x="196" y="-363.8" font-family="FangSong" font-size="14.00"> &#160;运行 </text>
+</g>
+<!-- ready&#45;&gt;running -->
+<g id="edge2" class="edge"><title>ready&#45;&gt;running</title>
+<path fill="none" stroke="black" d="M196,-443.799C196,-432.163 196,-416.548 196,-403.237"/>
+<polygon fill="black" stroke="black" points="199.5,-403.175 196,-393.175 192.5,-403.175 199.5,-403.175"/>
+<text text-anchor="middle" x="215" y="-414.8" font-family="FangSong" font-size="14.00">start</text>
+</g>
+<!-- pause_locked -->
+<g id="node4" class="node"><title>pause_locked</title>
+<polygon fill="none" stroke="black" points="124,-306 16,-306 16,-270 124,-270 124,-306"/>
+<text text-anchor="middle" x="70" y="-291.8" font-family="FangSong" font-size="14.00">pause_locked/[pause_locked]</text>
+<text text-anchor="middle" x="70" y="-276.8" font-family="FangSong" font-size="14.00"> &#160;暂停锁定 </text>
+</g>
+<!-- running&#45;&gt;pause_locked -->
+<g id="edge3" class="edge"><title>running&#45;&gt;pause_locked</title>
+<path fill="none" stroke="black" d="M170.502,-356.799C151.289,-343.838 124.759,-325.941 103.781,-311.789"/>
+<polygon fill="black" stroke="black" points="105.707,-308.866 95.4601,-306.175 101.793,-314.669 105.707,-308.866"/>
+<text text-anchor="middle" x="160" y="-327.8" font-family="FangSong" font-size="14.00">pause</text>
+</g>
+<!-- stop_locked -->
+<g id="node7" class="node"><title>stop_locked</title>
+<polygon fill="none" stroke="black" points="250,-306 142,-306 142,-270 250,-270 250,-306"/>
+<text text-anchor="middle" x="196" y="-291.8" font-family="FangSong" font-size="14.00">stop_locked/[stop_locked]</text>
+<text text-anchor="middle" x="196" y="-276.8" font-family="FangSong" font-size="14.00"> &#160;停止锁定 </text>
+</g>
+<!-- running&#45;&gt;stop_locked -->
+<g id="edge7" class="edge"><title>running&#45;&gt;stop_locked</title>
+<path fill="none" stroke="black" d="M196,-356.799C196,-345.163 196,-329.548 196,-316.237"/>
+<polygon fill="black" stroke="black" points="199.5,-316.175 196,-306.175 192.5,-316.175 199.5,-316.175"/>
+<text text-anchor="middle" x="211.5" y="-327.8" font-family="FangSong" font-size="14.00">stop</text>
+</g>
+<!-- pause -->
+<g id="node5" class="node"><title>pause</title>
+<polygon fill="none" stroke="black" points="124,-179 16,-179 16,-143 124,-143 124,-179"/>
+<text text-anchor="middle" x="70" y="-164.8" font-family="FangSong" font-size="14.00">pause/[pause]</text>
+<text text-anchor="middle" x="70" y="-149.8" font-family="FangSong" font-size="14.00"> &#160;暂停 </text>
+</g>
+<!-- pause_locked&#45;&gt;pause -->
+<g id="edge4" class="edge"><title>pause_locked&#45;&gt;pause</title>
+<path fill="none" stroke="black" d="M47.5729,-269.863C42.4802,-264.73 37.7624,-258.669 35,-252 26.0131,-230.304 37.3403,-205.404 49.4414,-187.303"/>
+<polygon fill="black" stroke="black" points="52.4012,-189.181 55.3585,-179.007 46.7022,-185.116 52.4012,-189.181"/>
+<text text-anchor="middle" x="80.5" y="-240.8" font-family="FangSong" font-size="14.00">pauseWaiting</text>
+</g>
+<!-- pause_unlocked -->
+<g id="node6" class="node"><title>pause_unlocked</title>
+<polygon fill="none" stroke="black" points="279,-52 171,-52 171,-16 279,-16 279,-52"/>
+<text text-anchor="middle" x="225" y="-37.8" font-family="FangSong" font-size="14.00">pause_unlocked/[pause_unlocked]</text>
+<text text-anchor="middle" x="225" y="-22.8" font-family="FangSong" font-size="14.00"> &#160;暂停解锁 </text>
+</g>
+<!-- pause&#45;&gt;pause_unlocked -->
+<g id="edge5" class="edge"><title>pause&#45;&gt;pause_unlocked</title>
+<path fill="none" stroke="black" d="M88.0471,-142.798C100.42,-131.224 117.364,-115.8 133,-103 152.019,-87.4312 174.149,-71.0244 191.937,-58.2278"/>
+<polygon fill="black" stroke="black" points="194.19,-60.9194 200.288,-52.2554 190.118,-55.2256 194.19,-60.9194"/>
+<text text-anchor="middle" x="199" y="-73.8" font-family="FangSong" font-size="14.00">resume</text>
+</g>
+<!-- pause_unlocked&#45;&gt;running -->
+<g id="edge6" class="edge"><title>pause_unlocked&#45;&gt;running</title>
+<path fill="none" stroke="black" d="M239.367,-52.1679C249.284,-65.1965 261.618,-84.0455 267,-103 291.662,-189.859 293.966,-222.753 259,-306 251.929,-322.834 238.752,-338.103 226.27,-349.887"/>
+<polygon fill="black" stroke="black" points="223.733,-347.462 218.648,-356.757 228.42,-352.661 223.733,-347.462"/>
+<text text-anchor="middle" x="330" y="-240.8" font-family="FangSong" font-size="14.00">resumeWaiting</text>
+</g>
+<!-- stop -->
+<g id="node8" class="node"><title>stop</title>
+<ellipse fill="none" stroke="black" cx="200" cy="-161" rx="54" ry="54"/>
+<ellipse fill="none" stroke="black" cx="200" cy="-161" rx="58" ry="58"/>
+<text text-anchor="middle" x="200" y="-164.8" font-family="FangSong" font-size="14.00">stop/[stop]</text>
+<text text-anchor="middle" x="200" y="-149.8" font-family="FangSong" font-size="14.00"> &#160;自定义的结束状态 </text>
+</g>
+<!-- stop_locked&#45;&gt;stop -->
+<g id="edge8" class="edge"><title>stop_locked&#45;&gt;stop</title>
+<path fill="none" stroke="black" d="M164.114,-269.671C158.022,-264.802 152.47,-258.91 149,-252 146.008,-246.042 147.039,-243.372 149,-237 151.28,-229.593 154.568,-222.262 158.393,-215.251"/>
+<polygon fill="black" stroke="black" points="161.45,-216.957 163.489,-206.561 155.411,-213.416 161.45,-216.957"/>
+<text text-anchor="middle" x="187" y="-240.8" font-family="FangSong" font-size="14.00">stopWating</text>
+</g>
+</g>
+</svg>
