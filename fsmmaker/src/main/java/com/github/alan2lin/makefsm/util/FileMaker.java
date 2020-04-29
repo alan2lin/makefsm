@@ -37,6 +37,7 @@ public class FileMaker {
 		//将dot的图像内容刷到文件
 		try {
 			Graphviz.fromString(dotFileContent).height(800).render(Format.PNG).toFile(new File(graphPath+fsmName+"." + graphType));
+			Graphviz.fromString(dotFileContent).height(800).render(Format.SVG).toFile(new File(graphPath+fsmName+".svg"  ));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
