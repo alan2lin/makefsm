@@ -1,5 +1,14 @@
 MOORE FSM NodeManagerFSM "节点管理器状态机" ;
-STATUS: start/"开始" DESC "初始", ready/"就绪" DESC "就绪" ,waiting DESC "等待", detect_prelocked DESC "检测前锁定",detecting DESC "检测中",detect_lock_release DESC "检测后解锁", stop_prelocked DESC "停止前申请锁定", stop "结束状态";
+
+STATUS:
+start/"开始"          DESC "初始",
+ready/"就绪"          DESC "就绪",
+waiting              DESC "等待",
+detect_prelocked     DESC "检测前锁定",
+detecting            DESC "检测中",
+detect_lock_release  DESC "检测后解锁",
+stop_prelocked       DESC "停止前申请锁定", stop "结束状态";
+
 START=start;
 END=stop;
 
