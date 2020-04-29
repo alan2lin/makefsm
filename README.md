@@ -108,3 +108,8 @@ locked->end[finish DESC "完结"];<br/>
 | Hierarchically nested states | 无，将可能导致大量事件重复 | 有 |
 
 
+## 执行命令
+
+java -jar fsmmaker-0.5.4.jar 'E:\repo\mvn\makefsm\fsmmaker\testdata\Processor.data' 'E:\repo\mvn\makefsm\generates\'
+
+

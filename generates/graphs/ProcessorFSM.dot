@@ -1,0 +1,29 @@
+
+ digraph G {
+ node[fontname="FangSong"];
+ edge[fontname="FangSong"];
+ graph[fontname="FangSong"];
+ subgraph cluster_r0 {
+     label ="ProcessorFSM  \n  处理器状态机 ";
+
+     start[label="\N/[开始]\n  初始 " fixedsize=true  shape=ellipse    width=1.5]; 
+     ready[label="\N/[就绪]\n  就绪 " fixedsize=true  shape=box    width=1.5]; 
+     running[label="\N/[running]\n  运行 " fixedsize=true  shape=box    width=1.5]; 
+     pause_locked[label="\N/[pause_locked]\n  暂停锁定 " fixedsize=true  shape=box    width=1.5]; 
+     pause[label="\N/[pause]\n  暂停 " fixedsize=true  shape=box    width=1.5]; 
+     pause_unlocked[label="\N/[pause_unlocked]\n  暂停解锁 " fixedsize=true  shape=box    width=1.5]; 
+     stop_locked[label="\N/[stop_locked]\n  停止锁定 " fixedsize=true  shape=box    width=1.5]; 
+     stop[label="\N/[stop]\n  自定义的结束状态 " fixedsize=true  shape=doublecircle    width=1.5]; 
+
+     start->ready[label="init"];
+     ready->running[label="start"];
+     running->pause_locked[label="pause"];
+     pause_locked->pause[label="pauseWaiting"];
+     pause->pause_unlocked[label="resume"];
+     pause_unlocked->running[label="resumeWaiting"];
+     running->stop_locked[label="stop"];
+     stop_locked->stop[label="stopWating"];
+     }
+ }
+
+ 
